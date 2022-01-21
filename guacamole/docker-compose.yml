@@ -1,0 +1,68 @@
+#docker run --name some-guacd -d -p 4822:4822 guacamole/guacd
+version: "3.5"
+services:
+   guacd:
+     image: guacamole/guacd:1.4.0
+     networks:
+       - guacamole
+     #ports:
+     #  - 4822:4822
+     deploy:
+       placement:
+         constraints: [ node.role == manager ]
+   guacamole:
+     image: guacamole/guacamole:1.4.0
+     environment:
+       - POSTGRES_HOSTNAME=db
+       - POSTGRES_USER=guacamole
+       - POSTGRES_DATABASE=guacamole
+       - POSTGRES_PASSWORD=guacamolepass
+       - GUACD_HOSTNAME=guacd
+     #ports:
+     #  - 4822:8080
+     networks:
+       - guacamole
+     deploy:
+       placement:
+         constraints: [ node.role == manager ]
+   db:
+     image: postgres:13-alpine
+     environment:
+       - POSTGRES_USER=guacamole
+       - POSTGRES_DB=guacamole
+       - POSTGRES_PASSWORD=guacamolepass
+     volumes:
+       - ./db:/var/lib/postgresql/data
+       - ./init:/init
+     networks:
+       - guacamole
+     deploy:
+       placement:
+         constraints: [ node.role == manager ]
+
+   apache:
+     image: 192.168.0.2:5050/dedyms/apache:fcgid
+     networks:
+       - guacamole
+     configs:
+       - source: apache.conf
+         target: /etc/apache2/sites-available/000-default-ssl.conf
+     ports:
+       - 4822:443
+     deploy:
+       placement:
+         constraints: [ node.role == manager ]
+
+networks:
+  guacamole:
+    name: guacamole
+
+configs:
+  apache.conf:
+    file: ./apache.conf
+#  docker run --name some-guacamole --link some-guacd:guacd \
+#    --link some-postgres:postgres      \
+#    -e POSTGRES_DATABASE=guacamole_db  \
+#    -e POSTGRES_USER=guacamole_user    \
+#    -e POSTGRES_PASSWORD=some_password \
+#    -d -p 8080:8080 guacamole/guacamole

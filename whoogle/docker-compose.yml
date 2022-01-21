@@ -1,0 +1,45 @@
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/whoogle:latest
+    volumes:
+      - config:/home/debian/whoogle/config
+    environment:
+      - WHOOGLE_CONFIG_NEW_TAB=true
+      - WHOOGLE_CONFIG_DISABLE=true
+      - WHOOGLE_CONFIG_THEME=dark
+    #ports:
+    #  - 5000:5000
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [ node.hostname == rpi4 ]
+    networks:
+      - whoogle
+  apache:
+    image: 192.168.0.2:5050/dedyms/apache:fcgid
+    ports:
+      - 5000:443
+      #- 5001:443
+    configs:
+      - source: apache.conf
+        target: /etc/apache2/sites-available/000-default-ssl.conf
+    networks:
+      - whoogle
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [ node.hostname == rpi4 ]
+
+volumes:
+  config:
+
+networks:
+  whoogle:
+    name: whoole
+
+configs:
+  apache.conf:
+    file: ./apache.conf

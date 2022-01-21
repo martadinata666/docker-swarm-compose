@@ -1,0 +1,47 @@
+version: "3.5"
+services:
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    user: 1000:1000
+    networks:
+      - codimd
+    environment:
+      MYSQL_ROOT_PASSWORD: codimdroot
+      MYSQL_USER: codimd
+      MYSQL_PASSWORD: codimdpass
+      MYSQL_DATABASE: codimd
+    volumes:
+      - ./db:/var/lib/mysql
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+  app:
+    image: 192.168.0.2:5050/dedyms/codimd:git
+    environment:
+      - CMD_DB_URL=mysql://codimd:codimdpass@db:3306/codimd
+      - CMD_ALLOW_ANONYMOUS=true
+      - CMD_ALLOW_ANONYMOUS_EDITS=true
+      - CMD_DEFAULT_PERMISSION=freely #freely, editable, limited, locked, protected or private
+    #command: /bin/bash
+    #tty: true
+    #stdin_open: true
+    #ports:
+    #  - 9800:3000
+    networks:
+      - codimd
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+  nginx:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline
+    ports:
+      - 9800:443
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - codimd
+volumes:
+  db:
+networks:
+  codimd:
+    name: codimd

@@ -1,0 +1,64 @@
+---
+version: "3.5"
+services:
+  rd:
+    image: redis:alpine
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+    networks:
+      - heimdall
+    deploy:
+      placement:
+        constraints: [node.hostname == homelab ]
+  web:
+    image: 192.168.0.2:5050/dedyms/heimdall:git
+    networks:
+      - heimdall
+      - swag
+    configs:
+      - source: env
+        target: /var/www/html/.env
+        uid: "1000"
+        gid: "1000"
+      - source: user.ini
+        target: /var/www/html/.user.ini
+        uid: "1000"
+        gid: "1000"
+    volumes:
+      - ./database:/var/www/html/database
+      - ./storage:/var/www/html/storage
+    deploy:
+      placement: 
+        constraints: [ node.hostname == homelab ]
+networks:
+  heimdall:
+    name: heimdall
+  swag:
+    external: true
+volumes:
+   htdocs:
+   redis-data:
+   nfs-config:
+     driver_opts:
+       type: "nfs4"
+       o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+       device: ":/home/dedyms/docker/heimdall/config"
+   nfs-database:
+     driver_opts:
+       type: "nfs4"
+       o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+       device: ":/home/dedyms/docker/heimdall/database"
+   nfs-storage:
+     driver_opts:
+       type: "nfs4"
+       o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+       device: ":/home/dedyms/docker/heimdall/storage"
+
+configs:
+  user.ini:
+    file: user.ini
+  env:
+    file: env-backup

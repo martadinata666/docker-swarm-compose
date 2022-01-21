@@ -1,0 +1,17 @@
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/docker-swarm-visualizer:git
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - visualizer
+    ports:
+      - 9300:8080
+    deploy:
+      placement:
+        constraints: [ node.role == manager  ]
+
+networks:
+  visualizer:
+    name: visualizer

@@ -1,0 +1,17 @@
+---
+version: "3.5"
+services:
+  sys:
+    image: 192.168.0.2:5050/dedyms/debian:latest
+    privileged: true
+    container_name: debian-standalone
+    tty: true
+    stdin_open: true
+    volumes:
+      - ./home:/home/debian
+      - /var/run/dbus:/var/run/dbus
+      - ./ot:/home/debian/ot
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+

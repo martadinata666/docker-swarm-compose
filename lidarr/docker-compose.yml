@@ -1,0 +1,32 @@
+---
+version: "3.5"
+services:
+  web:
+    image: 192.168.0.2:5050/dedyms/lidarr:latest
+    container_name: lidarr
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jakarta
+    ports:
+      - 8686:8686
+    volumes:
+      - ./config:/home/debian/lidarr
+      - /media/WD/Music:/Music
+      - nfs-cl-torrents-downloads:/Torrents
+    networks:
+      - swag
+networks:
+  swag:
+    external: true
+volumes:
+  #nfs-config:
+  #  driver_opts:
+  #    type: "nfs4"
+  #    o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+  #    device: ":/home/dedyms/docker/lidarr/config"
+  nfs-cl-torrents-downloads:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock,rsize=8192,wsize=8192"
+      device: ":/media/Clouds/Downloads/Torrents"

@@ -1,0 +1,15 @@
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/plex-discord-bot:git
+    configs:
+      - source: plex.js
+        target: /home/debian/plex-discord-bot/config/plex.js
+      - source: keys.js
+        target: /home/debian/plex-discord-bot/config/keys.js
+ 
+configs:
+  keys.js:
+    file: ./keys.js
+  plex.js:
+    file: ./plex.js

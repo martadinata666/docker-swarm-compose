@@ -1,0 +1,26 @@
+---
+version: "3.5"
+services:
+  web:
+    image: plexinc/pms-docker:plexpass
+    container_name: plex_mediaserver
+    ports:
+      - 32400:32400
+      - 1900:1900
+    environment:
+      - TZ=Asia/Jakarta
+      - PLEX_UID=1000
+      - PLEX_GID=1000
+      - ADVERTISE_IP=http://192.168.0.3:32400
+      #- PLEX_CLAIM="claim-u6-r59XTu6SAiUdj_KpD"
+    volumes:
+      - ./data:/config
+      - ./transcode:/transcode
+      - /media/WD:/media/WD
+    network_mode: host
+    devices:
+      - /dev/dri/:/dev/dri/
+    hostname: Plex
+    restart: always
+volumes:
+  transcode:

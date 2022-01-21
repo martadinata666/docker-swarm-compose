@@ -1,0 +1,55 @@
+---
+version: "3.9"
+services:
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    networks:
+      - ampache
+    environment:
+      MYSQL_ROOT_PASSWORD: ampacheroot
+      MYSQL_USER: ampache
+      MYSQL_PASSWORD: ampachepass
+      MYSQL_DATABASE: ampache
+      TZ: Asia/Jakarta
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+  web:
+    image: 192.168.0.2:5050/dedyms/ampache:5.2.0
+    environment:
+      - TZ=Asia/Jakarta
+    ports:
+      - 4040:80
+      #- 4443:8443
+    volumes:
+      - nfs-music:/music
+      - nfs-config:/var/www/html/config
+    restart: unless-stopped
+    networks:
+      - ampache
+    configs:
+      - source: nginx.conf
+        target: /etc/nginx/conf.d/default.conf
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+volumes:
+  nfs-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/ampache/config"
+  nfs-music:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/Musik/Music"
+networks:
+  ampache:
+    name: ampache
+configs:
+  nginx.conf:
+    file: nginx.conf

@@ -1,0 +1,140 @@
+---
+version: "3.5"
+services:
+  #ssh-buster:
+  #  image: 192.168.0.2:5050/dedyms/debian-openssh:buster
+  #  environment:
+  #    - TZ=Asia/Jakarta
+  #    - SSHPORT=2255
+  #  ports:
+  #    - "2255:2255"
+  #  networks:
+  #    - debian
+  #  volumes:
+  #    - nfs-home-config:/home/debian
+  #    - nfs-cl-torrents-downloads:/home/debian/Downloads
+  #    - cifs-wd:/home/debian/WD
+  #  deploy:
+  #    placement:
+  #      constraints: [node.hostname == homelab]
+  #ssh:
+  #  image: 192.168.0.2:5050/dedyms/openssh:sid
+  #  environment:
+  #    - TZ=Asia/Jakarta
+  #    - SSHPORT=2244
+  #  ports: 
+  #    - "2244:2244"
+  #  networks:
+  #    - debian
+  #  volumes:
+  #    - nfs-home-config:/home/debian/.config
+  #    - nfs-cl-torrents-downloads:/home/debian/Downloads
+  #    - cifs-wd:/home/debian/WD
+  #  deploy:
+  #    placement:
+  #      constraints: [node.hostname == homelab]
+  qbittorrent:
+    image: 192.168.0.2:5050/dedyms/qbittorrent-nox:latest
+    container_name: qbittorrent
+    environment:
+      - TZ=Asia/Jakarta
+      - WEBPORT=8090
+    volumes:
+      - nfs-home-config:/home/debian/.config
+      - nfs-cl-torrents-downloads:/home/debian/Downloads
+      - cifs-wd:/home/debian/WD
+    #ports:
+    #  - 6881:6881/tcp
+    #  - 6881:6881/udp
+    #  - 8090:8090
+    networks:
+      - debian
+      - swag
+    deploy:
+      placement:
+        constraints: [node.hostname == rpi4]
+  #deluge:
+  #  image: 192.168.0.2:5050/dedyms/deluge-web:sid
+  #  environment:
+  #    - TZ=Asia/Jakarta
+    #ports:
+    #  - 58946:58946/tcp
+    #  - 58946:58946/udp
+    #  - 8084:8112
+  #  volumes:
+  #    - nfs-home-config:/home/debian/.config
+  #    - nfs-cl-torrents-downloads:/home/debian/Downloads
+  #    - cifs-wd:/home/debian/WD
+  #  networks:
+  #    - debian
+  #    - swag
+  #  deploy:
+  #    placement:
+  #      constraints: [node.hostname == homelab]
+  #ftp:
+  #  image: 192.168.0.2:5050/dedyms/vsftpd:sid
+  #  environment:
+  #    - TZ=Asia/Jakarta
+  #    - LISTEN_PORT=2121
+  #    - PASV_ADDRESS=192.168.0.3
+  #    - PASV_MIN_PORT=51000
+  #    - PASV_MAX_PORT=52000
+  #  ports:
+  #    - "2121:2121"
+  #    - "51000-52000:51000-52000"
+  #  networks:
+  #    - debian
+  #  volumes:
+  #    - nfs-home-config:/home/debian/.config
+  #    - nfs-cl-torrents-downloads:/home/debian/Downloads
+  #    - cifs-wd:/home/debian/WD
+    #configs:
+    #  - source: vsftpd.conf
+    #    target: /etc/vsftpd.conf
+  #  deploy:
+  #    placement:
+  #      constraints: [node.hostname == homelab]
+  iperf3:
+    image: 192.168.0.2:5050/dedyms/iperf3:latest
+    environment:
+      - TZ=Asia/Jakarta
+      - SSHPORT=2244
+    ports:
+      - "5201:5201"
+    networks:
+      - debian
+    volumes:
+      - nfs-home-config:/home/debian/.config
+      - nfs-cl-torrents-downloads:/home/debian/Downloads
+      - cifs-wd:/home/debian/WD
+    deploy:
+      placement:
+        constraints: [node.hostname == homelab]
+
+# Override configs test
+#configs:
+#  vsftpd.conf:
+#    file: ./vsftpd.conf
+
+networks:
+  debian:
+    name: debian
+    driver: overlay
+  swag:
+    external: true
+volumes:
+  nfs-home-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      device: ":/home/dedyms/docker/debian/debianhome/config"
+  nfs-cl-torrents-downloads:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock,rsize=8192,wsize=8192"
+      device: ":/media/Clouds/Downloads/Torrents"
+  cifs-wd:
+    driver_opts:
+      type: "cifs"
+      o: "addr=192.168.0.3,username=dedyms,password=smb,uid=1000,gid=1000"
+      device: "//192.168.0.3/datashare"

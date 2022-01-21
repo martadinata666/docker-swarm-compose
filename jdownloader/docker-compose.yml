@@ -1,0 +1,28 @@
+services:
+   jdownloader:
+    image: jaymoulin/jdownloader
+    container_name: jdownloader
+    command: sh -c /opt/JDownloader/daemon.sh
+    tty: true
+    stdin_open: true
+    restart: always
+    user: 1000:1000
+    volumes:
+        - ./config:/opt/JDownloader/app/cfg
+        - ./downloads:/opt/JDownloader/Downloads
+        - ./app:/opt/JDownloader/app
+        - ./logs:/opt/JDownloader/app/logs
+        - /etc/localtime:/etc/localtime:ro
+    #environment: 
+    #        MYJD_USER: email@email.com #optional (see [Identify](https://github.com/jaymoulin/docker-jdownloader#identify))
+    #        MYJD_PASSWORD: bar #optional (see [Identify](https://github.com/jaymoulin/docker-jdownloader#identify))
+    #        MYJD_DEVICE_NAME: goofy #optional
+    #        XDG_DOWNLOAD_DIR: /opt/JDownloader/Downloads #optional
+    ports:
+        - 3129:3129
+    networks:
+        - jdownloader
+
+networks:
+  jdownloader:
+    name: jdownloader

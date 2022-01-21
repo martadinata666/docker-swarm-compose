@@ -1,0 +1,71 @@
+---
+version: "3.5"
+services:
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    user: 1000:1000
+    environment:
+      - MYSQL_ROOT_PASSWORD=documizeroot
+      - TZ=Asia/Jakarta
+      - MYSQL_DATABASE=documize
+      - MYSQL_USER=documize
+      - MYSQL_PASSWORD=documize
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - documize
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
+  app:
+    image: 192.168.0.2:5050/dedyms/documize:latest
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - nfs-data:/home/debian/documize
+    #ports:
+    #  - 5100:5001
+    networks:
+      - documize
+    depends_on:
+      - db
+    deploy:
+      placement:
+        constraints: [ node.hostname == GITLAB ]
+  nginx:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline
+    ports:
+      - 5002:443
+    configs:
+      - source: nginx.conf
+        target: /etc/nginx/conf.d/default.conf
+    networks:
+      - documize
+  apache:
+    image: 192.168.0.2:5050/dedyms/apache:fcgid
+    ports:
+      - 5003:443
+    configs:
+      - source: apache.conf
+        target: /etc/apache2/sites-available/000-default-ssl.conf
+    networks:
+      - documize
+
+networks:
+  documize:
+    name: documize
+
+volumes:
+  nfs-data:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/documize/data"
+
+configs:
+  nginx.conf:
+    file: ./default.conf
+  apache.conf:
+    file: ./000-default.conf
+

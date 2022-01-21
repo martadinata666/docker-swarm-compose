@@ -1,0 +1,52 @@
+version: "3.5"
+services:
+  db:
+   image: 192.168.0.2:5050/dedyms/mariadb:10.6
+   user: 1000:1000
+   environment:
+      - MYSQL_ROOT_PASSWORD=chyrproot
+      - TZ=Asia/Jakarta
+      - MYSQL_DATABASE=chyrp
+      - MYSQL_USER=chyrp
+      - MYSQL_PASSWORD=chyrppass
+   volumes:
+      - ./db:/var/lib/mysql
+   restart: unless-stopped
+   networks:
+      - chyrp
+   deploy:
+     placement:
+       constraints: [ node.role == manager ]
+  apache:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline-fpm
+    environment:
+      - TZ=Asia/Jakarta
+    #configs:
+    #  - source: apache.conf
+    #    target: /etc/apache2/sites-available/000-default-ssl.conf
+    volumes:
+      - nfs-htdocs:/var/www/html
+    ports:
+      #- 6060:80
+      - 7171:443
+    restart: unless-stopped
+    networks:
+      - chyrp
+    deploy:
+      placement:
+        constraints: [ node.hostname == GITLAB ]
+networks:
+  chyrp:
+    name: chyrp
+  #swag:
+  #  external: true
+volumes:
+  nfs-htdocs:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/chyrp/htdocs"
+
+#configs:
+#  apache.conf:
+#    file: ./apache.conf

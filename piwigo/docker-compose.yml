@@ -1,0 +1,58 @@
+version: "3.5"
+services:
+  db:
+   image: 192.168.0.2:5050/dedyms/mariadb:10.6
+   user: 1000:1000
+   environment:
+      - MYSQL_ROOT_PASSWORD=piwigoroot
+      - TZ=Asia/Jakarta
+      - MYSQL_DATABASE=piwigo
+      - MYSQL_USER=piwigo
+      - MYSQL_PASSWORD=piwigopass
+   volumes:
+      - ./db:/var/lib/mysql
+   restart: unless-stopped
+   networks:
+      - piwigo
+   deploy:
+     placement:
+       constraints: [ node.role == manager ]
+  fpm:
+   image: 192.168.0.2:5050/dedyms/php-fpm:alpine
+   #image: php:8-fpm-alpine
+   environment:
+     - TZ=Asia/Jakarta
+   volumes:
+     - nfs-htdocs:/var/www/html
+   networks:
+     - piwigo
+   deploy:
+     placement:
+       constraints: [ node.hostname == rpi4 ]
+   restart: unless-stopped
+  web:
+    image: 192.168.0.2:5050/dedyms/apache:fcgid
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - nfs-htdocs:/var/www/html
+    ports:
+      - 6161:80
+      #- 6060:443
+    restart: unless-stopped
+    networks:
+      - piwigo
+    deploy:
+      placement:
+        constraints: [ node.hostname == rpi4 ]
+networks:
+  piwigo:
+    name: piwigo
+  swag:
+    external: true
+volumes:
+  nfs-htdocs:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/piwigo/htdocs"

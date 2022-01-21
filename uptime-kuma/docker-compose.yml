@@ -1,0 +1,31 @@
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/uptime-kuma:1.10.0
+    volumes:
+      - ./data:/home/debian/uptime-kuma/data
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab  ]
+    networks:
+      - kuma
+    #ports:
+    #  - 9400:3001
+  apache:
+    image: 192.168.0.2:5050/dedyms/apache:fcgid
+    ports:
+      - 9400:443
+    configs:
+      - source: apache.conf
+        target: /etc/apache2/sites-available/000-default-ssl.conf
+    networks:
+      - kuma
+
+volumes:
+  data:
+networks:
+  kuma:
+    name: kuma
+configs:
+  apache.conf:
+    file: ./apache.conf

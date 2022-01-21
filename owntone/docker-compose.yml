@@ -1,0 +1,76 @@
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/owntone-server:git
+    privileged: true
+    #command: owntone -c /home/debian/owntone/owntone.conf -P /home/debian/owntone/owntone.pid -f
+    command: owntone -c ./owntone.conf -f -P ./owntone.pid -w /home/debian/.local/share/owntone/htdocs
+    #tty: true
+    #stdin_open: true
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - /var/run/dbus:/var/run/dbus
+      - data:/home/debian/owntone
+      -  /home/dedyms/Musik/Music/Music/:/music
+    ports:
+      - 3689:3689
+      - 3688:3688
+    networks:
+      - owntone
+    restart: always
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+  #web-npm:
+  #  image: 192.168.0.2:5050/dedyms/node:14
+  #  command: bash
+  #  tty: true
+  #  stdin_open: true
+  #  environment:
+  #    - TZ=Asia/Jakarta
+      #- VUE_APP_JSON_API_SERVER=http://192.168.0.2:3689
+      #- VUE_APP_WEBSOCKET_SERVER=ws://192.168.0.2:3688
+  #  volumes:
+  #    - ./websrc:/home/debian/websrc
+  #  ports:
+  #     - 12000:8080
+    #deploy:
+    #  placement:
+    #    constraints:
+    #      - node.role == manager
+  #  networks:
+  #    - owntone
+
+
+  #ympd:
+  #  image: 192.168.0.2:5050/dedyms/ympd:latest
+  #  volumes:
+  #    - ./ympd:/mpd
+  #  restart: always
+  #  environment:
+  #    MPD_SERVER: app
+  #    MPD_PORT: 6600
+  #  ports:
+  #    - 3690:8080
+  #  depends_on:
+  #    - app
+  #  networks:
+  #    - owntone
+
+  #apache:
+  #  image: 192.168.0.2:5050/dedyms/apache2:fcgid
+  #  ports:
+  #    - 3689:443
+  #  volumes:
+  #    - ./apache.conf:/etc/apache2/sites-available/000-default-ssl.conf
+  #  networks:
+  #    - owntone
+
+networks:
+  owntone:
+    name: owntone
+
+volumes:
+  data:

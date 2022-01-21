@@ -1,0 +1,46 @@
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/unmanic:latest
+    #container_name: unmanic
+    #command: bash
+    #tty: true
+    #stdin_open: true
+    restart: always
+    volumes:
+       - ./config:/home/debian/.unmanic
+       - /media/WD/Videos/MV:/library
+       - /dev/shm:/tmp/unmanic
+    devices:
+       - /dev/dri:/dev/dri
+    ports:
+       - 7777:8888
+    networks:
+       - unmanic
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    #deploy:
+    #  resources:
+    #     limits:
+    #       cpus: '4.0'
+  #nginx:
+  #  image: 192.168.0.2:5050/dedyms/nginx:mainline
+  #  ports:
+  #    - 7778:443
+  #  volumes:
+  #    - ./default.conf:/etc/nginx/conf.d/default.conf
+  #  networks:
+  #    - unmanic
+  #apache:
+  #  image: 192.168.0.2:5050/dedyms/apache2:fcgid
+  #  ports:
+  #    - 7777:443
+  #  volumes:
+  #    - ./apache.conf:/etc/apache2/sites-available/000-default-ssl.conf
+  #  networks:
+  #    - unmanic
+
+networks:
+  unmanic:
+    name: unmanic
+

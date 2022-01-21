@@ -1,0 +1,85 @@
+version: "3.5"
+services:
+  rd:
+   image: redis:alpine
+   environment:
+     - TZ=Asia/Jakarta
+   volumes:
+     - rd:/data
+   restart: unless-stopped
+   networks:
+     - linkace
+   deploy:
+     placement:
+       constraints: [node.hostname == homelab ]
+
+  db:
+   image: 192.168.0.2:5050/dedyms/mariadb:10.6
+   user: 1000:1000
+   environment:
+      - MYSQL_ROOT_PASSWORD=mariadblinkace
+      - TZ=Asia/Jakarta
+      - MYSQL_DATABASE=linkace
+      - MYSQL_USER=linkace
+      - MYSQL_PASSWORD=linkace
+   volumes:
+      - ./db:/var/lib/mysql
+   restart: unless-stopped
+   networks:
+      - linkace
+   deploy:
+     placement:
+       constraints: [ node.role == manager ]
+  web:
+   image: 192.168.0.2:5050/dedyms/apache:fpm
+   environment:
+     - TZ=Asia/Jakarta
+   volumes:
+     - nfs-htdocs:/var/www/html
+   configs:
+     - source: apache.conf
+       target: /etc/apache2/sites-available/000-default-ssl.conf
+   networks:
+     - linkace
+   ports:
+     - 7070:443
+   deploy:
+     placement:
+       constraints: [ node.hostname == GITLAB ]
+   restart: unless-stopped
+  #apache:
+  #  image: 192.168.0.2:5050/dedyms/apache:fcgid
+  #  environment:
+  #    - TZ=Asia/Jakarta
+  #  configs:
+  #    - source: apache.conf
+  #      target: /etc/apache2/sites-available/000-default-ssl.conf
+  #  volumes:
+  #    - nfs-htdocs:/var/www/html
+  #  ports:
+  #    #- 6060:80
+  #    - 7070:443
+  #  restart: unless-stopped
+  #  networks:
+  #    - linkace
+  #  deploy:
+  #    placement:
+  #      constraints: [ node.hostname == GITLAB ]
+networks:
+  linkace:
+    name: linkace
+  #swag:
+  #  external: true
+volumes:
+  rd:
+  nfs-htdocs:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/linkace/htdocs"
+
+configs:
+  apache.conf:
+    file: ./apache.conf
+  nginx.conf:
+    file: ./nginx.conf

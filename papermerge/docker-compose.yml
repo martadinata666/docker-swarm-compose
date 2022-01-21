@@ -1,0 +1,71 @@
+version: '3.7'
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/papermerge-mysql:main
+    #build:
+    #  context: .
+    #  dockerfile: app.dockerfile
+    container_name: papermerge-main
+    ports:
+      - "5000:8000"
+    networks:
+      - papermerge
+    depends_on:
+      - redis
+    volumes:
+      - /media/WD/PDF:/opt/media
+    restart: unless-stopped
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - TZ=Asia/Jakarta
+      - MYSQL_USER=papermerge
+      - MYSQL_PASSWORD=papermergepass
+      - MYSQL_DB=papermerge
+      - MYSQL_HOST=pm_db
+      - MYSQL_PORT=3306
+#  db:
+#    image: mariadb:10.5
+#    container_name: pm_db
+#    user: 1000:1000
+#    volumes:
+#      - ./db:/var/lib/mysql/
+#      #- ./db/my.cnf:/etc/my.cnf
+#    environment:
+#      - TZ=Asia/Jakarta
+#      - MYSQL_ROOT_PASSWORD=papermergeroot
+#      - MYSQL_USER=papermerge
+#      - MYSQL_PASSWORD=papermergepass
+#      - MYSQL_DATABASE=papermerge
+#    networks:
+#      - papermerge
+  redis:
+    container_name: 'redispm'
+    image: 'redis'
+    ports:
+      - '127.0.0.1:6379:6379'
+    volumes:
+      - ./rd:/data
+    networks:
+      - papermerge
+    restart: unless-stopped
+  worker:
+    image: 192.168.0.2:5050/dedyms/papermerge-mysql:worker
+    #build:
+    #  context: .
+    #  dockerfile: worker.dockerfile    
+    container_name: papermerge-worker
+    volumes:
+      - /media/WD/PDF:/opt/media
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.production
+      - MYSQL_USER=papermerge
+      - MYSQL_PASSWORD=papermergepass
+      - MYSQL_DB=papermerge
+      - MYSQL_HOST=pm_db
+      - MYSQL_PORT=3306  
+    networks:
+      - papermerge
+    restart: unless-stopped
+networks:
+  papermerge:
+    external: true

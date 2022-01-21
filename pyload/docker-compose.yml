@@ -1,0 +1,33 @@
+---
+version: "3.5"
+services:
+  web:
+    image: 192.168.0.2:5050/dedyms/pyload-ng:develop
+    networks:
+      - pyload
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - nfs-config:/home/debian/pyload/config
+      - nfs-cl-downloads:/home/debian/pyload/downloads
+    ports:
+      - 8093:8000
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab
+volumes:
+  nfs-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/pyload/config"
+  nfs-cl-downloads:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/media/Clouds/Downloads"
+networks:
+  pyload:
+    name: pyload
+    driver: overlay

@@ -1,0 +1,8 @@
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/python-http-server:latest
+    volumes:
+      - /media/WD:/data
+    ports:
+      - 25000:8000

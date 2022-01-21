@@ -1,0 +1,25 @@
+version: "3.5"
+services:
+  documentserver:
+    image: onlyoffice/documentserver:7.0
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Jakarta
+      #- SSL_CERTIFICATE_PATH=/etc/ssl/certs/ssl-cert-snakeoil.pem
+      #- SSL_KEY_PATH=/etc/ssl/private/ssl-cert-snakeoil.key
+    ports:
+      - 5080:80
+    volumes:
+      - ds_logs:/var/log/onlyoffice
+      - ds_data:/var/www/onlyoffice/Data
+    networks:
+      - onlyoffice
+    deploy:
+      placement:
+        constraints: [node.hostname == homelab]
+volumes:
+  ds_logs:
+  ds_data:
+networks:
+  onlyoffice:
+    name: onlyoffice

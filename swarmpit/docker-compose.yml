@@ -1,0 +1,102 @@
+version: '3.5'
+services:
+  app:
+    image: swarmpit/swarmpit:latest
+    environment:
+      - SWARMPIT_DB=http://couchdb-swarmpit:5984
+      - SWARMPIT_INFLUXDB=http://influxdb-swarmpit:8086
+      - TZ=Asia/Jakarta
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - 9999:8080
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+    networks:
+      - swarmpit
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 1024M
+        reservations:
+          cpus: '0.25'
+          memory: 512M
+      placement:
+        constraints:
+          - node.role == manager
+
+  couchdb-swarmpit:
+    image: couchdb:2.3.0
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - couchdb-data:/opt/couchdb/data
+    networks:
+      - swarmpit
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: '0.30'
+          memory: 256M
+        reservations:
+          cpus: '0.15'
+          memory: 128M
+
+  influxdb-swarmpit:
+    image: influxdb:1.7
+    volumes:
+      - influxdb-data:/var/lib/influxdb
+    environment:
+      - TZ=Asia/Jakarta
+    networks:
+      - swarmpit
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      resources:
+        limits:
+          cpus: '0.60'
+          memory: 512M
+        reservations:
+          cpus: '0.30'
+          memory: 128M
+
+  agent:
+    image: swarmpit/agent:latest
+    environment:
+      - DOCKER_API_VERSION=1.35
+      - TZ=Asia/Jakarta
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - swarmpit
+    deploy:
+      mode: global
+      labels:
+        swarmpit.agent: 'true'
+      resources:
+        limits:
+          cpus: '0.10'
+          memory: 64M
+        reservations:
+          cpus: '0.05'
+          memory: 32M
+
+networks:
+  swarmpit:
+    name: swarmpit
+    driver: overlay
+
+volumes:
+  couchdb-data:
+    driver: local
+  influxdb-data:
+    driver: local

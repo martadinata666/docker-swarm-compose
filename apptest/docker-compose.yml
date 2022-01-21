@@ -1,0 +1,18 @@
+version: "3.8"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/node:lts-dev
+    volumes:
+      #- ./jellyfin-vue:/home/debian/jellyfin-vue
+      - ./plex:/home/debian/plex
+    command: bash
+    stdin_open: true
+    tty: true
+    networks:
+      - apptest
+    ports:
+      - 25000:3000
+
+networks:
+  apptest:
+    name: apptest

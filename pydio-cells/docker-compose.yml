@@ -1,0 +1,39 @@
+---
+version: "2.1"
+services:
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.5
+    volumes:
+      - ./db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=pydioroot
+      - TZ=Asia/Jakarta
+      - MYSQL_DATABASE=pydio
+      - MYSQL_USER=pydio
+      - MYSQL_PASSWORD=pydiopass
+    restart: unless-stopped
+  cells:
+    #user: 1000:1000
+    image: pydio/cells:latest
+    restart: unless-stopped
+    ports: ["21000:8080"]
+    environment:
+      - CELLS_LOG_LEVEL=production
+      - CELLS_BIND=:8080
+      - CELLS_NO_TLS=1
+      - CELLS_INSTALL_YAML=/pydio/config/install.yml
+      - CELLS_EXTERNAL=http://192.168.0.2:21000
+    volumes:
+      - cells:/var/cells
+      - ./install-conf.yml:/pydio/config/install.yml:ro
+  collabora:
+    image: collabora/code
+    environment:
+      - extra_params=--o:tls.enable=false
+      - extra_params=--o:ssl.enable=false
+      - username=admin
+      - password=adminadmin
+    ports:
+      - 21001:9980
+volumes:
+  cells:

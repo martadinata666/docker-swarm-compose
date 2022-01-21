@@ -1,0 +1,47 @@
+---
+version: '3.5'
+services:
+  web:
+    image: 192.168.0.2:5050/dedyms/pitchfork:latest
+    networks:
+      #- mpd
+      - pitchfork
+    restart: always
+    volumes:
+      - htdocs:/var/www/html
+      - nfs-config:/var/www/html/config
+    ports:
+      - "1010:80"
+    depends_on:
+      - player
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab
+  fpm:
+    image: 192.168.0.2:5050/dedyms/php-fpm:alpine
+    networks:
+      - pitchfork
+      - mpd
+    volumes:
+      - htdocs:/var/www/html
+      - nfs-config:/var/www/html/config
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab
+volumes:
+  htdocs:
+  nfs-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/pitchfork/pfconfig/"
+  dedyms_music:
+    external: true
+networks:
+  mpd:
+    external: true
+  pitchfork:
+    name: pitchfork
+    driver: overlay

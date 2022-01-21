@@ -1,0 +1,57 @@
+version: '3.5'
+services:
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    container_name: filerun-db
+    networks:
+      - filerun
+    environment:
+      MYSQL_ROOT_PASSWORD: filerunroot
+      MYSQL_USER: filerunuser
+      MYSQL_PASSWORD: filerunpassword
+      MYSQL_DATABASE: filerun
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab
+  web:
+    image: 192.168.0.2:5050/dedyms/filerun:20210627
+    networks:
+      - filerun
+    environment:
+      FR_DB_HOST: db
+      FR_DB_PORT: 3306
+      FR_DB_NAME: filerun
+      FR_DB_USER: filerunuser
+      FR_DB_PASS: filerunpassword
+      APACHE_RUN_USER: dedyms
+      APACHE_RUN_USER_ID: 1000
+      APACHE_RUN_GROUP: dedyms
+      APACHE_RUN_GROUP_ID: 1000
+    depends_on:
+      - db
+      - ds
+    ports:
+      - "1080:80"
+    volumes:
+      - web_data:/var/www/html
+      - wd-smb:/user-files
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == rpi4
+volumes:
+  web_data:
+  wd-smb:
+    driver_opts:
+      type: "cifs"
+      o: "addr=192.168.0.3,username=dedyms,password=smb,uid=1000,gid=1000"
+      device: "//192.168.0.3/datashare"
+networks:
+  filerun:
+      name: filerun
+      driver: overlay

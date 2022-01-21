@@ -1,0 +1,36 @@
+---
+version: "3.5"
+services:
+  web:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline
+    ports:
+      - 9200:443
+    volumes:
+      - htdocs:/var/www/html
+      - data:/var/www/html/data
+      - workspace:/var/www/html/workspace
+      - plugins:/var/www/html/plugins
+      - themes:/var/www/html/theme
+      -  /home/dedyms/Documents/docker-gitlab:/var/www/html/workspace/docker-gitlab
+    networks:
+      - atheos
+  fpm:
+    image: 192.168.0.2:5050/dedyms/atheos:git-fpm
+    volumes:
+      - htdocs:/var/www/html 
+      - data:/var/www/html/data
+      - workspace:/var/www/html/workspace
+      - plugins:/var/www/html/plugins
+      - themes:/var/www/html/theme
+      - /home/dedyms/Documents/docker-gitlab:/var/www/html/workspace/docker-gitlab
+    networks:
+       - atheos
+networks:
+  atheos:
+    name: atheos
+volumes:
+  htdocs:
+  data:
+  workspace:
+  plugins:
+  themes:

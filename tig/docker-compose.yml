@@ -1,0 +1,166 @@
+version: "3.5"
+services:
+  grafana:
+    image: grafana/grafana:8.3.4
+    user: 1000:1000
+    #ports:
+    #  - 3000:3000
+    volumes:
+      - ./grafana:/var/lib/grafana
+    environment:
+      - "GF_SERVER_ROOT_URL=https://192.168.0.2/grafana"
+      - "GF_SERVER_DOMAIN=https://192.168.0.2/"
+      - TZ=Asia/Jakarta
+    networks:
+      - tig
+      - swag
+    depends_on:
+      - influxdb
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab
+
+  influxdb:
+    image: influxdb:1.8
+    user: 1000:1000
+    environment:
+      - TZ=Asia/Jakarta
+    configs:
+      - source: influxdb.conf
+        target: /etc/influxdb/influxdb.conf
+    #ports:
+    #  - 8086:8086
+    volumes:
+      - ./influxdb:/var/lib/influxdb
+    networks:
+      - tig
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab
+  
+  telegraf:
+    image: telegraf:1.20.2
+    hostname: "{{.Node.Hostname}}"
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - tig
+    configs:
+      - source: telegraf.conf
+        target: /etc/telegraf/telegraf.conf
+    depends_on:
+      - influxdb
+    deploy:
+      mode: global
+    #deploy:
+    #  placement:
+    #    constraints: [ node.role == manager  ]
+
+
+  cadvisor:
+    image: 192.168.0.2:5050/dedyms/cadvisor:v0.43
+    privileged: true
+    networks:
+      - tig
+    #command: -docker_only
+    #command: 
+    #  - '--docker_only=true'
+    #  - '--disable_metrics=disk,network,tcp,udp,percpu,sched,process'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk:/dev/disk:ro
+    deploy:
+      mode: global
+      #placement:
+      #  constraints: [ node.platform.arch == x86_64 ]
+      #resources:
+      #  limits:
+      #    memory: 128M
+      #  reservations:
+      #    memory: 64M
+
+  node-exporter:
+    image: prom/node-exporter:v1.3.1
+    networks:
+      - tig
+    environment:
+      - NODE_ID={{.Node.ID}}
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+      - /etc/hostname:/etc/nodename
+      - data:/etc/node-exporter
+    configs:
+      - source: node_entrypoint.sh
+        target: /etc/node-exporter/docker-entrypoint.sh
+    command:
+      - '--path.sysfs=/host/sys'
+      - '--path.procfs=/host/proc'
+      - '--collector.textfile.directory=/etc/node-exporter/'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+      - '--no-collector.ipvs'
+    deploy:
+      mode: global
+      #placement:
+      #  constraints: [ node.platform.arch == x86_64 ]
+
+  prometheus:
+    image: prom/prometheus:v2.32.1
+    user: 1000:1000
+    networks:
+      - tig
+    #ports:
+    #  - 9000:9090
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION:-24h}'
+    volumes:
+      - ./prometheus:/prometheus
+    configs:
+      - source: node_rules
+        target: /etc/prometheus/swarm_node.rules.yml
+      - source: task_rules
+        target: /etc/prometheus/swarm_task.rules.yml
+      - source: prometheus_conf
+        target: /etc/prometheus/prometheus.yml
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints:
+          - node.role == manager
+      #resources:
+      #  limits:
+      #    memory: 2048M
+      #  reservations:
+      #    memory: 128M
+
+configs:
+  telegraf.conf:
+    file: ./telegraf/telegraf.conf
+  influxdb.conf:
+    file: ./influxdb/influxdb.conf
+  prometheus_conf:
+    file: ./prometheus/conf/prometheus.yml
+  node_rules:
+    file: ./prometheus/rules/swarm_node.rules.yml
+  task_rules:
+    file: ./prometheus/rules/swarm_task.rules.yml
+  node_entrypoint.sh:
+    file: ./node-exporter/conf/docker-entrypoint.sh
+
+networks:
+  tig:
+   name: tig
+  swag:
+   external: true

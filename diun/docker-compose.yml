@@ -1,0 +1,27 @@
+version: "3.5"
+services:
+  agent:
+    image: crazymax/diun:latest
+    container_name: diun_standalone
+    hostname: diun_standalone
+    volumes:
+      - "./data-standalone:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./data-standalone/diun-standalone.yml:/etc/diun/diun.yml"
+      - "./data-standalone/image.yml:/etc/diun/image.yml"
+    environment:
+      - "TZ=Asia/Jakarta"
+      - "LOG_LEVEL=info"
+      - "LOG_JSON=false"
+      - "DIUN_WATCH_WORKERS=20"
+      - "DIUN_WATCH_SCHEDULE=0 */1 * * *"
+      - "DIUN_PROVIDERS_DOCKER=true"
+    restart: always
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    networks:
+      - diun
+networks:
+  diun:
+    name: diun
+    driver: bridge

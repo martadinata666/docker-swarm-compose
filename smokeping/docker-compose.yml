@@ -1,0 +1,24 @@
+version: "3.5"
+services:
+  web:
+    image: ghcr.io/linuxserver/smokeping:latest
+    container_name: smokeping
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jakarta
+    volumes:
+      - ./config:/config
+      - ./data:/data
+    ports:
+      - 4080:80
+    restart: unless-stopped
+    networks:
+      - smokeping
+    deploy:
+      placement:
+        constraints: [node.hostname == homelab]
+networks:
+  smokeping:
+    name: smokeping
+    driver: overlay

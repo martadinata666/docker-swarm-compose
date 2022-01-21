@@ -1,0 +1,73 @@
+version: '3.5'
+services:
+  rd:
+    image: redis:alpine
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - rd:/data
+    restart: unless-stopped
+    networks:
+      - akaunting
+    deploy:
+      placement:
+        constraints: [node.hostname == GITLAB ]
+
+  db:
+    restart: unless-stopped
+    image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    networks:
+      - akaunting
+    environment:
+      - MYSQL_USER=akaunting
+      - MYSQL_PASSWORD=akauntingpass
+      - MYSQL_DATABASE=akaunting
+      - MYSQL_ROOT_PASSWORD=akauntingroot
+    #ports:
+    #  - '3306:3306'
+    volumes:
+      - ./db:/var/lib/mysql
+    deploy:
+      placement:
+        constraints:
+           - node.role == manager
+
+  web:
+    image: 192.168.0.2:5050/dedyms/akaunting:2.1.27
+    networks:
+      - akaunting
+    volumes:
+      #- htdocs:/var/www/html
+      #- nfs-config:/var/www/html/config
+      - nfs-storage:/var/www/html/storage
+      - nfs-modules:/var/www/html/modules
+    configs:
+      - source: env
+        target: /var/www/html/.env
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Jakarta
+    ports:
+      - 8087:443
+    deploy:
+      placement:
+        constraints:
+           - node.hostname == GITLAB
+networks:
+  akaunting:
+    name: akaunting
+volumes:
+  rd:
+  nfs-modules:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/akaunting/modules"
+  nfs-storage:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/akaunting/storage"
+configs:
+  env:
+    file: env

@@ -1,0 +1,21 @@
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/detsube:git
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - db:/home/debian/detsube/db
+    configs:
+      - source: config.ts
+        target: /home/debian/detsube/src/config.ts
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab
+configs:
+  config.ts:
+    file: ./config.ts
+
+volumes:
+  db:

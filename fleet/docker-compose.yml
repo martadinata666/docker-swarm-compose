@@ -1,0 +1,42 @@
+version: "3.5"
+services:
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    user: 1000:1000
+    environment:
+      - MYSQL_ROOT_PASSWORD=fleetroot
+      - TZ=Asia/Jakarta
+      - MYSQL_DATABASE=fleet
+      - MYSQL_USER=fleet
+      - MYSQL_PASSWORD=fleetpassword
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - fleet
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
+  app:
+    #image: ghcr.io/linuxserver/fleet
+    image: 192.168.0.2:5050/dedyms/fleet:2.3.1
+    environment:
+      #- PUID=1000
+      #- PGID=1000
+      - fleet_admin_authentication_type=DATABASE
+      - fleet_database_url=jdbc:mariadb://db:3306/fleet
+      - fleet_database_username=fleet
+      - fleet_database_password=fleetpassword
+      #- fleet_admin_secret=randomstring #optional
+    volumes:
+      - ./config:/home/debian/fleet/config
+    ports:
+      - 9700:8080
+    networks:
+      - fleet
+    deploy:
+      placement:
+        constraints: [ node.role == manager  ]
+networks:
+  fleet:
+    name: fleet

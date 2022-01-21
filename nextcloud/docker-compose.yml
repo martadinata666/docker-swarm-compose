@@ -1,0 +1,120 @@
+version: "3.5"
+services:
+  web:
+    image: 192.168.0.2:5050/dedyms/nextcloud-smb:23.0.0
+    environment:
+      - TZ=Asia/Jakarta
+      - NEXTCLOUD_UPDATE=1
+    volumes:
+      - htdocs:/var/www/html
+      - nfs-cl-pictures:/Pictures
+      - nfs-cl-instasave:/InstaSave
+      - nfs-config:/var/www/html/config
+      - nfs-data:/var/www/html/data
+      - nfs-themes:/var/www/html/themes
+    #configs:
+    #  - source: user.ini
+    #    target: /var/www/html/.user.ini
+    ports:
+      - 8080:80
+      #- 8383:443
+    restart: unless-stopped
+    networks:
+      - nextcloud
+    #  - swag
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.5
+    environment:
+      - MYSQL_ROOT_PASSWORD=mariadbnc
+      - TZ=Asia/Jakarta
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_PASSWORD=nextcloud
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - nextcloud
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
+  #drawio:
+  #  image: jgraph/drawio:alpine
+  #  environment:
+  #    - TZ=Asia/Jakarta
+  #  ports:
+  #    - 8082:8080
+  #  restart: unless-stopped
+  #  networks:
+  #    - nextcloud
+  #  deploy:
+  #    placement:
+  #      constraints: [node.hostname == homelab ]
+  rd:
+    image: redis:alpine
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - rd:/data
+    restart: unless-stopped
+    networks:
+      - nextcloud
+    deploy:
+      placement:
+        constraints: [node.hostname == homelab ]
+#  collabora:
+#    image: collabora/code
+#    networks:
+#      - nextcloud
+#    environment:
+#      - extra_params=--o:tls.enable=false
+#      - extra_params=--o:ssl.enable=false
+#      - username=admin
+#      - password=adminadmin
+#    deploy:
+#      placement:
+#        constraints: [node.hostname == homelab]
+#    ports:
+#      - 8081:9980
+volumes:
+  htdocs:
+  rd:
+  db:
+  nfs-cl-pictures:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/media/Clouds/Pictures/dedyms"
+  nfs-cl-instasave:
+    driver_opts:  
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/media/Clouds/InstaSave"
+  nfs-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/nextcloud/config"
+  nfs-data:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/nextcloud/data"
+  nfs-themes:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/nextcloud/themes"
+
+networks:
+  nextcloud:
+    name: nextcloud
+    driver: overlay
+configs:
+  default.conf:
+    file: default.conf
+#  user.ini:
+#    file: user.ini

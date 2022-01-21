@@ -1,0 +1,57 @@
+version: "3.6"
+services:
+  web:
+    image: gitlab/gitlab-ee:14.6.2-ee.0
+    #hostname: 192.168.0.2:10000
+    ports:
+      - "2022:22"
+      - "10000:10000"
+      - "5050:5050"
+      #- "10443:443"
+    volumes:
+      - ./gitlab/data:/var/opt/gitlab
+      - ./gitlab/logs:/var/log/gitlab
+      - ./gitlab/config:/etc/gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
+    configs:
+      - source: gitlab
+        target: /omnibus_config.rb
+    secrets:
+      - gitlab_root_password
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+    networks:
+      - gitlab
+
+  runner:
+    image: gitlab/gitlab-runner:alpine-v14.6.0
+    volumes:
+      - runner_config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./runner/builds:/builds
+      - ./runner/cache:/cache
+      - ./runner/volumes:/volumes
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [ node.hostname == homelab ]
+    networks: 
+      - gitlab
+
+configs:
+  gitlab:
+    file: ./gitlab/gitlab.rb
+secrets:
+  gitlab_root_password:
+    file: ./gitlab/root_password.txt
+
+networks:
+  gitlab:
+    name: gitlab
+
+volumes:
+  runner_config:
+  runner_cache:

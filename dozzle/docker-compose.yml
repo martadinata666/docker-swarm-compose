@@ -1,0 +1,34 @@
+---
+version: "3.5"
+services:
+  app:
+    image: amir20/dozzle:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - TZ=Asia/Jakarta
+      - DOZZLE_ADDR=:8080
+    ports:
+      - 8888:8080
+    networks:
+      - dozzle
+    deploy:
+      placement:
+        constraints: [ node.role == manager  ]
+  #homeworker0:
+  #  image: amir20/dozzle:latest
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock
+  #  environment:
+  #    - TZ=Asia/Jakarta
+  #    - DOZZLE_ADDR=:8081
+  #  ports:  
+  #    - 8889:8081
+  #  networks:
+  #    - dozzle
+  #  deploy:
+  #    placement:
+  #      constraints: [ node.hostname == homeworker0  ]
+networks:
+  dozzle:
+    name: dozzle

@@ -1,0 +1,41 @@
+---
+version: "3.5"
+services:
+  fpm:
+   image: 192.168.0.2:5050/dedyms/php-fpm:alpine
+   environment:
+     - TZ=Asia/Jakarta
+   volumes:
+     - html:/var/www/html
+     - var:/var/www/html/var
+     - cache:/var/www/html/public/media
+     - /media/Clouds/InstaSave:/photos
+   networks:
+     - pixapop
+   deploy:
+     placement:
+       constraints: [ node.hostname == homelab ]
+  web:
+   image: 192.168.0.2:5050/dedyms/pixapop:git-fpm
+   environment:
+     - TZ=Asia/Jakarta
+   volumes:
+     - html:/var/www/html
+     - var:/var/www/html/var
+     - cache:/var/www/html/public/media
+     - /media/Clouds/InstaSave:/photos
+   networks:
+     - pixapop
+   ports:
+     - 2080:80
+   deploy:
+     placement:
+       constraints: [ node.hostname == homelab ]
+volumes:
+  html:
+  var:
+  cache:
+networks:
+  pixapop:
+    name: pixapop
+    driver: overlay

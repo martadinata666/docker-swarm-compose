@@ -1,0 +1,39 @@
+---
+version: "3.5"
+services:
+  homelab:
+    image: 192.168.0.2:5050/dedyms/glances:git
+    hostname: HomeLab
+    #command: /bin/bash
+    #tty: true
+    #stdin_open: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - WEBPORT=61208
+    ports:
+      - "61208:61208"
+    networks:
+      - glances
+    deploy:
+      placement:
+        constraints: [node.hostname == homelab ]
+  #homeworker0:
+  #  image: 192.168.0.2:5050/dedyms/glances:latest
+  #  hostname: HomeWorker0
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock:ro
+  #  environment:
+  #    - WEBPORT=61209
+  #  ports:
+  #    - "61209:61209"
+  #  networks:
+  #    - glances
+  #  deploy: 
+  #    placement:
+  #      constraints: [node.hostname == homeworker0 ]
+networks:
+  glances:
+    name: glances
+    driver: overlay
+

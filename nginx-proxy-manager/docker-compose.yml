@@ -1,0 +1,68 @@
+version: "3.5"
+services:
+  app:
+    image: jc21/nginx-proxy-manager:latest
+    #user: 1000:1000
+    restart: unless-stopped
+    ports:
+      # Public HTTP Port:
+      - '15000:80'
+      # Public HTTPS Port:
+      - '15443:443'
+      # Admin Web Port:
+      - '15081:81'
+    environment:
+      # These are the settings to access your db
+      DB_MYSQL_HOST: "db"
+      DB_MYSQL_PORT: 3306
+      DB_MYSQL_USER: "npm"
+      DB_MYSQL_PASSWORD: "npmpass"
+      DB_MYSQL_NAME: "npm"
+      # If you would rather use Sqlite uncomment this
+      # and remove all DB_MYSQL_* lines above
+      # DB_SQLITE_FILE: "/data/database.sqlite"
+      # Uncomment this if IPv6 is not enabled on your host
+      DISABLE_IPV6: 'true'
+    volumes:
+      - nfs-data:/data
+      - nfs-letsencrypt:/etc/letsencrypt
+    depends_on:
+      - db
+    deploy:
+      placement:
+        constraints: [ node.hostname == rpi4 ]
+    networks:
+      - nginx-proxy-manager
+
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    user: 1000:1000
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "npmroot"
+      MYSQL_DATABASE: "npm"
+      MYSQL_USER: "npm"
+      MYSQL_PASSWORD: "npmpass"
+    volumes:
+      - ./db:/var/lib/mysql
+    deploy:
+      placement:
+         constraints: [ node.role == manager ]
+    networks:
+      - nginx-proxy-manager
+
+volumes:
+  nfs-data:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/opt/nginx-proxy-manager/data"
+  nfs-letsencrypt:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/opt/nginx-proxy-manager/letsencrypt"
+
+networks:
+  nginx-proxy-manager:
+    name: nginx-proxy-manager

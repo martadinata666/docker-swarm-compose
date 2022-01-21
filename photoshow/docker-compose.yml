@@ -1,0 +1,23 @@
+version: "3.5"
+services:
+  nginx:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline
+    volumes:
+      - ./htdocs:/var/www/html
+      - /media/Clouds/InstaSave:/var/www/html/photos
+      #- ./nginx.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - photoshow
+    ports:
+      - 9090:80
+    restart: always
+  fpm:
+    image: 192.168.0.2:5050/dedyms/php-fpm:alpine
+    volumes:
+      - ./htdocs:/var/www/html
+      - /media/Clouds/InstaSave:/var/www/html/photos
+    networks:
+      - photoshow
+networks:
+  photoshow:
+    name: photoshow

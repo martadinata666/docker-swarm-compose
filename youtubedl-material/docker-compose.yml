@@ -1,0 +1,87 @@
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/youtubedl-material:git
+    #command: /bin/bash
+    #tty: true
+    #stdin_open: true
+    environment:
+      - TZ=Asia/Jakarta
+      #- ALLOW_CONFIG_MUTATIONS='true'
+      #- ytdl_mongodb_connection_string='mongodb://db:27017/?compression=zlib'
+      #- ytdl_use_local_db='false'
+      #- write_ytdl_config='true'
+    volumes:
+      - nfs-cl-downloads:/home/debian/youtubedl-material/video
+      - nfs-cl-downloads:/home/debian/youtubedl-material/audio
+      - nfs-config:/home/debian/youtubedl-material/appdata
+      #- ./config:/home/debian/youtubedl-material/appdata
+    #ports:
+    #  - 9100:8080
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    networks:
+      - ytdl
+
+  #db:
+  #  image: mongo:latest
+    #environment:
+    #  MONGO_INITDB_ROOT_USERNAME: ytdlroot
+    #  MONGO_INITDB_ROOT_PASSWORD: ytdlpass
+    #  MONGO_INITDB_DATABASE: ytdl
+    #ports:
+    #  - 27017:27017
+    #logging:
+    #  driver: "none"
+  #  volumes:
+  #    - ./db:/data/db
+  #  networks:
+  #    - ytdl
+  #  deploy:
+  #    placement:
+  #      constraints: [ node.role == manager  ]
+
+  nginx:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline
+    #image: nginx:slim
+    ports:
+      - 9200:443
+    configs:
+      - source: nginx.conf
+        target: /etc/nginx/conf.d/default.conf
+    networks:
+      - ytdl
+  
+  #apache:
+  #  image: 192.168.0.2:5050/dedyms/apache:fcgid
+  #  ports:
+  #    - 9100:443
+  #  configs:
+  #    - source: apache.conf
+  #      target: /etc/apache2/sites-available/000-default-ssl.conf
+  #  networks:
+  #    - ytdl
+
+networks:
+  ytdl:
+    name: ytdl
+
+volumes:
+  nfs-cl-downloads:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/media/Clouds/Downloads"
+  nfs-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/youtubedl-material/config"
+
+configs:
+  apache.conf:
+    file: ./apache.conf
+  nginx.conf:
+    file: ./default.conf

@@ -1,0 +1,46 @@
+version: "3.5"
+services:
+  db:
+   image: 192.168.0.2:5050/dedyms/mariadb:10.6
+   user: 1000:1000
+   environment:
+      - MYSQL_ROOT_PASSWORD=mariadbwm
+      - TZ=Asia/Jakarta
+      - MYSQL_DATABASE=webmail
+      - MYSQL_USER=webmail
+      - MYSQL_PASSWORD=webmail
+   volumes:
+      - ./db:/var/lib/mysql
+   restart: unless-stopped
+   networks:
+      - webmail
+   deploy:
+     placement:
+       constraints: [ node.role == manager ]
+  web:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline-fpm
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - nfs-htdocs:/var/www/html
+    ports:
+      #- 6060:80
+      - 6060:443
+    restart: unless-stopped
+    networks:
+      - webmail
+      - swag
+    deploy:
+      placement:
+        constraints: [ node.hostname == GITLAB ]
+networks:
+  webmail:
+    name: webmail
+  swag:
+    external: true
+volumes:
+  nfs-htdocs:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/webmail/www"

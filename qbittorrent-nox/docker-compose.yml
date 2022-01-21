@@ -1,0 +1,79 @@
+version: "3.5"
+services:  
+  app:
+    image: 192.168.0.2:5050/dedyms/qbittorrent-nox:latest
+    environment:
+      - TZ=Asia/Jakarta
+      - WEBPORT=8090
+    volumes:
+      - nfs-config:/home/debian/qbittorrent/qBittorrent
+      - nfs-downloads:/home/debian/qbittorrent/downloads
+      - cifs-wd:/home/debian/WD
+    ports:
+    #  - 6881:6881/tcp
+    #  - 6881:6881/udp
+      - 8090:8090
+    networks:
+      - qbittorrent
+      - swag
+    deploy:
+      placement:
+        constraints: [node.hostname == rpi4]
+
+  flood:
+    image: jesec/flood:4.7.0
+    restart: always
+    depends_on:
+      - app
+    user: 1000:1000
+    ports:
+      - 8091:3000
+    environment:
+      - HOME=/config
+    volumes:
+      - nfs-flood-config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - nfs-config:/home/debian/qbittorrent/qBittorrent
+      - nfs-downloads:/home/debian/qbittorrent/downloads
+      - cifs-wd:/home/debian/WD
+    networks:
+      - qbittorrent
+    deploy:
+      placement:
+        constraints: [node.hostname == rpi4]
+    #command:
+    #  - --auth=none
+    #  - --qburl=http://app:8090
+    #  - --qbuser=admin
+    #  - --qbpass=adminadmin
+    #  - --rundir=/home/debian/qbittorrent
+
+networks:
+  qbittorrent:
+    name: qbittorrent
+  swag:
+    external: true
+
+volumes:
+  config:
+  flood_config:
+  nfs-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      device: ":/home/dedyms/docker/qbittorrent-nox/qBittorrent"
+  nfs-flood-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      device: ":/home/dedyms/docker/qbittorrent-nox/flood"
+  nfs-downloads:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock,rsize=8192,wsize=8192"
+      device: ":/media/Clouds/Downloads/Torrents"
+  cifs-wd:
+    driver_opts:
+      type: "cifs"
+      o: "addr=192.168.0.3,username=dedyms,password=smb,uid=1000,gid=1000"
+      device: "//192.168.0.3/datashare"

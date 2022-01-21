@@ -1,0 +1,42 @@
+version: "3.6"
+services:
+  prometheus-pihole:
+    image: prom/prometheus:v2.31.0
+    user: 1000:1000
+    restart: always
+    volumes:
+      - ./config/:/etc/prometheus/
+      - ./data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=90d'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    #ports:
+    #  - 9090:9090
+    networks:
+      - pihole-exporter
+      - tig
+    deploy:
+      placement:
+        constraints: [ node.role == manager  ]
+
+  pihole-exporter:
+    image: 192.168.0.2:5050/dedyms/pihole-exporter:latest
+    #expose:
+    #  - 9617
+    environment:
+      - PIHOLE_HOSTNAME=192.168.0.11
+      - PIHOLE_PORT=80
+      - PIHOLE_API_TOKEN=62926dfbee80a9c520fcb11f7abf2b32598efca34b3f6a60d4049fac48585a57
+      - INTERVAL=15s
+      - PORT=9617
+    networks:
+      - pihole-exporter
+
+networks:
+  pihole-exporter:
+    name: pihole-exporter
+  tig:
+    external: true

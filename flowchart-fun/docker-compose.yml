@@ -1,0 +1,19 @@
+---
+version: "3.5"
+services:
+  web:
+    image: 192.168.0.2:5050/dedyms/flowchart-fun:sid
+    #command: /bin/bash
+    #stdin_open: true # docker run -i
+    #tty: true        # docker run -t
+    #image: 192.168.0.2:5050/dedyms/flowchart-fun:production
+    ports:
+      - 3000:3000
+    networks:
+      - flowchart-fun
+    deploy:
+      placement:
+        constraints: [node.hostname == homelab]
+networks:
+  flowchart-fun:
+    name: flowchart-fun

@@ -1,0 +1,36 @@
+---
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/photato:1.0.2
+    volumes:
+      - nfs-cl-instasave:/home/debian/photato/pictures
+      - nfs-config:/home/debian/photato/config
+      - nfs-cache:/home/debian/photato/cache
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab  ]
+    ports:
+      - 3080:8186
+    networks:
+      - photato
+networks:
+  photato:
+    name: photato
+volumes:
+  #htdocs:
+  nfs-cache:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/photato/cache"
+  nfs-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/photato/config"
+  nfs-cl-instasave:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/media/Clouds/InstaSave"

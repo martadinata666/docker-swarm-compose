@@ -1,0 +1,56 @@
+version: '3.5'
+services:
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    user: 1000:1000
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: vikunjaroot
+      MYSQL_USER: vikunja
+      MYSQL_PASSWORD: vikunjapass
+      MYSQL_DATABASE: vikunja
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
+  api:
+    image: vikunja/api
+    environment:
+      VIKUNJA_DATABASE_HOST: db
+      VIKUNJA_DATABASE_PASSWORD: vikunjapass
+      VIKUNJA_DATABASE_TYPE: mysql
+      VIKUNJA_DATABASE_USER: vikunja
+      VIKUNJA_DATABASE_DATABASE: vikunja
+    volumes: 
+      - ./files:/app/vikunja/files
+    depends_on:
+      - db
+    restart: unless-stopped
+    ports:
+      - 3456:3456
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+  frontend:
+    image: vikunja/frontend
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+  proxy:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline
+    ports:
+      - 8000:80
+      - 8001:443
+    volumes:
+      - ./default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - api
+      - frontend
+      - db
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]

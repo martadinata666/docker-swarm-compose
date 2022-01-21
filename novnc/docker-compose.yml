@@ -1,0 +1,31 @@
+---
+version: "3.5"
+services:
+  web:
+    image: 192.168.0.2:5050/dedyms/novnc:git
+    container_name: novnc
+    #command: bash
+    #tty: true
+    #stdin_open: true
+    environment:
+      - REMOTE_HOST=192.168.0.2
+      - REMOTE_PORT=5902
+      - NOVNC_PORT=13000
+    ports:
+      - 13000:13000
+    networks:
+      - novnc
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+  #nginx:
+  #  image: 192.168.0.2:5050/dedyms/nginx:mainline
+  #  ports:
+  #    - 13000:443
+  #  volumes:
+  #    - ./default.conf:/etc/nginx/conf.d/default.conf
+  #  networks:
+  #    - novnc
+networks:
+  novnc:
+    name: novnc
