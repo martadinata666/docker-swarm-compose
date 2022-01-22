@@ -1,0 +1,55 @@
+---
+version: "3.5"
+services:
+  server:
+    image: 192.168.0.2:5050/dedyms/dim:git
+    #command: bash
+    #tty: true
+    #stdin_open: true
+    container_name: dim
+    group_add:
+      - 44
+      - 226
+    environment:
+      - TZ=Asia/Jakarta
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+    ports:
+      - 15000:8000
+    volumes:
+      - ./data:/opt/dim/config
+      - /media/WD/Videos:/videos:rw
+      - ow_videos:/videos2:rw
+    networks:
+      - dim
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    restart: unless-stopped
+    #deploy:
+    #  placement:
+    #    constrainst: [ node.name == homeworker0 ]
+  #client:
+  #  image: registry.gitlab.com/dedyms/jellyfin-vue:git
+  #  container_name: jellyfin_client
+  #  ports:
+  #    - 8100:80
+  #  networks:
+  #    - jellyfin
+  #  labels:
+  #    - com.centurylinklabs.watchtower.enable=true
+volumes:
+  ow_videos:
+    external: true
+  #nfs-data:
+  #  driver_opts:
+  #    type: "nfs4"
+  #    o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+  #    device: ":/home/dedyms/docker/jellyfin/data"
+  #nfs-cache:
+  #  driver_opts:
+  #    type: "nfs4"
+  #    o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+  #    device: ":/home/dedyms/docker/jellyfin/cache"
+networks:
+  dim:
+    name: dim

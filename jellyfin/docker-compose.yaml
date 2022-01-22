@@ -1,0 +1,55 @@
+---
+version: "3.5"
+services:
+  server:
+    image: 192.168.0.2:5050/dedyms/jellyfin:git
+    container_name: jellyfin_server
+    environment:
+      - TZ=Asia/Jakarta
+    group_add:
+      - 226
+    devices:
+      - /dev/dri/:/dev/dri/
+    ports:
+      - 8097:8097
+    volumes:
+      - ./data:/config
+      - ./cache:/cache
+      - /media/WD/Videos:/media/Videos:rw
+      - ow_videos:/media/Videos2:rw
+      - /dev/shm:/config/transcodes
+    networks:
+      - jellyfin
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    restart: unless-stopped
+    #deploy:
+    #  placement:
+    #    constrainst: [ node.name == homeworker0 ]
+  client:
+    image: 192.168.0.2:5050/dedyms/jellyfin-vue:static
+    container_name: jellyfin_client
+    ports:
+      - 8100:80
+    networks:
+      - jellyfin
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    restart: unless-stopped
+volumes:
+  ow_videos:
+    external: true
+  transcode:
+  #nfs-data:
+  #  driver_opts:
+  #    type: "nfs4"
+  #    o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+  #    device: ":/home/dedyms/docker/jellyfin/data"
+  #nfs-cache:
+  #  driver_opts:
+  #    type: "nfs4"
+  #    o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+  #    device: ":/home/dedyms/docker/jellyfin/cache"
+networks:
+  jellyfin:
+    name: jellyfin

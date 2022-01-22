@@ -1,0 +1,3 @@
+- targets:
+   #- http://192.168.0.2/;homelab;external;internetbox
+    - http://192.168.0.2;homelab;

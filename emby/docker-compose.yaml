@@ -1,0 +1,45 @@
+---
+version: "2.4"
+services:
+#  embystat:
+#    image: ghcr.io/linuxserver/embystat:latest
+#    container_name: emby-stat
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#      - TZ=Asia/Jakarta
+#    volumes:
+#      - ./embystat/config:/config
+#    ports:
+#      - "6555:6555"
+#    restart: unless-stopped
+#    networks:
+#      - emby
+#    labels:
+#      - com.centurylinklabs.watchtower.enable=true
+  emby:
+    image: emby/embyserver:beta
+    #image: ghcr.io/linuxserver/emby:beta
+    container_name: emby
+    restart: unless-stopped
+    volumes:
+      - ./data:/config
+      - /media/WD:/media/WD
+    devices:
+      - /dev/dri:/dev/dri
+    ports:
+      - 8096:8096
+    environment:
+      - UID=1000
+      - GID=1000
+      - GIDLIST=1000,139
+      #- PUID=1000
+      #- PGID=1000
+      - TZ=Asia/Jakarta
+    network_mode: host
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+networks:
+  emby:
+    name: emby
+    driver: bridge

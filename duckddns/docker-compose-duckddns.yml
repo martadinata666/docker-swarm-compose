@@ -1,0 +1,29 @@
+---
+version: "3.5"
+services:
+  ddns:
+    image: ghcr.io/linuxserver/duckdns
+    environment:
+      - PUID=1000 #optional
+      - PGID=1000 #optional
+      - TZ=Asia/Jakarta
+      - SUBDOMAINS=topisayabundar
+      - TOKEN=09dbd6af-c488-4981-b37d-8e683eea2f06
+      - LOG_FILE=true
+    volumes:
+      - nfs-config:/config
+    restart: unless-stopped
+    networks:
+      - duckddns
+    deploy:
+      placement:
+        constraints: [ node.hostname==homelab ]
+networks:
+  duckddns:
+    name: duckddns
+volumes:
+  nfs-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      device: ":/home/dedyms/docker/duckddns/config"

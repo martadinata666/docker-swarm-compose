@@ -1,0 +1,46 @@
+version: '3.5'
+services:
+  agent:
+    image: portainer/agent
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    environment:
+      - TZ=Asia/Jakarta
+    networks:
+      - portainer
+    #ports:
+    #  - "9001:9001"
+    networks:
+      - portainer
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.platform.os == linux]
+
+  manager:
+    image: portainer/portainer-ce
+    #command: -H tcp://tasks.agent:9001 --tlsskipverify
+    #ports:
+    #  - "9000:9000"
+    #  - "8000:8000"
+    volumes:
+      - manager-data:/data
+    networks:
+      - portainer
+      - swag
+    environment:
+      - TZ=Asia/Jakarta
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+networks:
+  portainer:
+    name: portainer
+    driver: overlay
+  swag:
+    external: true
+volumes:
+  manager-data:

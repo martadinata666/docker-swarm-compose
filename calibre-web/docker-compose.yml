@@ -1,6 +1,0 @@
-version: "3.5"
-services:
-  app:
-    image: calibre-web:local
-    ports:
-      - 8083:8083

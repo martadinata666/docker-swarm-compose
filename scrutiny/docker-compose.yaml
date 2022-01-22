@@ -1,0 +1,40 @@
+version: "3.5"
+services:
+  app:
+    environment:
+      - TZ=Asia/Jakarta
+    image: 192.168.0.2:5050/dedyms/scrutiny:0.3.13-web
+    #command: /home/debian/scrutiny/bin/scrutiny-web-linux start
+    #stdin_open: true
+    #tty: true
+    ports:
+      - 9091:8080/tcp
+    restart: unless-stopped
+    volumes:
+      - /run/udev:/run/udev:ro
+      - ./config:/scrutiny/config:rw
+    networks:
+      - scrutiny
+  collector:
+    environment:
+      - TZ=Asia/Jakarta
+      - SCRUTINY_API_URL=http://app:8080
+    cap_add:
+      - SYS_RAWIO
+      - SYS_ADMIN
+    devices:
+      - /dev/sda:/dev/sda
+      - /dev/sdb:/dev/sdb
+      - /dev/sdc:/dev/sdc
+      - /dev/sdd:/dev/sdd
+      - /dev/nvme0:/dev/nvme0
+    volumes:
+      - /run/udev:/run/udev:ro
+    image: 192.168.0.2:5050/dedyms/scrutiny:0.3.13-collector
+    restart: unless-stopped
+    networks:
+      - scrutiny
+
+networks:
+  scrutiny:
+    name: scrutiny

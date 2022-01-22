@@ -1,0 +1,75 @@
+---
+version: "3.5"
+services:
+  tautulli:
+    image: tautulli/tautulli:v2.7.7
+    volumes:
+      - nfs-tautulli-config:/config
+    environment:
+      - TZ=Asia/Jakarta
+      - PUID=1000
+      - PGID=1000
+    ports:
+      - 8181:8181
+    networks:
+      - plex_monitor
+      - swag
+    restart: always
+    deploy:
+      placement:
+        constraints: [ node.hostname == rpi4 ]
+  #collector:
+  #  image: 192.168.0.2:5050/dedyms/plex-data-collector:git
+  #  configs:
+  #    - source: config.ini
+  #      target: /home/debian/plexdatacollector/config.ini
+  #    - source: plexcollector.py
+  #      target: /home/debian/plexdatacollector/plexcollector/PlexInfluxdbCollector.py
+  #  networks:
+  #    - plex_monitor
+  #  deploy:
+  #    placement:
+  #      constraints: [ node.hostname == rpi4 ]
+  #influxdb-plex:
+  #  image: influxdb:1.8
+  #  user: 1000:1000
+  #  environment:
+  #    - TZ=Asia/Jakarta
+  #  configs:
+  #    - source: influxdb.conf
+  #      target: /etc/influxdb/influxdb.conf
+    #ports:
+    #  - 2086:8086
+  #  volumes:
+  #    - ./influxdb:/var/lib/influxdb
+  #  deploy:
+  #    placement:
+  #      constraints: [ node.hostname == homelab ]
+  #  networks:
+  #    - plex_monitor
+  #    - tig
+configs:
+  influxdb.conf:
+    file: ./influxdb/influxdb.conf
+  config.ini:
+    file: ./config.ini
+  plexcollector.py:
+    file: ./PlexInfluxdbCollector.py
+networks:
+  plex_monitor:
+    name: plex_monitor
+  tig:
+    external: true
+  swag:
+    external: true
+volumes:
+  nfs-tautulli-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/plex/tautulli/config"
+  #nfs-influxdb:
+  #  driver_opts:
+  #    type: "nfs4"
+  #    o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+  #    device: ":/home/dedyms/docker/plex/influxdb"
