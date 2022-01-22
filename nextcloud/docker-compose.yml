@@ -1,3 +1,4 @@
+
 version: "3.5"
 services:
   web:
@@ -12,12 +13,15 @@ services:
       - nfs-config:/var/www/html/config
       - nfs-data:/var/www/html/data
       - nfs-themes:/var/www/html/themes
+      - ./ssl/nextcloud.crt:/etc/ssl/certs/ssl-cert-snakeoil.pem
+      - ./ssl/nextcloud.key:/etc/ssl/private/ssl-cert-snakeoil.key
+
     #configs:
     #  - source: user.ini
     #    target: /var/www/html/.user.ini
     ports:
-      - 8080:80
-      #- 8383:443
+      #- 8080:80
+      - 8080:443
     restart: unless-stopped
     networks:
       - nextcloud
@@ -25,6 +29,7 @@ services:
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
+
   db:
     image: 192.168.0.2:5050/dedyms/mariadb:10.5
     environment:
@@ -83,6 +88,8 @@ volumes:
   htdocs:
   rd:
   db:
+  ds_logs:
+  ds_data:
   nfs-cl-pictures:
     driver_opts:
       type: "nfs4"

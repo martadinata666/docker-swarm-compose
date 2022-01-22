@@ -76,10 +76,10 @@ volumes:
     driver_opts:
       type: "nfs4"
       o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
-      device: ":/home/dedyms/docker/linkace/htdocs"
+      device: ":/home/dedyms/docker/linkace/htdocs1.9"
 
 configs:
   apache.conf:
     file: ./apache.conf
-  nginx.conf:
-    file: ./nginx.conf
+#  nginx.conf:
+#    file: ./nginx.conf
