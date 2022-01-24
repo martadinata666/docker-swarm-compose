@@ -5,6 +5,7 @@
 */.zcache
 */config
 */db
+*/db1
 */env
 */storage
 */modules
@@ -60,3 +61,5 @@ imgurapiupload.txt
 */config.ini
 duckdns/
 diun/
+*/esdata
+*/backup

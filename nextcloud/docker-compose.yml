@@ -1,4 +1,3 @@
-
 version: "3.5"
 services:
   web:
@@ -6,6 +5,8 @@ services:
     environment:
       - TZ=Asia/Jakarta
       - NEXTCLOUD_UPDATE=1
+      - ALLOW_SELF_SIGNED=true
+      - NEXTCLOUD_URL=https://web:443
     volumes:
       - htdocs:/var/www/html
       - nfs-cl-pictures:/Pictures
@@ -15,7 +16,6 @@ services:
       - nfs-themes:/var/www/html/themes
       - ./ssl/nextcloud.crt:/etc/ssl/certs/ssl-cert-snakeoil.pem
       - ./ssl/nextcloud.key:/etc/ssl/private/ssl-cert-snakeoil.key
-
     #configs:
     #  - source: user.ini
     #    target: /var/www/html/.user.ini
@@ -26,6 +26,27 @@ services:
     networks:
       - nextcloud
     #  - swag
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+  es:
+    image: elasticsearch:7.16.2
+    environment:
+      - discovery.type=single-node
+      - TZ=Asia/Jakarta
+      #- bootstrap.memory_lock=true
+      #- "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      #- xpack.security.enabled=false
+    user: 1000:1000
+    networks: 
+      - nextcloud
+    #ports:
+    #  - "1200:9200"
+    #  - "1300:9300"
+    volumes:
+      #- nfs-sensei-data:/usr/share/elasticsearch/data
+      - ./esdata:/usr/share/elasticsearch/data
+      - ./esdata/plugins:/usr/share/elasticsearch/plugins
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
@@ -120,8 +141,8 @@ networks:
   nextcloud:
     name: nextcloud
     driver: overlay
-configs:
-  default.conf:
-    file: default.conf
+#configs:
+#  default.conf:
+#    file: default.conf
 #  user.ini:
 #    file: user.ini

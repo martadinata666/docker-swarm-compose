@@ -10,6 +10,6 @@ services:
  
 configs:
   keys.js:
-    file: ./keys.js
+    file: ./config/keys.js
   plex.js:
-    file: ./plex.js
+    file: ./config/plex.js

@@ -33,7 +33,7 @@ services:
        - POSTGRES_PASSWORD=guacamolepass
      volumes:
        - ./db:/var/lib/postgresql/data
-       - ./init:/init
+       - ./backup:/backup
      networks:
        - guacamole
      deploy:

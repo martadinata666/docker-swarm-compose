@@ -1,37 +1,36 @@
 ---
 version: "3.5"
 services:
-  homelab:
-    image: 192.168.0.2:5050/dedyms/glances:git
-    hostname: HomeLab
-    #command: /bin/bash
+  server:
+    image: 192.168.0.2:5050/dedyms/glances:latest
+    #command: /bin/bash -c "glances -d -s -C $HOME/glances/glances.conf -w"
     #tty: true
     #stdin_open: true
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     environment:
-      - WEBPORT=61208
+      - ADDITIONAL_OPT=-d
     ports:
       - "61208:61208"
+      #- "61209:61209"
     networks:
       - glances
     deploy:
       placement:
-        constraints: [node.hostname == homelab ]
-  #homeworker0:
-  #  image: 192.168.0.2:5050/dedyms/glances:latest
-  #  hostname: HomeWorker0
-  #  volumes:
-  #    - /var/run/docker.sock:/var/run/docker.sock:ro
-  #  environment:
-  #    - WEBPORT=61209
+        constraints: [node.role == manager ]
+#  client:
+#    image: 192.168.0.2:5050/dedyms/glances:latest
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#    environment:
+#      - ADDITIONAL_OPT=-c server
   #  ports:
   #    - "61209:61209"
-  #  networks:
-  #    - glances
-  #  deploy: 
-  #    placement:
-  #      constraints: [node.hostname == homeworker0 ]
+#    networks:
+#      - glances
+#    deploy: 
+#      placement:
+#        constraints: [node.role != manager ]
 networks:
   glances:
     name: glances

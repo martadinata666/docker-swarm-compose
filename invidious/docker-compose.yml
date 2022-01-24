@@ -1,14 +1,15 @@
 version: "3.8"
 services:
   postgres:
-    image: postgres:13-alpine
+    image: postgres:14-alpine
     restart: always
     networks:
       - invidious
     volumes:
-      - ./db:/var/lib/postgresql/data
+      - ./db1:/var/lib/postgresql/data
       - ./config/sql:/config/sql
       - ./docker/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh
+      - ./backup:/backup
     environment:
       POSTGRES_DB: invidious
       POSTGRES_USER: kemal
