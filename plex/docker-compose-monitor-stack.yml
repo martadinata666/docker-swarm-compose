@@ -2,7 +2,7 @@
 version: "3.5"
 services:
   tautulli:
-    image: tautulli/tautulli:v2.7.7
+    image: tautulli/tautulli:v2.8.1
     volumes:
       - nfs-tautulli-config:/config
     environment:
@@ -13,7 +13,7 @@ services:
       - 8181:8181
     networks:
       - plex_monitor
-      - swag
+#      - swag
     restart: always
     deploy:
       placement:
@@ -48,20 +48,20 @@ services:
   #  networks:
   #    - plex_monitor
   #    - tig
-configs:
-  influxdb.conf:
-    file: ./influxdb/influxdb.conf
-  config.ini:
-    file: ./config.ini
-  plexcollector.py:
-    file: ./PlexInfluxdbCollector.py
+#configs:
+#  influxdb.conf:
+#    file: ./influxdb/influxdb.conf
+#  config.ini:
+#    file: ./config.ini
+#  plexcollector.py:
+#    file: ./PlexInfluxdbCollector.py
 networks:
   plex_monitor:
     name: plex_monitor
-  tig:
-    external: true
-  swag:
-    external: true
+  #tig:
+  #  external: true
+  #swag:
+  #  external: true
 volumes:
   nfs-tautulli-config:
     driver_opts:

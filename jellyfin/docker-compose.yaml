@@ -17,6 +17,7 @@ services:
       - ./cache:/cache
       - /media/WD/Videos:/media/Videos:rw
       - ow_videos:/media/Videos2:rw
+      - /media/Clouds/Porn:/Porn:rw
       - /dev/shm:/config/transcodes
     networks:
       - jellyfin

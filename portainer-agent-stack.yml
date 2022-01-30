@@ -19,7 +19,7 @@ services:
         constraints: [node.platform.os == linux]
 
   manager:
-    image: portainer/portainer-ce
+    image: portainer/portainer-ee
     command: -H tcp://tasks.agent:9001 --tlsskipverify
     ports:
       - "9000:9000"
@@ -28,7 +28,7 @@ services:
       - manager-data:/data
     networks:
       - portainer
-      - swag
+    #  - swag
     environment:
       - TZ=Asia/Jakarta
     deploy:
@@ -40,7 +40,7 @@ networks:
   portainer:
     name: portainer
     driver: overlay
-  swag:
-    external: true
+ # swag:
+ #   external: true
 volumes:
   manager-data:

@@ -12,9 +12,10 @@ services:
     restart: unless-stopped
     volumes:
       - /run/udev:/run/udev:ro
-      - ./config:/scrutiny/config:rw
+      - data:/scrutiny
     networks:
       - scrutiny
+
   collector:
     environment:
       - TZ=Asia/Jakarta
@@ -34,6 +35,9 @@ services:
     restart: unless-stopped
     networks:
       - scrutiny
+
+volumes:
+  data:
 
 networks:
   scrutiny:
