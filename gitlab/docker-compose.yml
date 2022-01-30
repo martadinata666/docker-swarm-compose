@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   web:
-    image: gitlab/gitlab-ee:14.6.2-ee.0
+    image: gitlab/gitlab-ee:14.7.0-ee.0
     #hostname: 192.168.0.2:10000
     ports:
       - "2022:22"
@@ -26,7 +26,7 @@ services:
       - gitlab
 
   runner:
-    image: gitlab/gitlab-runner:alpine-v14.6.0
+    image: gitlab/gitlab-runner:alpine-v14.7.0
     volumes:
       - runner_config:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock

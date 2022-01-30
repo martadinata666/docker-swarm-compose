@@ -38,7 +38,7 @@ volumes:
 
 networks:
   whoogle:
-    name: whoole
+    name: whoogle
 
 configs:
   apache.conf:

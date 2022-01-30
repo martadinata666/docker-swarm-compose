@@ -5,7 +5,7 @@ services:
     image: 192.168.0.2:5050/dedyms/ympd:git
     volumes:
       - mpd-data:/home/debian/mpd
-      - nfs-dedyms-music:/music
+      - nfs-music:/music
     networks:
       - ympd
     restart: always
@@ -13,19 +13,21 @@ services:
     #  MPD_SERVER: player
     #  MPD_PORT: 6600
     ports:
-      - "8083:8080"
-      - "8800:8800"
+      - 8083:8080
+      - 8800:8800
+      - 8000:8000
     deploy:
       placement:
         constraints:
           - node.hostname == homelab
 
 volumes:
+  icecast2-config:
   mpd-data:
-  nfs-dedyms-music:
+  nfs-music:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
       device: ":/home/dedyms/Musik/Music"
 
 networks:

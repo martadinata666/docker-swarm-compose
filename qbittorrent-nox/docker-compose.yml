@@ -15,10 +15,10 @@ services:
       - 8090:8090
     networks:
       - qbittorrent
-      - swag
+    #  - swag
     deploy:
       placement:
-        constraints: [node.hostname == rpi4]
+        constraints: [node.hostname == homelab]
 
   flood:
     image: jesec/flood:4.7.0
@@ -40,7 +40,7 @@ services:
       - qbittorrent
     deploy:
       placement:
-        constraints: [node.hostname == rpi4]
+        constraints: [node.hostname == homelab]
     #command:
     #  - --auth=none
     #  - --qburl=http://app:8090
@@ -60,20 +60,20 @@ volumes:
   nfs-config:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
       device: ":/home/dedyms/docker/qbittorrent-nox/qBittorrent"
   nfs-flood-config:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
       device: ":/home/dedyms/docker/qbittorrent-nox/flood"
   nfs-downloads:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock,rsize=8192,wsize=8192"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock,rsize=8192,wsize=8192"
       device: ":/media/Clouds/Downloads/Torrents"
   cifs-wd:
     driver_opts:
       type: "cifs"
-      o: "addr=192.168.0.3,username=dedyms,password=smb,uid=1000,gid=1000"
-      device: "//192.168.0.3/datashare"
+      o: "addr=192.168.0.2,username=dedyms,password=smb,uid=1000,gid=1000"
+      device: "//192.168.0.2/datashare"

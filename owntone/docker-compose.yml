@@ -1,0 +1,35 @@
+version: "3.5"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/owntone-server:28.3
+    privileged: true
+    command: owntone -c ./owntone.conf -f -P ./owntone.pid
+    #tty: true
+    #stdin_open: true
+    #environment:
+    #  - VUE_APP_JSON_API_SERVER='http://192.168.0.2:3689'
+    #  - VUE_APP_WEBSOCKET_SERVER='ws://192.168.0.2:3688'
+    volumes:
+      - data:/home/debian/owntone
+      - ./owntone.conf:/home/debian/owntone/owntone.conf
+      - /var/run/dbus:/var/run/dbus
+      - nfs-music:/music
+    ports:
+      - 3689:3689
+      - 3688:3688
+    restart: unless-stopped
+  web:
+    image: owntone-web:local
+    ports:
+      - 11000:8080
+    volumes:
+      - ./env:/home/debian/owntone/web-src/.env
+    restart: unless-stopped
+  
+volumes:
+  data:
+  nfs-music:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      device: ":/home/dedyms/Musik/Music"

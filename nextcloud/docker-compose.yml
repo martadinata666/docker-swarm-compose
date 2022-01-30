@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/nextcloud-smb:23.0.0
+    image: 192.168.0.2:5050/dedyms/nextcloud-smb:23.0.1
     environment:
       - TZ=Asia/Jakarta
       - NEXTCLOUD_UPDATE=1
@@ -34,10 +34,14 @@ services:
     environment:
       - discovery.type=single-node
       - TZ=Asia/Jakarta
-      #- bootstrap.memory_lock=true
-      #- "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       #- xpack.security.enabled=false
     user: 1000:1000
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     networks: 
       - nextcloud
     #ports:
@@ -114,27 +118,27 @@ volumes:
   nfs-cl-pictures:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/media/Clouds/Pictures/dedyms"
   nfs-cl-instasave:
     driver_opts:  
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/media/Clouds/InstaSave"
   nfs-config:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/nextcloud/config"
   nfs-data:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/nextcloud/data"
   nfs-themes:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/nextcloud/themes"
 
 networks:

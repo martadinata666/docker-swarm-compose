@@ -13,7 +13,7 @@ services:
       - ./db:/var/lib/mysql
     restart: unless-stopped
     networks:
-      - pigallery
+      - pigallery2p
     deploy:
       placement:
         constraints: [ node.role == manager ]
@@ -22,28 +22,20 @@ services:
     environment:
       - TZ=Asia/Jakarta
     volumes:
-      - /media/Clouds/InstaSave:/home/debian/pigallery2/data/images
-      - nfs-config:/home/debian/pigallery2/data/config
+      - /media/Clouds/Porn:/home/debian/pigallery2/data/images
+      - ./config:/home/debian/pigallery2/data/config
       - ./tmp:/home/debian/pigallery2/data/tmp
     ports:
-      - 4080:80
+      - 4090:80
     restart: unless-stopped
     networks:
-      - pigallery
+      - pigallery2p
 #      - swag
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
 networks:
-  pigallery:
-    name: pigallery2
+  pigallery2p:
+    name: pigallery2p
 #  swag:
 #    external: true
-
-volumes:
-  tmp:
-  nfs-config:
-    driver_opts:
-      type: "nfs4"
-      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock,rsize=8192,wsize=8192"
-      device: ":/home/dedyms/docker/pigallery2/config"

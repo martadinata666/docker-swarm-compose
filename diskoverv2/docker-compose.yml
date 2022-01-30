@@ -1,42 +1,42 @@
 version: "3.5"
 services:
   es:
-    image: elasticsearch:7.16.1
+    image: elasticsearch:7.16.2
     #image: docker.elastic.co/elasticsearch/elasticsearch:7.10.2
     environment:
       - discovery.type=single-node
       - TZ=Asia/Jakarta
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=false
+      #- xpack.security.enabled=false
     user: 1000:1000
     ports:
-      - "2200:9200"
+      - 2200:9200
     #  - "1300:9300"
-    volumes:
-      #- nfs-sensei-data:/usr/share/elasticsearch/data
-      - ./dataes:/usr/share/elasticsearch/data
-      #- ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     ulimits:
       memlock:
         soft: -1
         hard: -1
+    volumes:
+      #- nfs-sensei-data:/usr/share/elasticsearch/data
+      - ./dataes:/usr/share/elasticsearch/data
+      #- ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     networks:
       - diskover
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
   app:
-    image: diskover-app:rc2
+    image: diskover-app:rc3
     #command: ["/diskover/crawl.sh"]
     #tty: true
     #stdin_open: true
     environment:
       - TZ=Asia/Jakarta
-      - ES_HOST=192.168.0.2
-      - ES_PORT=2200
-      #- ES_USER=elastic
-      #- ES_PASS=changeme
+      - ES_HOST=es
+      - ES_PORT=9200
+      - ES_USER=elastic
+      - ES_PASS=changeme
     volumes:
       - /media/WD:/media/WD
       #- ./diskover.cron:/etc/cron.d/diskover
@@ -45,25 +45,16 @@ services:
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
-#    deploy:
-#      placement:
-#        constraints: [ node.hostname == homelab ]
-#      labels:
-#        - "swarm.cronjob.enable=true"
-#        - "swarm.cronjob.schedule=0 4 * * *"
-#        - "swarm.cronjob.skip-running=false"
-#        - "swarm.cronjob.replicas=1"
-#      restart_policy:
-#        condition: none
+
   web:
-    image: diskover-web:rc2
+    image: diskover-web:rc3
     environment:
       - TZ=Asia/Jakarta
     networks:
       - diskover
-    volumes:
+    #volumes:
       #- htdocs:/var/www/html
-      - ./Constants.php:/var/www/html/src/diskover/Constants.php
+      #- ./Constants.php:/var/www/html/src/diskover/Constants.php
     ports:
       - 12000:8000
     deploy:

@@ -49,8 +49,8 @@ volumes:
   wd-smb:
     driver_opts:
       type: "cifs"
-      o: "addr=192.168.0.3,username=dedyms,password=smb,uid=1000,gid=1000"
-      device: "//192.168.0.3/datashare"
+      o: "addr=192.168.0.2,username=dedyms,password=smb,uid=1000,gid=1000"
+      device: "//192.168.0.2/datashare"
 networks:
   filerun:
       name: filerun

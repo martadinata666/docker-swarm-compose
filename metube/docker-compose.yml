@@ -22,8 +22,9 @@ volumes:
   nfs-cl-downloads:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
       device: ":/media/Clouds/Downloads"
+
 networks:
   metube:
     name: metube

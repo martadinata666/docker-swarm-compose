@@ -76,7 +76,7 @@ services:
   #  environment:
   #    - TZ=Asia/Jakarta
   #    - LISTEN_PORT=2121
-  #    - PASV_ADDRESS=192.168.0.3
+  #    - PASV_ADDRESS=192.168.0.2
   #    - PASV_MIN_PORT=51000
   #    - PASV_MAX_PORT=52000
   #  ports:
@@ -126,15 +126,15 @@ volumes:
   nfs-home-config:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
       device: ":/home/dedyms/docker/debian/debianhome/config"
   nfs-cl-torrents-downloads:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock,rsize=8192,wsize=8192"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock,rsize=8192,wsize=8192"
       device: ":/media/Clouds/Downloads/Torrents"
   cifs-wd:
     driver_opts:
       type: "cifs"
-      o: "addr=192.168.0.3,username=dedyms,password=smb,uid=1000,gid=1000"
-      device: "//192.168.0.3/datashare"
+      o: "addr=192.168.0.2,username=dedyms,password=smb,uid=1000,gid=1000"
+      device: "//192.168.0.2/datashare"

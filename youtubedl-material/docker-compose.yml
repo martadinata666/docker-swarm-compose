@@ -2,7 +2,7 @@ version: "3.5"
 services:
   app:
     image: 192.168.0.2:5050/dedyms/youtubedl-material:git
-    #command: /bin/bash
+    command: node ./app.js
     #tty: true
     #stdin_open: true
     environment:
@@ -12,9 +12,9 @@ services:
       #- ytdl_use_local_db='false'
       #- write_ytdl_config='true'
     volumes:
-      - nfs-cl-downloads:/home/debian/youtubedl-material/video
-      - nfs-cl-downloads:/home/debian/youtubedl-material/audio
-      - nfs-config:/home/debian/youtubedl-material/appdata
+      - nfs-downloads:/home/debian/youtubedl-material/video
+      - nfs-downloads:/home/debian/youtubedl-material/audio
+      - nfs-configs:/home/debian/youtubedl-material/appdata
       #- ./config:/home/debian/youtubedl-material/appdata
     #ports:
     #  - 9100:8080
@@ -69,15 +69,15 @@ networks:
     name: ytdl
 
 volumes:
-  nfs-cl-downloads:
+  nfs-downloads:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/media/Clouds/Downloads"
-  nfs-config:
+  nfs-configs:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/youtubedl-material/config"
 
 configs:

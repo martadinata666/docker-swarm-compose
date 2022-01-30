@@ -61,12 +61,12 @@ volumes:
   nfs-modules:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/akaunting/modules"
   nfs-storage:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/akaunting/storage"
 configs:
   env:

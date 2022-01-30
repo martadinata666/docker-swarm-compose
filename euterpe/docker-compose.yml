@@ -9,6 +9,9 @@ services:
       - data:/home/debian/.euterpe
     ports:
        - 2000:443
+    configs:
+       - source: config.json
+         target: /home/debian/.euterpe/config.json
     deploy:
       placement:
         constraints:
@@ -22,3 +25,7 @@ networks:
 
 volumes:
   data:
+
+configs:
+  config.json:
+    file: config.json

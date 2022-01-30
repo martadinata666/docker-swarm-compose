@@ -49,11 +49,11 @@ volumes:
   nfs-dedyms-music:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
       device: ":/home/dedyms/Musik/Music"
   nfs-config:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
       device: ":/home/dedyms/docker/mstream/config/"
     

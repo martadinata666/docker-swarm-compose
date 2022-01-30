@@ -11,7 +11,7 @@ services:
       - TZ=Asia/Jakarta
       - PLEX_UID=1000
       - PLEX_GID=1000
-      - ADVERTISE_IP=http://192.168.0.3:32400
+      - ADVERTISE_IP=http://192.168.0.2:32400
       #- PLEX_CLAIM="claim-u6-r59XTu6SAiUdj_KpD"
     volumes:
       - ./data:/config

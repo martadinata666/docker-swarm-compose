@@ -29,18 +29,18 @@ services:
     restart: unless-stopped
     networks:
       - webmail
-      - swag
+    #  - swag
     deploy:
       placement:
         constraints: [ node.hostname == GITLAB ]
 networks:
   webmail:
     name: webmail
-  swag:
-    external: true
+#  swag:
+#    external: true
 volumes:
   nfs-htdocs:
     driver_opts:
       type: "nfs4"
-      o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/webmail/www"
