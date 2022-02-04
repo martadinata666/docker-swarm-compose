@@ -17,11 +17,11 @@ services:
    image: 192.168.0.2:5050/dedyms/mariadb:10.6
    user: 1000:1000
    environment:
-      - MYSQL_ROOT_PASSWORD=mariadblinkace
+      - MARIADB_ROOT_PASSWORD=mariadblinkace
       - TZ=Asia/Jakarta
-      - MYSQL_DATABASE=linkace
-      - MYSQL_USER=linkace
-      - MYSQL_PASSWORD=linkace
+      - MARIADB_DATABASE=linkace
+      - MARIADB_USER=linkace
+      - MARIADB_PASSWORD=linkace
    volumes:
       - ./db:/var/lib/mysql
    restart: unless-stopped

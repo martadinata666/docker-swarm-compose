@@ -13,13 +13,13 @@ services:
       - '15081:81'
     environment:
       # These are the settings to access your db
-      DB_MYSQL_HOST: "db"
-      DB_MYSQL_PORT: 3306
-      DB_MYSQL_USER: "npm"
-      DB_MYSQL_PASSWORD: "npmpass"
-      DB_MYSQL_NAME: "npm"
+      DB_MARIADB_HOST: "db"
+      DB_MARIADB_PORT: 3306
+      DB_MARIADB_USER: "npm"
+      DB_MARIADB_PASSWORD: "npmpass"
+      DB_MARIADB_NAME: "npm"
       # If you would rather use Sqlite uncomment this
-      # and remove all DB_MYSQL_* lines above
+      # and remove all DB_MARIADB_* lines above
       # DB_SQLITE_FILE: "/data/database.sqlite"
       # Uncomment this if IPv6 is not enabled on your host
       DISABLE_IPV6: 'true'
@@ -39,10 +39,10 @@ services:
     user: 1000:1000
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: "npmroot"
-      MYSQL_DATABASE: "npm"
-      MYSQL_USER: "npm"
-      MYSQL_PASSWORD: "npmpass"
+      MARIADB_ROOT_PASSWORD: "npmroot"
+      MARIADB_DATABASE: "npm"
+      MARIADB_USER: "npm"
+      MARIADB_PASSWORD: "npmpass"
     volumes:
       - ./db:/var/lib/mysql
     deploy:

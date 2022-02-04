@@ -19,10 +19,10 @@ services:
     networks:
       - akaunting
     environment:
-      - MYSQL_USER=akaunting
-      - MYSQL_PASSWORD=akauntingpass
-      - MYSQL_DATABASE=akaunting
-      - MYSQL_ROOT_PASSWORD=akauntingroot
+      - MARIADB_USER=akaunting
+      - MARIADB_PASSWORD=akauntingpass
+      - MARIADB_DATABASE=akaunting
+      - MARIADB_ROOT_PASSWORD=akauntingroot
     #ports:
     #  - '3306:3306'
     volumes:

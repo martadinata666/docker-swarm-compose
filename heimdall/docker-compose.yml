@@ -13,10 +13,9 @@ services:
       placement: 
         constraints: [ node.hostname == homelab ]
     ports:
+      - 80:80
       - 443:443
 
 networks:
   heimdall:
     name: heimdall
-volumes:
-   redis-data:

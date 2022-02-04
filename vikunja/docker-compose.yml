@@ -5,10 +5,10 @@ services:
     user: 1000:1000
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
-      MYSQL_ROOT_PASSWORD: vikunjaroot
-      MYSQL_USER: vikunja
-      MYSQL_PASSWORD: vikunjapass
-      MYSQL_DATABASE: vikunja
+      MARIADB_ROOT_PASSWORD: vikunjaroot
+      MARIADB_USER: vikunja
+      MARIADB_PASSWORD: vikunjapass
+      MARIADB_DATABASE: vikunja
     volumes:
       - ./db:/var/lib/mysql
     restart: unless-stopped

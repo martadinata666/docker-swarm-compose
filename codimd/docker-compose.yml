@@ -6,10 +6,10 @@ services:
     networks:
       - codimd
     environment:
-      MYSQL_ROOT_PASSWORD: codimdroot
-      MYSQL_USER: codimd
-      MYSQL_PASSWORD: codimdpass
-      MYSQL_DATABASE: codimd
+      MARIADB_ROOT_PASSWORD: codimdroot
+      MARIADB_USER: codimd
+      MARIADB_PASSWORD: codimdpass
+      MARIADB_DATABASE: codimd
     volumes:
       - ./db:/var/lib/mysql
     deploy:

@@ -4,11 +4,11 @@ services:
     image: 192.168.0.2:5050/dedyms/mariadb:10.6
     user: 1000:1000
     environment:
-      - MYSQL_ROOT_PASSWORD=fleetroot
+      - MARIADB_ROOT_PASSWORD=fleetroot
       - TZ=Asia/Jakarta
-      - MYSQL_DATABASE=fleet
-      - MYSQL_USER=fleet
-      - MYSQL_PASSWORD=fleetpassword
+      - MARIADB_DATABASE=fleet
+      - MARIADB_USER=fleet
+      - MARIADB_PASSWORD=fleetpassword
     volumes:
       - ./db:/var/lib/mysql
     restart: unless-stopped

@@ -1,29 +1,48 @@
 version: "3.8"
 services:
-  app:
-    image: 192.168.0.2:5050/dedyms/mariadb:10.6
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    environment:
-      - MYSQL_ROOT_PASSWORD=apptestroot
+#  app:
+#    image: 192.168.0.2:5050/dedyms/nginx:mainline-fpm7
+#    environment:
+#      - COMPOSER_MEMORY_LIMIT=3G
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    volumes:
+#      - ./heimdall:/var/www/html
+#      - ./default.conf:/etc/nginx/conf.d/default.conf
+#    networks:
+#      - apptest
+#    ports:
+#      - 25000:80
+  db:
+   image: mariadb:10.5-local
+   #user: 1000:1000
+   #ulimits:
+   #   memlock:
+   #     soft: -1
+   #     hard: -1
+   environment:
+      - MARIADB_ROOT_PASSWORD=apptestroot
+      - MARIADB_INITDB_SKIP_TZINFO=1
       - TZ=Asia/Jakarta
-      - MYSQL_DATABASE=apptest
-      - MYSQL_USER=apptest
-      - MYSQL_PASSWORD=apptest
-    volumes:
-      #- ./jellyfin-vue:/home/debian/jellyfin-vue
-      #- ./plex:/home/debian/plex
-      - ./db:/var/lib/mysql
-    #command: bash
-    #stdin_open: true
-    #tty: true
-    networks:
+      - MARIADB_DATABASE=apptest
+      - MARIADB_USER=apptest
+      - MARIADB_PASSWORD=apptest
+   volumes:
+      - nfs-db-data:/var/lib/mysql
+   restart: unless-stopped
+   networks:
       - apptest
-    ports:
-      - 25000:3306
 
 networks:
   apptest:
     name: apptest
+
+volumes:
+  nfs-db-data:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/apptest/db/"
+

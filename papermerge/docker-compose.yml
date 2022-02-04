@@ -18,11 +18,11 @@ services:
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.production
       - TZ=Asia/Jakarta
-      - MYSQL_USER=papermerge
-      - MYSQL_PASSWORD=papermergepass
-      - MYSQL_DB=papermerge
-      - MYSQL_HOST=pm_db
-      - MYSQL_PORT=3306
+      - MARIADB_USER=papermerge
+      - MARIADB_PASSWORD=papermergepass
+      - MARIADB_DB=papermerge
+      - MARIADB_HOST=pm_db
+      - MARIADB_PORT=3306
 #  db:
 #    image: mariadb:10.5
 #    container_name: pm_db
@@ -32,10 +32,10 @@ services:
 #      #- ./db/my.cnf:/etc/my.cnf
 #    environment:
 #      - TZ=Asia/Jakarta
-#      - MYSQL_ROOT_PASSWORD=papermergeroot
-#      - MYSQL_USER=papermerge
-#      - MYSQL_PASSWORD=papermergepass
-#      - MYSQL_DATABASE=papermerge
+#      - MARIADB_ROOT_PASSWORD=papermergeroot
+#      - MARIADB_USER=papermerge
+#      - MARIADB_PASSWORD=papermergepass
+#      - MARIADB_DATABASE=papermerge
 #    networks:
 #      - papermerge
   redis:
@@ -58,11 +58,11 @@ services:
       - /media/WD/PDF:/opt/media
     environment:
       - DJANGO_SETTINGS_MODULE=config.settings.production
-      - MYSQL_USER=papermerge
-      - MYSQL_PASSWORD=papermergepass
-      - MYSQL_DB=papermerge
-      - MYSQL_HOST=pm_db
-      - MYSQL_PORT=3306  
+      - MARIADB_USER=papermerge
+      - MARIADB_PASSWORD=papermergepass
+      - MARIADB_DB=papermerge
+      - MARIADB_HOST=pm_db
+      - MARIADB_PORT=3306  
     networks:
       - papermerge
     restart: unless-stopped

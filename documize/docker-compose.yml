@@ -5,11 +5,11 @@ services:
     image: 192.168.0.2:5050/dedyms/mariadb:10.6
     user: 1000:1000
     environment:
-      - MYSQL_ROOT_PASSWORD=documizeroot
+      - MARIADB_ROOT_PASSWORD=documizeroot
       - TZ=Asia/Jakarta
-      - MYSQL_DATABASE=documize
-      - MYSQL_USER=documize
-      - MYSQL_PASSWORD=documize
+      - MARIADB_DATABASE=documize
+      - MARIADB_USER=documize
+      - MARIADB_PASSWORD=documize
     volumes:
       - ./db:/var/lib/mysql
     restart: unless-stopped

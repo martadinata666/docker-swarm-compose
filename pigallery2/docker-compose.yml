@@ -4,11 +4,11 @@ services:
     image: 192.168.0.2:5050/dedyms/mariadb:10.6
     user: 1000:1000
     environment:
-      - MYSQL_ROOT_PASSWORD=pigalleryroot
+      - MARIADB_ROOT_PASSWORD=pigalleryroot
       - TZ=Asia/Jakarta
-      - MYSQL_DATABASE=pigallery
-      - MYSQL_USER=pigallery
-      - MYSQL_PASSWORD=pigallery
+      - MARIADB_DATABASE=pigallery
+      - MARIADB_USER=pigallery
+      - MARIADB_PASSWORD=pigallery
     volumes:
       - ./db:/var/lib/mysql
     restart: unless-stopped

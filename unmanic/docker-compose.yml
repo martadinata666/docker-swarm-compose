@@ -2,11 +2,9 @@ version: "3.5"
 services:
   app:
     image: 192.168.0.2:5050/dedyms/unmanic:latest
-    #container_name: unmanic
-    #command: bash
-    #tty: true
-    #stdin_open: true
     restart: always
+    group_add:
+       - 226
     volumes:
        - ./config:/home/debian/.unmanic
        - /media/WD/Videos/MV:/library

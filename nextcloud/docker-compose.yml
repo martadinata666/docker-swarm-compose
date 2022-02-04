@@ -58,11 +58,11 @@ services:
   db:
     image: 192.168.0.2:5050/dedyms/mariadb:10.5
     environment:
-      - MYSQL_ROOT_PASSWORD=mariadbnc
+      - MARIADB_ROOT_PASSWORD=mariadbnc
       - TZ=Asia/Jakarta
-      - MYSQL_DATABASE=nextcloud
-      - MYSQL_USER=nextcloud
-      - MYSQL_PASSWORD=nextcloud
+      - MARIADB_DATABASE=nextcloud
+      - MARIADB_USER=nextcloud
+      - MARIADB_PASSWORD=nextcloud
     volumes:
       - ./db:/var/lib/mysql
     restart: unless-stopped

@@ -6,10 +6,10 @@ services:
     networks:
       - filerun
     environment:
-      MYSQL_ROOT_PASSWORD: filerunroot
-      MYSQL_USER: filerunuser
-      MYSQL_PASSWORD: filerunpassword
-      MYSQL_DATABASE: filerun
+      MARIADB_ROOT_PASSWORD: filerunroot
+      MARIADB_USER: filerunuser
+      MARIADB_PASSWORD: filerunpassword
+      MARIADB_DATABASE: filerun
     volumes:
       - ./db:/var/lib/mysql
     restart: unless-stopped

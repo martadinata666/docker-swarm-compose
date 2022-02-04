@@ -4,11 +4,11 @@ services:
    image: 192.168.0.2:5050/dedyms/mariadb:10.6
    user: 1000:1000
    environment:
-      - MYSQL_ROOT_PASSWORD=mariadbwm
+      - MARIADB_ROOT_PASSWORD=mariadbwm
       - TZ=Asia/Jakarta
-      - MYSQL_DATABASE=webmail
-      - MYSQL_USER=webmail
-      - MYSQL_PASSWORD=webmail
+      - MARIADB_DATABASE=webmail
+      - MARIADB_USER=webmail
+      - MARIADB_PASSWORD=webmail
    volumes:
       - ./db:/var/lib/mysql
    restart: unless-stopped

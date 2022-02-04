@@ -119,10 +119,10 @@ services:
     volumes: # Don't remove permanent storage for index database files!
       - ./db:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: photoprismroot
-      MYSQL_DATABASE: photoprism
-      MYSQL_USER: photoprism
-      MYSQL_PASSWORD: photoprismpass
+      MARIADB_ROOT_PASSWORD: photoprismroot
+      MARIADB_DATABASE: photoprism
+      MARIADB_USER: photoprism
+      MARIADB_PASSWORD: photoprismpass
       TZ: Asia/Jakarta
     deploy:
       placement:
