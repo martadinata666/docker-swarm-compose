@@ -1,6 +1,18 @@
 ---
 version: "3.5"
 services:
+  rd:
+    image: redis:alpine
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - rd:/data
+    restart: unless-stopped
+    networks:
+      - heimdall
+    deploy:
+      placement:
+        constraints: [node.hostname == homelab ]
   web:
     image: 192.168.0.2:5050/dedyms/heimdall:git
     networks:
@@ -13,9 +25,12 @@ services:
       placement: 
         constraints: [ node.hostname == homelab ]
     ports:
-      - 80:80
+      #- 80:80
       - 443:443
 
 networks:
   heimdall:
     name: heimdall
+
+volumes:
+  rd:

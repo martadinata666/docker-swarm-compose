@@ -1,5 +1,5 @@
 APP_NAME=Heimdall
-APP_ENV=production
+APP_ENV=local
 APP_KEY=base64:YChmnQqrptpoztAU0Fik2Y3bt8zhC3rC+tFlR7+8SZs=
 APP_DEBUG=false
 APP_LOG_LEVEL=error
@@ -9,7 +9,7 @@ DB_CONNECTION=sqlite
 DB_DATABASE=app.sqlite
 
 BROADCAST_DRIVER=log
-CACHE_DRIVER=redis
+CACHE_DRIVER=file
 SESSION_DRIVER=file
 SESSION_LIFETIME=120
 QUEUE_DRIVER=sync

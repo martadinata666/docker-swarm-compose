@@ -15,8 +15,9 @@ services:
       #- PLEX_CLAIM="claim-u6-r59XTu6SAiUdj_KpD"
     volumes:
       - ./data:/config
-      - ./transcode:/transcode
+      - /dev/shm:/transcode
       - /media/WD:/media/WD
+      - /media/Clouds:/media/Clouds
     network_mode: host
     devices:
       - /dev/dri/:/dev/dri/

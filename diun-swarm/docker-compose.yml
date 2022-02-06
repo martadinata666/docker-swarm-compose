@@ -1,0 +1,14 @@
+version: "3.5"
+services:
+  diun:
+    image: crazymax/diun:latest
+    volumes:
+      - ./data:/data
+      - ./data/diun.yml:/diun.yml:ro
+      - ./data/image.yml:/image.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+    restart: always
+    deploy:
+      placement:
+        constraints: [node.role == manager]

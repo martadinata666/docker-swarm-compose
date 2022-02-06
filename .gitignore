@@ -2,6 +2,7 @@
 *.txt
 #diunwebhook.txt
 #dockerswarmtoken.txt
+apptest/*
 */.zcache
 */config
 */db
@@ -63,3 +64,5 @@ duckdns/
 diun/
 */esdata
 */backup
+shepherd/docker-compose.yml
+apptest/heimdall

@@ -2,13 +2,17 @@ version: "3.5"
 services:
   db:
    image: 192.168.0.2:5050/dedyms/mariadb:10.6
-   user: 1000:1000
+   ulimits:
+      memlock:
+        soft: -1
+        hard: -1
    environment:
-      - MARIADB_ROOT_PASSWORD=mariadbwm
+      - MARIADB_ROOT_PASSWORD=webmailroot
       - TZ=Asia/Jakarta
       - MARIADB_DATABASE=webmail
       - MARIADB_USER=webmail
       - MARIADB_PASSWORD=webmail
+      - MARIADB_INITDB_SKIP_TZINFO=1
    volumes:
       - ./db:/var/lib/mysql
    restart: unless-stopped
@@ -18,7 +22,7 @@ services:
      placement:
        constraints: [ node.role == manager ]
   web:
-    image: 192.168.0.2:5050/dedyms/nginx:mainline-fpm
+    image: 192.168.0.2:5050/dedyms/nginx:mainline-fpm7
     environment:
       - TZ=Asia/Jakarta
     volumes:

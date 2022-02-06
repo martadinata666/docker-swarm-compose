@@ -56,6 +56,7 @@ services:
     deploy:
       placement:
         constraints: [ node.hostname == rpi4 ]
+
   apache:
     image: 192.168.0.2:5050/dedyms/apache:fcgid
     ports:
@@ -67,7 +68,7 @@ services:
       - invidious
     deploy:
       placement:
-        constraints: [ node.hostname == homelab ]
+        constraints: [ node.hostname == rpi4 ]
 
 networks:
   invidious:
