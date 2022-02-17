@@ -35,4 +35,4 @@ networks:
   glances:
     name: glances
     driver: overlay
-
+    internal: true

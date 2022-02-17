@@ -1,0 +1,54 @@
+version: "3.5"
+services:
+  db:
+   image: 192.168.0.2:5050/dedyms/mariadb:10.6
+   user: 1000:1000
+   environment:
+      - MARIADB_ROOT_PASSWORD=freshrssroot
+      - TZ=Asia/Jakarta
+      - MARIADB_DATABASE=freshrss
+      - MARIADB_USER=freshrss
+      - MARIADB_PASSWORD=fresrsspass
+   volumes:
+      - ./db:/var/lib/mysql
+   restart: unless-stopped
+   networks:
+      - freshrss
+   deploy:
+     placement:
+       constraints: [ node.role == manager ]
+  web:
+   image: 192.168.0.2:5050/dedyms/apache:fpm
+   environment:
+     - TZ=Asia/Jakarta
+   volumes:
+     - nfs-htdocs:/var/www/html
+     - ./yacron.yml:/home/debian/supervisor/yacron.yml
+   #configs:
+   #  - source: apache.conf
+   #    target: /etc/apache2/sites-available/000-default-ssl.conf
+   networks:
+     - freshrss
+   ports:
+     - 2500:443
+   deploy:
+     placement:
+       constraints: [ node.hostname == homelab ]
+   restart: unless-stopped
+
+networks:
+  freshrss:
+    name: freshrss
+
+volumes:
+  nfs-htdocs:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/freshrss/htdocs"
+
+#configs:
+#  apache.conf:
+#    file: ./apache.conf
+#  nginx.conf:
+#    file: ./nginx.conf

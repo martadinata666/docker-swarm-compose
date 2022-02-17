@@ -24,6 +24,8 @@ services:
     ports:
       - "9000:9000"
     #  - "8000:8000"
+    environment:
+      - TZ=Asia/Jakarta
     volumes:
       - manager-data:/data
     networks:

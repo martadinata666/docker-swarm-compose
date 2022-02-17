@@ -1,19 +1,19 @@
 version: "3.5"
 services:
   grafana:
-    image: grafana/grafana:8.3.4
+    image: grafana/grafana:8.3.6
     user: 1000:1000
-    #ports:
-    #  - 3000:3000
+    ports:
+      - 3000:3000
     volumes:
       - ./grafana:/var/lib/grafana
     environment:
-      - "GF_SERVER_ROOT_URL=https://192.168.0.2/grafana"
+      - "GF_SERVER_ROOT_URL=https://192.168.0.2/"
       - "GF_SERVER_DOMAIN=https://192.168.0.2/"
       - TZ=Asia/Jakarta
     networks:
       - tig
-      - swag
+      #- swag
     depends_on:
       - influxdb
     deploy:
@@ -41,8 +41,10 @@ services:
           - node.hostname == homelab
   
   telegraf:
-    image: telegraf:1.20.2
+    image: telegraf:1.21.4
     hostname: "{{.Node.Hostname}}"
+    user: root
+    entrypoint: "telegraf"
     environment:
       - TZ=Asia/Jakarta
     volumes:
@@ -62,7 +64,7 @@ services:
 
 
   cadvisor:
-    image: 192.168.0.2:5050/dedyms/cadvisor:v0.43
+    image: 192.168.0.2:5050/dedyms/cadvisor:git
     privileged: true
     networks:
       - tig
@@ -158,6 +160,9 @@ configs:
     file: ./prometheus/rules/swarm_task.rules.yml
   node_entrypoint.sh:
     file: ./node-exporter/conf/docker-entrypoint.sh
+
+volumes:
+  data:
 
 networks:
   tig:

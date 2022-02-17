@@ -1,0 +1,37 @@
+version: "3.8"
+services:
+  app:
+    #image: 192.168.0.2:5050/dedyms/node:lts-dev
+    image: 192.168.0.2:5050/dedyms/deemix:git
+    #image: registry.gitlab.com/bockiii/deemix-docker:latest
+    #command: yarn start-server --host 0.0.0.0
+    #command: bash
+    #stdin_open: true
+    #tty: true
+    volumes:
+      - nfs-config:/home/debian/deemix-gui/server/config
+      - nfs-downloads:/home/debian/deemix-gui/server/downloads
+      #- ./default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - deemix
+    ports:
+      - 6595:6595
+    deploy:
+      placement:
+        constraints: [ node.hostname == rpi4 ]
+
+networks:
+  deemix:
+    name: deemix
+
+volumes:
+  nfs-config:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/deemix/config"
+  nfs-downloads:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/deemix/downloads"

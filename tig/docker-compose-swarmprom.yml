@@ -3,7 +3,7 @@ services:
   cadvisor:
     #image: gcr.io/cadvisor/cadvisor:v0.37.5
     #image: zcube/cadvisor:v0.37.5
-    image: 192.168.0.2:5050/dedyms/cadvisor:v0.43
+    image: 192.168.0.2:5050/dedyms/cadvisor:git
     privileged: true
     networks:
       - tig
@@ -55,7 +55,7 @@ services:
       #  constraints: [ node.platform.arch == x86_64 ]
 
   prometheus:
-    image: prom/prometheus:v2.33.1
+    image: prom/prometheus:v2.33.3
     user: 1000:1000
     networks:
       - tig

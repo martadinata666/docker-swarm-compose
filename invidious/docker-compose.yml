@@ -1,12 +1,13 @@
 version: "3.8"
 services:
   postgres:
-    image: postgres:14-alpine
+    image: postgres:14
+    user: 1000:1000
     restart: always
     networks:
       - invidious
     volumes:
-      - ./db1:/var/lib/postgresql/data
+      - ./db:/var/lib/postgresql/data
       - ./config/sql:/config/sql
       - ./docker/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh
       - ./backup:/backup
@@ -14,37 +15,42 @@ services:
       POSTGRES_DB: invidious
       POSTGRES_USER: kemal
       POSTGRES_PASSWORD: kemal
+      TZ: Asia/Jakarta
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
     deploy:
       placement:
         constraints: [ node.role == manager ]
   app:
-    image: quay.io/invidious/invidious:latest-arm64
+    image: quay.io/invidious/invidious:latest
     restart: always
-    #volumes:
+    volumes:
     #  - ./invidious-config.yml:/invidious/config/config.yml
+      - /etc/localtime:/etc/localtime:ro
     configs:
       - source: invidious.yml
         target: /invidious/config/config.yml
+        uid: "1000"
+        gid: "1000"
+        mode: 0600
     networks:
       - invidious
     #ports:
     #  - 127.0.0.1:3000:3000
-    environment:
-      INVIDIOUS_CONFIG: |
-        channel_threads: 1
-        check_tables: true
-        feed_threads: 1
-        db:
-          dbname: invidious
-          user: kemal
-          password: kemal
-          host: postgres
-          port: 5432
-        full_refresh: false
-        https_only: false
-        domain:
+    #environment:
+      #INVIDIOUS_CONFIG: |
+      #  channel_threads: 1
+      #  check_tables: true
+      #  feed_threads: 1
+      #  db:
+      #    dbname: invidious
+      #    user: kemal
+      #    password: kemal
+      #    host: postgres
+      #    port: 5432
+      #  full_refresh: false
+      #  https_only: false
+      #  domain:
       #  external_port: 443
     #healthcheck:
     #  test: wget -nv --tries=1 --spider http://127.0.0.1:3000/feed/trending || exit 1
@@ -55,7 +61,7 @@ services:
       - postgres
     deploy:
       placement:
-        constraints: [ node.hostname == rpi4 ]
+        constraints: [ node.hostname == gitlab ]
 
   apache:
     image: 192.168.0.2:5050/dedyms/apache:fcgid
@@ -68,7 +74,7 @@ services:
       - invidious
     deploy:
       placement:
-        constraints: [ node.hostname == rpi4 ]
+        constraints: [ node.hostname == homelab ]
 
 networks:
   invidious:

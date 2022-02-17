@@ -14,7 +14,7 @@ services:
       placement:
         constraints: [node.hostname == homelab ]
   web:
-    image: 192.168.0.2:5050/dedyms/heimdall:git
+    image: 192.168.0.2:5050/dedyms/heimdall:2.2.3.3
     networks:
       - heimdall
     volumes:

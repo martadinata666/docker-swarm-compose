@@ -1,0 +1,12 @@
+jobs:
+  - name: feed-update
+    command: php -f /var/www/html/app/actualize_script.php
+    shell: /bin/bash
+    schedule: "0 * * * *"
+  # Some additional jobs, not including this line
+  #- name: nextcloud-preview-generate
+  #  command: php -f /var/www/html/occ -vvv preview:pre-generate
+  #  schedule: "*/30 * * * *"
+  #  utc: false
+  #  #executionTimeout: 120
+  

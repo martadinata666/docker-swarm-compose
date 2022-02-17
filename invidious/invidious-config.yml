@@ -183,7 +183,7 @@ https_only: true
 ## Accepted values: ipv4, ipv6
 ## Default: <none>
 ##
-#force_resolve:
+force_resolve: ipv4
 
 
 # -----------------------------
@@ -325,7 +325,7 @@ channel_threads: 1
 ## Accepted values: true, false
 ## Default: false
 ##
-full_refresh: false
+full_refresh: true
 
 ##
 ## Number of threads to use when updating RSS feeds.
@@ -606,7 +606,7 @@ default_user_preferences:
   ## Accepted values: Popular, Trending, Subscriptions, Playlists, <none>
   ## Default: Popular
   ##
-  default_home: Trending
+  default_home: Subcriptions
 
   ##
   ## Default number of results to display per page.
@@ -619,7 +619,7 @@ default_user_preferences:
   ## Accepted values: any positive integer
   ## Default: 40
   ##
-  #max_results: 40
+  max_results: 50
 
   ##
   ## Show/hide annotations.
@@ -627,7 +627,7 @@ default_user_preferences:
   ## Accepted values: true, false
   ## Default: false
   ##
-  #annotations: false
+  annotations: false
 
   ##
   ## Show/hide annotation.
@@ -635,7 +635,7 @@ default_user_preferences:
   ## Accepted values: true, false
   ## Default: false
   ##
-  #annotations_subscribed: false
+  annotations_subscribed: true
 
   ##
   ## Type of comments to display below video.
@@ -653,7 +653,7 @@ default_user_preferences:
   ## Accepted values: invidious, youtube
   ## Default: invidious
   ##
-  player_style: youtube
+  player_style: invidious
 
   ##
   ## Show/Hide the "related videos" sidebar when
@@ -850,4 +850,4 @@ default_user_preferences:
   ## Accepted values: true, false
   ## Default: false
   ##
-  #automatic_instance_redirect: false
+  automatic_instance_redirect: false

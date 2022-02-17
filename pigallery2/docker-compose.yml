@@ -21,9 +21,15 @@ services:
     image: 192.168.0.2:5050/dedyms/pigallery2:git
     environment:
       - TZ=Asia/Jakarta
+      - DB_HOST=db
+      - DB_NAME=pigallery
+      - DB_USER=pigallery
+      - DB_PASSWORD=pigallery
+      - APP_ENV=debug
     volumes:
       - /media/Clouds/InstaSave:/home/debian/pigallery2/data/images
-      - nfs-config:/home/debian/pigallery2/data/config
+      - ./config:/home/debian/pigallery2/data/config
+      - ./db-sqlite:/home/debian/pigallery2/data/db
       - ./tmp:/home/debian/pigallery2/data/tmp
     ports:
       - 4080:80
@@ -34,16 +40,9 @@ services:
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
+
 networks:
   pigallery:
-    name: pigallery2
+    name: pigallery
 #  swag:
 #    external: true
-
-volumes:
-  tmp:
-  nfs-config:
-    driver_opts:
-      type: "nfs4"
-      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock,rsize=8192,wsize=8192"
-      device: ":/home/dedyms/docker/pigallery2/config"

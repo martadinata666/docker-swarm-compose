@@ -18,13 +18,6 @@ services:
       - 3689:3689
       - 3688:3688
     restart: unless-stopped
-  web:
-    image: owntone-web:local
-    ports:
-      - 11000:8080
-    volumes:
-      - ./env:/home/debian/owntone/web-src/.env
-    restart: unless-stopped
   
 volumes:
   data:

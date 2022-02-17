@@ -10,13 +10,16 @@ services:
     networks:
       - kuma
     #ports:
-    #  - 9400:3001
+    #  - 3001:3001
   apache:
     image: 192.168.0.2:5050/dedyms/apache:fcgid
     ports:
       - 9400:443
+      #- 9443:80
     configs:
       - source: apache.conf
+        target: /etc/apache2/sites-available/000-default.conf
+      - source: apache-ssl.conf
         target: /etc/apache2/sites-available/000-default-ssl.conf
     networks:
       - kuma
@@ -26,6 +29,10 @@ volumes:
 networks:
   kuma:
     name: kuma
+  #goautentik:
+  #  external: true
 configs:
   apache.conf:
     file: ./apache.conf
+  apache-ssl.conf:
+    file: ./apache-ssl.conf

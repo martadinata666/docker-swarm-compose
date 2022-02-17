@@ -30,13 +30,13 @@ services:
       placement:
         constraints: [ node.hostname == homelab ]
   es:
-    image: elasticsearch:7.16.2
+    image: elasticsearch:7.17.0
     environment:
       - discovery.type=single-node
       - TZ=Asia/Jakarta
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      #- xpack.security.enabled=false
+      - xpack.security.enabled=true
     user: 1000:1000
     ulimits:
       memlock:

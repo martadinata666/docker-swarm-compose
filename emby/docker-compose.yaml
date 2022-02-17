@@ -21,7 +21,7 @@ services:
     image: emby/embyserver:beta
     #image: ghcr.io/linuxserver/emby:beta
     container_name: emby
-    restart: unless-stopped
+    restart: always
     volumes:
       - ./data:/config
       - /media/WD:/media/WD

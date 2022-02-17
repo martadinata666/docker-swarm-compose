@@ -3,6 +3,7 @@
 #diunwebhook.txt
 #dockerswarmtoken.txt
 apptest/*
+*/.env
 */.zcache
 */config
 */db
