@@ -27,7 +27,7 @@ services:
       placement:
         constraints: [ node.hostname == homelab ]
   app:
-    image: diskover-app:rc3
+    image: diskover-app:git
     #command: ["/diskover/crawl.sh"]
     #tty: true
     #stdin_open: true
@@ -47,7 +47,7 @@ services:
         constraints: [ node.hostname == homelab ]
 
   web:
-    image: diskover-web:rc3
+    image: diskover-web:git
     environment:
       - TZ=Asia/Jakarta
     networks:

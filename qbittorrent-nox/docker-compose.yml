@@ -2,12 +2,16 @@ version: "3.5"
 services:  
   app:
     image: 192.168.0.2:5050/dedyms/qbittorrent-nox:latest
+    #entrypoint: /home/debian/.local/bin/qbittorrent-nox --webui-port=8090 --profile=/home/debian/qbittorrent
+    #command: bash
+    #tty: true
+    #stdin_open: true
     environment:
       - TZ=Asia/Jakarta
       - WEBPORT=8090
     volumes:
-      - nfs-config:/home/debian/qbittorrent/qBittorrent
-      - nfs-downloads:/home/debian/qbittorrent/downloads
+      - nfs-config:/home/debian/qbittorrent
+      - nfs-downloads:/home/debian/downloads
       - cifs-wd:/home/debian/WD
     ports:
     #  - 6881:6881/tcp
@@ -20,27 +24,27 @@ services:
       placement:
         constraints: [node.hostname == homelab]
 
-  flood:
-    image: jesec/flood:4.7.0
-    restart: always
-    depends_on:
-      - app
-    user: 1000:1000
-    ports:
-      - 8091:3000
-    environment:
-      - HOME=/config
-    volumes:
-      - nfs-flood-config:/config
-      - /etc/localtime:/etc/localtime:ro
-      - nfs-config:/home/debian/qbittorrent/qBittorrent
-      - nfs-downloads:/home/debian/qbittorrent/downloads
-      - cifs-wd:/home/debian/WD
-    networks:
-      - qbittorrent
-    deploy:
-      placement:
-        constraints: [node.hostname == homelab]
+#  flood:
+#    image: jesec/flood:4.7.0
+#    restart: always
+#    depends_on:
+#      - app
+#    user: 1000:1000
+#    ports:
+#      - 8091:3000
+#    environment:
+#      - HOME=/config
+#    volumes:
+#      - nfs-flood-config:/config
+#      - /etc/localtime:/etc/localtime:ro
+#      - nfs-config:/home/debian/qbittorrent/qBittorrent
+#      - nfs-downloads:/home/debian/qbittorrent/downloads
+#      - cifs-wd:/home/debian/WD
+#    networks:
+#      - qbittorrent
+#    deploy:
+#      placement:
+#        constraints: [node.hostname == homelab]
     #command:
     #  - --auth=none
     #  - --qburl=http://app:8090
@@ -61,7 +65,7 @@ volumes:
     driver_opts:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
-      device: ":/home/dedyms/docker/qbittorrent-nox/qBittorrent"
+      device: ":/home/dedyms/docker/qbittorrent-nox/config"
   nfs-flood-config:
     driver_opts:
       type: "nfs4"

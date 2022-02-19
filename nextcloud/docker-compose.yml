@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/nextcloud-smb:23.0.1
+    image: 192.168.0.2:5050/dedyms/nextcloud-smb:23.0.2
     environment:
       - TZ=Asia/Jakarta
       - NEXTCLOUD_UPDATE=1
@@ -56,8 +56,9 @@ services:
         constraints: [ node.hostname == homelab ]
 
   db:
-    image: 192.168.0.2:5050/dedyms/mariadb:10.5
+    image: 192.168.0.2:5050/dedyms/mariadb:10.6
     environment:
+      #- MARIADB_AUTO_UPGRADE=1
       - MARIADB_ROOT_PASSWORD=mariadbnc
       - TZ=Asia/Jakarta
       - MARIADB_DATABASE=nextcloud
