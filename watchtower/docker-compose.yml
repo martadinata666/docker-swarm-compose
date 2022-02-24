@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    environment:
+      - WATCHTOWER_NOTIFICATIONS=shoutrrr
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/localtime:/etc/localtime:ro
+    command: --label-enable --notification-url "discord://token@ID"

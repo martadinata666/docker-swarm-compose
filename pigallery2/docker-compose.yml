@@ -29,7 +29,6 @@ services:
     volumes:
       - /media/Clouds/InstaSave:/home/debian/pigallery2/data/images
       - ./config:/home/debian/pigallery2/data/config
-      - ./db-sqlite:/home/debian/pigallery2/data/db
       - ./tmp:/home/debian/pigallery2/data/tmp
     ports:
       - 4080:80

@@ -8,6 +8,7 @@ services:
       - TZ=Asia/Jakarta
     group_add:
       - 226
+      - 44
     devices:
       - /dev/dri/:/dev/dri/
     ports:
