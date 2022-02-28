@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   grafana:
-    image: grafana/grafana:8.4.1
+    image: grafana/grafana:8.4.2
     user: 1000:1000
     ports:
       - 3000:3000
@@ -116,7 +116,7 @@ services:
       #  constraints: [ node.platform.arch == x86_64 ]
 
   prometheus:
-    image: prom/prometheus:v2.32.1
+    image: prom/prometheus:v2.33.4
     user: 1000:1000
     networks:
       - tig

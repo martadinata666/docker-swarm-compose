@@ -13,7 +13,7 @@ services:
       - ./db:/var/lib/mysql
     restart: unless-stopped
     networks:
-      - pigallery
+      - pigallery2d
     deploy:
       placement:
         constraints: [ node.role == manager ]
@@ -27,14 +27,14 @@ services:
       - MYSQL_PASSWORD=pigallery
       - NODE_ENV=debug
     volumes:
-      - /media/Clouds/InstaSave:/home/debian/pigallery2/data/images
+      - /media/Clouds/Pictures/dedyms:/home/debian/pigallery2/data/images
       - ./config:/home/debian/pigallery2/data/config
       - ./tmp:/home/debian/pigallery2/data/tmp
     #ports:
     #  - 4080:80
     restart: unless-stopped
     networks:
-      - pigallery
+      - pigallery2d
 #      - swag
     deploy:
       placement:
@@ -48,15 +48,15 @@ services:
       - ./default.vcl:/etc/varnish/default.vcl:ro
     tmpfs: /var/lib/varnish:exec
     ports:
-      - 4080:80
+      - 4081:80
     networks:
-      - pigallery
+      - pigallery2d
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
 
 networks:
-  pigallery:
-    name: pigallery
+  pigallery2d:
+    name: pigallery2d
 #  swag:
 #    external: true

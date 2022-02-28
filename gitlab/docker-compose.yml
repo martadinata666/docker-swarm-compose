@@ -26,13 +26,10 @@ services:
       - gitlab
 
   runner:
-    image: gitlab/gitlab-runner:v14.8.0
+    image: 192.168.0.2:5050/dedyms/gitlab-runner:v14.8.0
     volumes:
       - runner_config:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./runner/builds:/builds
-      - ./runner/cache:/cache
-      - ./runner/volumes:/volumes
     deploy:
       mode: replicated
       replicas: 1

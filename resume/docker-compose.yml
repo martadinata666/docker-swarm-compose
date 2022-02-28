@@ -1,14 +1,17 @@
 version: "3.5"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/reactive-resume:static
+    #image: 192.168.0.2:5050/dedyms/reactive-resume:static
+    image: 192.168.0.2:5050/dedyms/reactive-resume:develop
     ports:
-      - 7000:80
+      - 7000:8000
+    volumes:
+      - ./env:/home/debian/reactive-resume/.env
     networks:
       - reactive-resume
     deploy:
       placement:
-        constraints: [ node.hostname == rpi4 ]
+        constraints: [ node.hostname == homelab ]
 
 networks:
   reactive-resume:
