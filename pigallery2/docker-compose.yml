@@ -44,19 +44,35 @@ services:
     environment:
       - TZ=Asia/Jakarta
       - VARNISH_SIZE=2G
-    volumes:
-      - ./default.vcl:/etc/varnish/default.vcl:ro
+    configs:
+      - source: varnish.vcl
+        target: /etc/varnish/default.vcl
     tmpfs: /var/lib/varnish:exec
-    ports:
-      - 4080:80
+    #ports:
+    #  - 4080:80
     networks:
       - pigallery
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
+  apache:
+    image: 192.168.0.2:5050/dedyms/apache:fcgid
+    configs:
+      - source: apache.conf
+        target: /etc/apache2/sites-enabled/000-default-ssl.conf
+    ports:
+      - 4080:443
+    networks:
+      - pigallery
 
 networks:
   pigallery:
     name: pigallery
 #  swag:
 #    external: true
+
+configs:
+  varnish.vcl:
+    file: ./varnish.vcl
+  apache.conf:
+    file: ./apache.conf

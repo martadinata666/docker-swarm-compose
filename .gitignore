@@ -67,3 +67,5 @@ diun/
 */backup
 shepherd/docker-compose.yml
 apptest/heimdall
+pigallery2d
+pigallery2p
