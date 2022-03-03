@@ -27,9 +27,9 @@ services:
       - MYSQL_PASSWORD=pigallery
       - NODE_ENV=debug
     volumes:
-      - /media/Clouds/InstaSave:/home/debian/pigallery2/data/images
-      - ./config:/home/debian/pigallery2/data/config
-      - ./tmp:/home/debian/pigallery2/data/tmp
+      - /media/Clouds/InstaSave:/images
+      - ./config:/home/debian/pigallery2/data
+      - ./tmp:/tmp
     #ports:
     #  - 4080:80
     restart: unless-stopped

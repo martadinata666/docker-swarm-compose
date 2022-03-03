@@ -18,13 +18,17 @@ services:
       placement:
         constraints: [ node.role == manager ]
   app:
-    image: 192.168.0.2:5050/dedyms/pigallery2:1.9.0
+    image: 192.168.0.2:5050/dedyms/pigallery2:git
     environment:
       - TZ=Asia/Jakarta
+      - MYSQL_HOST=db
+      - MYSQL_DATABASE=pigallery
+      - MYSQL_USERNAME=pigallery
+      - MYSQL_PASSWORD=pigallery
     volumes:
-      - /media/Clouds/Porn:/home/debian/pigallery2/data/images
-      - ./config:/home/debian/pigallery2/data/config
-      - ./tmp:/home/debian/pigallery2/data/tmp
+      - /media/Clouds/Porn:/images
+      - ./config:/home/debian/pigallery2/data
+      - ./tmp:/tmp
     ports:
       - 4090:80
     restart: unless-stopped
