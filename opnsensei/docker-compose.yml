@@ -2,7 +2,7 @@
 version: "3.5"
 services:
   es:
-    image: elasticsearch:7.17.0
+    image: elasticsearch:7.17.1
     environment:
       - discovery.type=single-node
       - TZ=Asia/Jakarta
@@ -12,7 +12,7 @@ services:
     user: 1000:1000
     ports:
       - "1200:9200"
-      - "1300:9300"
+      #- "1300:9300"
     volumes:
       #- nfs-sensei-data:/usr/share/elasticsearch/data
       - ./data:/usr/share/elasticsearch/data
@@ -23,6 +23,19 @@ services:
     networks:
       - sensei
     restart: always
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.17.1
+    volumes:
+      - ./kibana.yml:/usr/share/kibana/config/kibana.yml
+    ports:
+      - 5601:5601
+    networks:
+      - sensei
     deploy:
       placement:
         constraints:

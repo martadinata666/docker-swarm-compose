@@ -316,7 +316,16 @@ admins: ["dedyms"]
 ## Accepted values: a positive integer
 ## Default: 1
 ##
-channel_threads: 1
+channel_threads: 6
+
+##
+## Time interval between two executions of the job that crawls
+## channel videos (subscriptions update).
+##
+## Accepted values: a valid time interval (like 1h30m or 90m)
+## Default: 30m
+##
+channel_refresh_interval: 120m
 
 ##
 ## Forcefully dump and re-download the entire list of uploaded
@@ -325,7 +334,7 @@ channel_threads: 1
 ## Accepted values: true, false
 ## Default: false
 ##
-full_refresh: true
+full_refresh: false
 
 ##
 ## Number of threads to use when updating RSS feeds.
@@ -338,7 +347,7 @@ full_refresh: true
 ## Accepted values: a positive integer
 ## Default: 1
 ##
-feed_threads: 1
+feed_threads: 6
 
 ##
 ## Enable/Disable the polling job that keeps the decryption

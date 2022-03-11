@@ -11,7 +11,7 @@ services:
       - MARIADB_USER=documize
       - MARIADB_PASSWORD=documize
     volumes:
-      - ./db:/var/lib/mysql
+      - nfs-db:/var/lib/mysql
     restart: unless-stopped
     networks:
       - documize
@@ -62,7 +62,11 @@ volumes:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/documize/data"
-
+  nfs-db:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/documize/db"
 configs:
   nginx.conf:
     file: ./default.conf

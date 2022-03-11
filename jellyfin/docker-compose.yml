@@ -1,25 +1,28 @@
 ---
-version: "3.5"
+version: "3.8"
 services:
   server:
     image: 192.168.0.2:5050/dedyms/jellyfin:git
     container_name: jellyfin_server
+    #entrypoint: ./jellyfin/jellyfin --datadir /config --cachedir /cache --ffmpeg /usr/lib/jellyfin-ffmpeg/ffmpeg
+    hostname: homelab
     environment:
       - TZ=Asia/Jakarta
-    group_add:
-      - 226
-      - 44
+    #group_add:
+    #  - video
+    #  - render
     devices:
       - /dev/dri/:/dev/dri/
     ports:
-      - 8097:8097
+      - 8097:8096
     volumes:
-      - ./data:/config
+      - ./config:/config
       - ./cache:/cache
-      - /media/WD/Videos:/media/Videos:rw
-      - ow_videos:/media/Videos2:rw
+      - /media/WD/Videos:/Videos:rw
+      - ow_videos:/Videos2:rw
       - /media/Clouds/Porn:/Porn:rw
       - /dev/shm:/config/transcodes
+      #- ./intel22549:/intel
     networks:
       - jellyfin
     labels:

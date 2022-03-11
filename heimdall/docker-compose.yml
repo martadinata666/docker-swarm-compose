@@ -18,12 +18,12 @@ services:
     networks:
       - heimdall
     volumes:
-      - ./db:/var/www/html/database
-      - ./storage:/var/www/html/storage
+      - db:/var/www/html/database
+      - storage:/var/www/html/storage
       - ./env:/var/www/html/.env
     deploy:
       placement: 
-        constraints: [ node.hostname == homelab ]
+        constraints: [ node.role == manager ]
     ports:
       #- 80:80
       - 443:443
@@ -34,3 +34,5 @@ networks:
 
 volumes:
   rd:
+  storage:
+  db:

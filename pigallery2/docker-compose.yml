@@ -10,10 +10,10 @@ services:
       - MARIADB_USER=pigallery
       - MARIADB_PASSWORD=pigallery
     volumes:
-      - ./db:/var/lib/mysql
+      - nfs-db:/var/lib/mysql
     restart: unless-stopped
     networks:
-      - pigallery
+      - pigallery2
     deploy:
       placement:
         constraints: [ node.role == manager ]
@@ -30,28 +30,9 @@ services:
       - /media/Clouds/InstaSave:/images
       - ./config:/home/debian/pigallery2/data
       - ./tmp:/tmp
-    #ports:
-    #  - 4080:80
     restart: unless-stopped
     networks:
-      - pigallery
-#      - swag
-    deploy:
-      placement:
-        constraints: [ node.hostname == homelab ]
-  varnish:
-    image: varnish:fresh
-    environment:
-      - TZ=Asia/Jakarta
-      - VARNISH_SIZE=2G
-    configs:
-      - source: varnish.vcl
-        target: /etc/varnish/default.vcl
-    tmpfs: /var/lib/varnish:exec
-    #ports:
-    #  - 4080:80
-    networks:
-      - pigallery
+      - pigallery2
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
@@ -63,16 +44,21 @@ services:
     ports:
       - 4080:443
     networks:
-      - pigallery
+      - pigallery2
 
 networks:
-  pigallery:
-    name: pigallery
-#  swag:
-#    external: true
+  pigallery2:
+    name: pigallery2
 
 configs:
-  varnish.vcl:
-    file: ./varnish.vcl
+#  varnish.vcl:
+#    file: ./varnish.vcl
   apache.conf:
     file: ./apache.conf
+
+volumes:
+  nfs-db:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/pigallery2/db"

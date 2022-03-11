@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/stash:v0.9.0
+    image: 192.168.0.2:5050/dedyms/stash:latest
     #command: /bin/bash
     #tty: true
     #stdin_open: true
@@ -9,7 +9,7 @@ services:
       - ow_videos:/home/debian/stash/videos
       - config:/home/debian/stash
     ports:
-      - 9999:9999
+      - 8888:9999
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
@@ -22,5 +22,3 @@ volumes:
 networks:
   stash:
     name: stash
-  swag:
-    external: true
