@@ -23,7 +23,7 @@ services:
       - MARIADB_USER=linkace
       - MARIADB_PASSWORD=linkace
    volumes:
-      - ./db:/var/lib/mysql
+      - nfs-db:/var/lib/mysql
    restart: unless-stopped
    networks:
       - linkace
@@ -31,55 +31,32 @@ services:
      placement:
        constraints: [ node.role == manager ]
   web:
-   image: 192.168.0.2:5050/dedyms/apache:fpm
+   image: 192.168.0.2:5050/dedyms/linkace:latest
    environment:
      - TZ=Asia/Jakarta
    volumes:
-     - nfs-htdocs:/var/www/html
-   configs:
-     - source: apache.conf
-       target: /etc/apache2/sites-available/000-default-ssl.conf
+     - ./env:/var/www/html/.env
+     - ./backups:/var/www/html/storage/app/backups
    networks:
      - linkace
    ports:
      - 7070:443
    deploy:
      placement:
-       constraints: [ node.hostname == GITLAB ]
+       constraints: [ node.hostname == homelab ]
    restart: unless-stopped
-  #apache:
-  #  image: 192.168.0.2:5050/dedyms/apache:fcgid
-  #  environment:
-  #    - TZ=Asia/Jakarta
-  #  configs:
-  #    - source: apache.conf
-  #      target: /etc/apache2/sites-available/000-default-ssl.conf
-  #  volumes:
-  #    - nfs-htdocs:/var/www/html
-  #  ports:
-  #    #- 6060:80
-  #    - 7070:443
-  #  restart: unless-stopped
-  #  networks:
-  #    - linkace
-  #  deploy:
-  #    placement:
-  #      constraints: [ node.hostname == GITLAB ]
 networks:
   linkace:
     name: linkace
-  #swag:
-  #  external: true
 volumes:
   rd:
-  nfs-htdocs:
+#  nfs-htdocs:
+#    driver_opts:
+#      type: "nfs4"
+#      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+#      device: ":/home/dedyms/docker/linkace/htdocs1.9"
+  nfs-db:
     driver_opts:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
-      device: ":/home/dedyms/docker/linkace/htdocs1.9"
-
-configs:
-  apache.conf:
-    file: ./apache.conf
-#  nginx.conf:
-#    file: ./nginx.conf
+      device: ":/home/dedyms/docker/linkace/db"

@@ -1,18 +1,48 @@
-version: "3.5"
+version: "3.8"
 services:
-  web:
-    #image: 192.168.0.2:5050/dedyms/reactive-resume:static
-    image: 192.168.0.2:5050/dedyms/reactive-resume:develop
+  proxy:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline
     ports:
-      - 7000:8000
-    volumes:
-      - ./env:/home/debian/reactive-resume/.env
+      - 27000:443
+      #- 8001:443
+    configs:
+      - source: nginx.conf
+        target: /etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - app
+      - db
     networks:
-      - reactive-resume
+      - resume
+
+  app:
+    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.2.5
+    env_file:
+       - env
+    networks:
+      - resume
+    #ports:
+    #  - 3000:3000
+    #  - 3100:3100
+
+  db:
+    image: postgres:13
+    user: 1000:1000
+    environment:
+      - POSTGRES_USER=reactiveresume
+      - POSTGRES_PASSWORD=reactiveresumepass
+      - POSTGRES_DB=reactiveresume
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    networks:
+      - resume
     deploy:
-      placement:
-        constraints: [ node.hostname == homelab ]
+      constraints:
+        placement: [ node.role == manager ]
 
 networks:
-  reactive-resume:
-    name: reactive-resume
+  apptest:
+    name: resume
+
+configs:
+  nginx.conf:
+    file: nginx.conf

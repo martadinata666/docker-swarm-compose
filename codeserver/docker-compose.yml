@@ -1,26 +1,32 @@
 ---
 version: "3.5"
 services:
+  web:
+    image: martadinata666/nginx:xdebug
+    volumes:
+      - ./htdocs:/var/www/html
+      - ./xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+      - ./error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+    ports:
+      - 20000:80
+    networks:
+      - code-server
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab  ]
   app:
-   image: 192.168.0.2:5050/dedyms/code-server:v4.0.2
-   #image: code-server:local
-   #command: code-server --bind-addr 0.0.0.0:8443 --user-data-dir $HOME/code-server --extensions-dir $HOME/code-server/extensions --config $HOME/code-server/config.yaml --disable-telemetry
-   #command: bash
-   #tty: true
-   #stdin_open: true
-   #environment:
-   #  - HOME=/home/debian
-   volumes:
-   #  - ./homesmoke:/home/debian
-     - ./data:/home/debian/code-server
-     - /home/dedyms/Documents/docker-gitlab-local:/home/debian/code-server/docker-gitlab
-   #ports:
-   #  - 4000:8443
-   networks:
-     - code-server
-   deploy:
-     placement:
-       constraints: [ node.hostname == homelab  ]
+    image: 192.168.0.2:5050/dedyms/code-server:v4.1.0
+    volumes:
+      - ./data:/home/debian/code-server
+      - /home/dedyms/Documents/docker-gitlab-local:/home/debian/code-server/docker-gitlab
+      - ./htdocs:/var/www/html
+    ports:
+      - 9003:9003
+    networks:
+      - code-server
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab  ]
   nginx:
     image: 192.168.0.2:5050/dedyms/nginx:mainline
     ports:
