@@ -4,25 +4,22 @@ services:
     image: 192.168.0.2:5050/dedyms/nginx:mainline
     ports:
       - 27000:443
-      #- 8001:443
     configs:
       - source: nginx.conf
-        target: /etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      - app
-      - db
-    networks:
-      - resume
+        target: /etc/nginx/conf.d/default.conf
+#    networks:
+#      - resume
 
   app:
-    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.2.5
+    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.2.8
     env_file:
-       - env
+      - env.v3
     networks:
       - resume
-    #ports:
-    #  - 3000:3000
-    #  - 3100:3100
+      - default
+    deploy:
+      placement:
+        constraints: [ node.hostname == rpi4 ]
 
   db:
     image: postgres:13
@@ -35,12 +32,13 @@ services:
       - ./db:/var/lib/postgresql/data
     networks:
       - resume
+      - default
     deploy:
-      constraints:
-        placement: [ node.role == manager ]
+      placement:
+        constraints: [ node.role == manager ]
 
 networks:
-  apptest:
+  resume:
     name: resume
 
 configs:

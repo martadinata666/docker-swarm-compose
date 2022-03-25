@@ -1,11 +1,11 @@
 version: "3.6"
 services:
   web:
-    image: gitlab/gitlab-ee:14.8.2-ee.0
+    image: gitlab/gitlab-ee:14.9.1-ee.0
     #hostname: 192.168.0.2:10000
     ports:
       - "2022:22"
-      #- "10000:10000"
+      - "10000:10000"
       - "5050:5050"
       #- "10443:443"
     volumes:
@@ -25,30 +25,13 @@ services:
     networks:
       - gitlab
 
-  varnish:
-    image: varnish:fresh
-    environment:
-      - TZ=Asia/Jakarta
-      - VARNISH_SIZE=2G
-    #volumes:
-    #  - ./default.vcl:/etc/varnish/default.vcl:ro
-    configs:
-      - source: default.vcl
-        target: /etc/varnish/default.vcl
-    tmpfs: /var/lib/varnish:exec
-    ports:
-      - 10000:80
-    networks:
-      - gitlab
-    deploy:
-      placement:
-        constraints: [ node.hostname == homelab ]
-
   runner:
-    image: 192.168.0.2:5050/dedyms/gitlab-runner:v14.8.2
+    image: 192.168.0.2:5050/dedyms/gitlab-runner:v14.9.1
     volumes:
       - runner_config:/etc/gitlab-runner
       - /var/run/docker.sock:/var/run/docker.sock
+    #environment:
+    #  - DOCKER_HOST=tcp://192.168.0.2:2375
     deploy:
       mode: replicated
       replicas: 1
@@ -60,8 +43,8 @@ services:
 configs:
   gitlab:
     file: ./gitlab/gitlab.rb
-  default.vcl:
-    file: ./default.vcl
+#  default.vcl:
+#    file: ./default.vcl
 secrets:
   gitlab_root_password:
     file: ./gitlab/root_password.txt

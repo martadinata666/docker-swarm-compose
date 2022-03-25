@@ -1,15 +1,12 @@
 ---
 version: "3.5"
 services:
-  server:
+  client:
     image: 192.168.0.2:5050/dedyms/glances:latest
-    #command: /bin/bash -c "glances -d -s -C $HOME/glances/glances.conf -w"
-    #tty: true
-    #stdin_open: true
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./glances.conf:/home/debian/glances/glances.conf
     environment:
-      - ADDITIONAL_OPT=-d
+      - ADDITIONAL_OPT=-d -c homelab
     ports:
       - "61208:61208"
       #- "61209:61209"
@@ -18,19 +15,58 @@ services:
     deploy:
       placement:
         constraints: [node.role == manager ]
-#  client:
-#    image: 192.168.0.2:5050/dedyms/glances:latest
-#    volumes:
-#      - /var/run/docker.sock:/var/run/docker.sock:ro
-#    environment:
-#      - ADDITIONAL_OPT=-c server
+
+  gitlab:
+    image: 192.168.0.2:5050/dedyms/glances:latest
+    command: glances
+    tty: true
+    stdin_open: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - ADDITIONAL_OPT=-d -s -q
   #  ports:
   #    - "61209:61209"
-#    networks:
-#      - glances
-#    deploy: 
-#      placement:
-#        constraints: [node.role != manager ]
+    networks:
+      - glances
+    deploy: 
+      placement:
+        constraints: [node.hostname == GITLAB ]
+
+  rpi4:
+    image: 192.168.0.2:5050/dedyms/glances:latest
+    command: glances
+    tty: true
+    stdin_open: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - ADDITIONAL_OPT=-d -s -q
+  #  ports:
+  #    - "61209:61209"
+    networks:
+      - glances
+    deploy: 
+      placement:
+        constraints: [node.hostname == rpi4 ]
+
+  homelab:
+    image: 192.168.0.2:5050/dedyms/glances:latest
+    command: glances
+    tty: true
+    stdin_open: true
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+      - ADDITIONAL_OPT=-d -s -q
+  #  ports:
+  #    - "61209:61209"
+    networks:
+      - glances
+    deploy: 
+      placement:
+        constraints: [node.hostname == homelab ]
+
 networks:
   glances:
     name: glances

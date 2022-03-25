@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/nextcloud-smb:23.0.2
+    image: 192.168.0.2:5050/dedyms/nextcloud-smb:23.0.3
     environment:
       - TZ=Asia/Jakarta
       - NEXTCLOUD_UPDATE=1
@@ -30,7 +30,7 @@ services:
       placement:
         constraints: [ node.hostname == homelab ]
   es:
-    image: elasticsearch:7.17.0
+    image: elasticsearch:7.17.1
     environment:
       - discovery.type=single-node
       - TZ=Asia/Jakarta
@@ -45,7 +45,7 @@ services:
     networks: 
       - nextcloud
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
+      - ./esdata/data:/usr/share/elasticsearch/data
       - ./esdata/plugins:/usr/share/elasticsearch/plugins
     deploy:
       placement:

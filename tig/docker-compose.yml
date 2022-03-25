@@ -1,10 +1,10 @@
 version: "3.5"
 services:
   grafana:
-    image: grafana/grafana:8.4.2
+    image: grafana/grafana:8.4.4
     user: 1000:1000
     ports:
-      - 3000:3000
+      - 12000:3000
     volumes:
       - ./grafana:/var/lib/grafana
     environment:
@@ -47,8 +47,6 @@ services:
     entrypoint: "telegraf"
     environment:
       - TZ=Asia/Jakarta
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
     networks:
       - tig
     configs:
@@ -56,8 +54,10 @@ services:
         target: /etc/telegraf/telegraf.conf
     depends_on:
       - influxdb
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
     deploy:
-      mode: global
+    #  mode: global
     #deploy:
     #  placement:
     #    constraints: [ node.role == manager  ]
@@ -68,15 +68,18 @@ services:
     privileged: true
     networks:
       - tig
-    #command: -docker_only
-    #command: 
-    #  - '--docker_only=true'
-    #  - '--disable_metrics=disk,network,tcp,udp,percpu,sched,process'
+    command:
+      - -housekeeping_interval=30s
+      - -max_housekeeping_interval=35s
+      - -event_storage_event_limit=default=0
+      - -event_storage_age_limit=default=0
+      - -global_housekeeping_interval=30s
+      - -event_storage_event_limit=default=0
+      - -event_storage_age_limit=default=0
+      - -allow_dynamic_housekeeping=true
+      - -storage_duration=1m0s
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - /:/rootfs:ro
-      - /var/run:/var/run:ro
-      - /sys:/sys:ro
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk:/dev/disk:ro
     deploy:
@@ -116,7 +119,7 @@ services:
       #  constraints: [ node.platform.arch == x86_64 ]
 
   prometheus:
-    image: prom/prometheus:v2.33.4
+    image: prom/prometheus:v2.34.0
     user: 1000:1000
     networks:
       - tig

@@ -20,8 +20,9 @@ services:
       - ./data:/home/debian/code-server
       - /home/dedyms/Documents/docker-gitlab-local:/home/debian/code-server/docker-gitlab
       - ./htdocs:/var/www/html
-    ports:
-      - 9003:9003
+    #ports:
+    #  - 9003:9003
+    #  - 5555:5555
     networks:
       - code-server
     deploy:

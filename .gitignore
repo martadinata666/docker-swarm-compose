@@ -5,6 +5,7 @@
 apptest/*
 */.env
 */.zcache
+resume/env.*
 */config
 */db
 */db1

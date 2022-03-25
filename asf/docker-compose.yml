@@ -1,0 +1,24 @@
+version: "3.5"
+services:
+  app:
+    #image: asf:local
+    image: justarchi/archisteamfarm:latest
+    volumes:
+      - ./config:/app/config
+    #working_dir: /home/debian/ASF
+    #command: ./ArchiSteamFarm-Service.sh
+    user: 1000:1000
+#    stdin_open: true
+#    tty: true
+    networks:
+      - asf
+    ports:
+      - 1242:1242
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+
+networks:
+  asf:
+    name: asf
