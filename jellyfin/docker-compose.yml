@@ -21,8 +21,7 @@ services:
       - /media/WD/Videos:/Videos:rw
       - ow_videos:/Videos2:rw
       - /media/Clouds/Porn:/Porn:rw
-      - /dev/shm:/config/transcodes
-      #- ./intel22549:/intel
+      - ./transcodes:/config/transcodes
     networks:
       - jellyfin
     labels:
@@ -44,7 +43,7 @@ services:
 volumes:
   ow_videos:
     external: true
-  transcode:
+  #transcodes:
   #nfs-data:
   #  driver_opts:
   #    type: "nfs4"

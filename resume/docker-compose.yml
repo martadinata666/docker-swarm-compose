@@ -7,11 +7,11 @@ services:
     configs:
       - source: nginx.conf
         target: /etc/nginx/conf.d/default.conf
-#    networks:
-#      - resume
+    networks:
+      - resume
 
   app:
-    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.2.8
+    image: 192.168.0.2:5050/dedyms/reactive-resume:latest
     env_file:
       - env.v3
     networks:
@@ -19,7 +19,7 @@ services:
       - default
     deploy:
       placement:
-        constraints: [ node.hostname == rpi4 ]
+        constraints: [ node.hostname == homelab ]
 
   db:
     image: postgres:13

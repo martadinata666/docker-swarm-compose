@@ -1,7 +1,7 @@
 .zcache
 *.txt
-#diunwebhook.txt
-#dockerswarmtoken.txt
+diunwebhook.txt
+dockerswarmtoken.txt
 apptest/*
 */.env
 */.zcache
@@ -71,3 +71,5 @@ shepherd/docker-compose.yml
 apptest/heimdall
 pigallery2d
 pigallery2p
+jellyfin/transcodes
+shinobi
