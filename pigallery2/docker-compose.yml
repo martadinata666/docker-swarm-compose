@@ -36,6 +36,7 @@ services:
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
+
   apache:
     image: 192.168.0.2:5050/dedyms/apache:fcgid
     configs:
@@ -45,14 +46,18 @@ services:
       - 4080:443
     networks:
       - pigallery2
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
 
 networks:
   pigallery2:
     name: pigallery2
+    driver: overlay
+    driver_opts:
+      encrypted: "false"
 
 configs:
-#  varnish.vcl:
-#    file: ./varnish.vcl
   apache.conf:
     file: ./apache.conf
 

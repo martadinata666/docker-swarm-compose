@@ -3,18 +3,20 @@ services:
   app:
     image: 192.168.0.2:5050/dedyms/whoogle:latest
     volumes:
-      - config:/home/debian/whoogle/config
+      - ./config:/home/debian/whoogle/config
     environment:
       - WHOOGLE_CONFIG_NEW_TAB=true
       - WHOOGLE_CONFIG_DISABLE=true
       - WHOOGLE_CONFIG_THEME=dark
+      - WHOOGLE_CONFIG_URL=https://192.168.0.2:5000
+      - WHOOGLE_AUTOCOMPLETE=1
     #ports:
     #  - 5000:5000
     deploy:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [ node.hostname == rpi4 ]
+        constraints: [ node.hostname == homelab ]
     networks:
       - whoogle
   nginx:
@@ -31,10 +33,10 @@ services:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [ node.hostname == rpi4 ]
+        constraints: [ node.hostname == homelab ]
 
-volumes:
-  config:
+#volumes:
+#  config:
 
 networks:
   whoogle:

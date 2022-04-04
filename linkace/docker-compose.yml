@@ -16,6 +16,7 @@ services:
   db:
    image: 192.168.0.2:5050/dedyms/mariadb:10.6
    user: 1000:1000
+   command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
    environment:
       - MARIADB_ROOT_PASSWORD=mariadblinkace
       - TZ=Asia/Jakarta
