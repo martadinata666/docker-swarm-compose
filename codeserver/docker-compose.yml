@@ -15,7 +15,7 @@ services:
       placement:
         constraints: [ node.hostname == homelab  ]
   app:
-    image: 192.168.0.2:5050/dedyms/code-server:v4.1.0
+    image: 192.168.0.2:5050/dedyms/code-server:latest
     volumes:
       - ./data:/home/debian/code-server
       - /home/dedyms/Documents/docker-gitlab-local:/home/debian/code-server/docker-gitlab
@@ -23,8 +23,9 @@ services:
     #ports:
     #  - 9003:9003
     #  - 5555:5555
-    networks:
-      - code-server
+    #  - 5500:5500
+    network_mode: host
+    #  - code-server
     deploy:
       placement:
         constraints: [ node.hostname == homelab  ]
