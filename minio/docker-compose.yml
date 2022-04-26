@@ -1,0 +1,34 @@
+#docker run \
+#  -p 9000:9000 \
+#  -p 9001:9001 \
+#  -e "MINIO_ROOT_USER=AKIAIOSFODNN7EXAMPLE" \
+#  -e "MINIO_ROOT_PASSWORD=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" \
+#  quay.io/minio/minio server /data --console-address ":9001"
+
+version: "3.9"
+services:
+  s3:
+    image: quay.io/minio/minio:RELEASE.2022-04-09T15-09-52Z
+    command: server /data --console-address ":9001"
+    restart: always
+    user: 1000:1000
+    environment:
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./data-standalone:/data
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
+    networks:
+      - minio
+
+networks:
+  minio:
+    name: minio
+
+

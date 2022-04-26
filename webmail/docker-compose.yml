@@ -22,11 +22,11 @@ services:
      placement:
        constraints: [ node.role == manager ]
   web:
-    image: 192.168.0.2:5050/dedyms/nginx:mainline-fpm7
+    image: 192.168.0.2:5050/dedyms/afterlogic-webmail:git
     environment:
       - TZ=Asia/Jakarta
     volumes:
-      - nfs-htdocs:/var/www/html
+      - nfs-data:/var/www/html/data
     ports:
       #- 6060:80
       - 6060:443
@@ -36,15 +36,15 @@ services:
     #  - swag
     deploy:
       placement:
-        constraints: [ node.hostname == GITLAB ]
+        constraints: [ node.hostname == homelab ]
 networks:
   webmail:
     name: webmail
 #  swag:
 #    external: true
 volumes:
-  nfs-htdocs:
+  nfs-data:
     driver_opts:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
-      device: ":/home/dedyms/docker/webmail/www"
+      device: ":/home/dedyms/docker/webmail/www/data"

@@ -24,8 +24,8 @@ services:
     #  - 9003:9003
     #  - 5555:5555
     #  - 5500:5500
-    network_mode: host
-    #  - code-server
+    networks:
+      - code-server
     deploy:
       placement:
         constraints: [ node.hostname == homelab  ]

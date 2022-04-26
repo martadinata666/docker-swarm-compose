@@ -1,66 +1,62 @@
 ---
 version: "3.5"
 services:
-  client:
-    image: 192.168.0.2:5050/dedyms/glances:latest
-    volumes:
-      - ./glances.conf:/home/debian/glances/glances.conf
-    environment:
-      - ADDITIONAL_OPT=-d -c homelab
-    ports:
-      - "61208:61208"
+#  client:
+#    image: 192.168.0.2:5050/dedyms/glances:latest
+#    command: bash
+#    tty: true
+#    stdin_open: true
+#    volumes:
+#      - ./glances.conf:/home/debian/glances/glances.conf
+#    environment:
+#      - ADDITIONAL_OPT=-d -c homelab
+#    ports:
+#      - "61208:61208"
       #- "61209:61209"
-    networks:
-      - glances
-    deploy:
-      placement:
-        constraints: [node.role == manager ]
+#    networks:
+#      - glances
+#    deploy:
+#      placement:
+#        constraints: [node.role == manager ]
 
-  gitlab:
-    image: 192.168.0.2:5050/dedyms/glances:latest
-    command: glances
-    tty: true
-    stdin_open: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - ADDITIONAL_OPT=-d -s -q
+#  gitlab:
+#    image: 192.168.0.2:5050/dedyms/glances:latest
+#    command: glances
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#    environment:
+#      - ADDITIONAL_OPT=-d -s
   #  ports:
   #    - "61209:61209"
-    networks:
-      - glances
-    deploy: 
-      placement:
-        constraints: [node.hostname == GITLAB ]
+#    networks:
+#      - glances
+#    deploy: 
+#      placement:
+#        constraints: [node.hostname == GITLAB ]
 
-  rpi4:
-    image: 192.168.0.2:5050/dedyms/glances:latest
-    command: glances
-    tty: true
-    stdin_open: true
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-      - ADDITIONAL_OPT=-d -s -q
+#  rpi4:
+#    image: 192.168.0.2:5050/dedyms/glances:latest
+#    command: glances
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock:ro
+#    environment:
+#      - ADDITIONAL_OPT=-d -s
   #  ports:
   #    - "61209:61209"
-    networks:
-      - glances
-    deploy: 
-      placement:
-        constraints: [node.hostname == rpi4 ]
+#    networks:
+#      - glances
+#    deploy: 
+#      placement:
+#        constraints: [node.hostname == rpi4 ]
 
   homelab:
     image: 192.168.0.2:5050/dedyms/glances:latest
-    command: glances
-    tty: true
-    stdin_open: true
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - ADDITIONAL_OPT=-d -s -q
-  #  ports:
-  #    - "61209:61209"
+      - ADDITIONAL_OPT=-d
+    ports:
+      - "61208:61208"
     networks:
       - glances
     deploy: 
@@ -70,5 +66,3 @@ services:
 networks:
   glances:
     name: glances
-    driver: overlay
-    internal: true

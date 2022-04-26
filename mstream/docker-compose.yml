@@ -14,22 +14,23 @@ services:
       - nfs-config:/home/debian/mstream/save/conf
       - ./nginx.key:/etc/ssl/localcerts/nginx.key
       - ./nginx.pem:/etc/ssl/localcerts/nginx.pem
-    ports:
-      - 9300:3000
+    #ports:
+    #  - 9300:3000
     deploy:
       placement:
         constraints:
           - node.role == manager
     networks:
       - mstream
-  #nginx:
-  #  image: 192.168.0.2:5050/dedyms/nginx:mainline
-  #  ports:
-  #    - 9500:443
-  #  volumes:
-  #    - ./default.conf:/etc/nginx/conf.d/default.conf
-  #  networks:
-  #    - mstream
+  nginx:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline
+    ports:
+      - 9300:443
+    configs:
+      - source: nginx.conf
+        target: /etc/nginx/conf.d/default.conf
+    networks:
+      - mstream
   #apache:
   #  image: 192.168.0.2:5050/dedyms/apache2:fcgid
   #  ports:
@@ -57,3 +58,6 @@ volumes:
       o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
       device: ":/home/dedyms/docker/mstream/config/"
     
+configs:
+  nginx.conf:
+    file: default.conf

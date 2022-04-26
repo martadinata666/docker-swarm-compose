@@ -75,3 +75,4 @@ jellyfin/transcodes
 shinobi
 watchtower/*
 spotify-dashboard/*
+minio/data*

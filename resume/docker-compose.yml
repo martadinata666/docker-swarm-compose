@@ -16,7 +16,9 @@ services:
       - env.v3
     networks:
       - resume
-      - default
+      - minio
+    volumes:
+      - ./data:/home/debian/reactiveresume/server/dist/assets
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
@@ -32,7 +34,6 @@ services:
       - ./db:/var/lib/postgresql/data
     networks:
       - resume
-      - default
     deploy:
       placement:
         constraints: [ node.role == manager ]
@@ -40,6 +41,8 @@ services:
 networks:
   resume:
     name: resume
+  minio:
+    external: true
 
 configs:
   nginx.conf:

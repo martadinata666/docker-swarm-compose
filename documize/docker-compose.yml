@@ -19,20 +19,20 @@ services:
       placement:
         constraints: [ node.role == manager ]
   app:
-    image: 192.168.0.2:5050/dedyms/documize:latest
+    image: 192.168.0.2:5050/dedyms/documize:v4.2.3
     environment:
       - TZ=Asia/Jakarta
     volumes:
       - nfs-config:/home/debian/documize
-    #ports:
-    #  - 5100:5001
+    ports:
+      - 5001:5001
     networks:
       - documize
     depends_on:
       - db
     deploy:
       placement:
-        constraints: [ node.hostname == GITLAB ]
+        constraints: [ node.hostname == homelab ]
   nginx:
     image: 192.168.0.2:5050/dedyms/nginx:mainline
     ports:
@@ -42,15 +42,15 @@ services:
         target: /etc/nginx/conf.d/default.conf
     networks:
       - documize
-  apache:
-    image: 192.168.0.2:5050/dedyms/apache:fcgid
-    ports:
-      - 5003:443
-    configs:
-      - source: apache.conf
-        target: /etc/apache2/sites-available/000-default-ssl.conf
-    networks:
-      - documize
+  #apache:
+  #  image: 192.168.0.2:5050/dedyms/apache:fcgid
+  #  ports:
+  #    - 5003:443
+  #  configs:
+  #    - source: apache.conf
+  #      target: /etc/apache2/sites-available/000-default-ssl.conf
+  #  networks:
+  #    - documize
 
 networks:
   documize:

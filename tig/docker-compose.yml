@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   grafana:
-    image: grafana/grafana:8.4.5
+    image: grafana/grafana:8.5.0
     user: 1000:1000
     ports:
       - 13000:3000
@@ -43,7 +43,7 @@ services:
   telegraf:
     image: telegraf:1.21.4
     hostname: "{{.Node.Hostname}}"
-    user: root
+    user: root:root
     entrypoint: "telegraf"
     environment:
       - TZ=Asia/Jakarta
@@ -65,12 +65,24 @@ services:
 
   cadvisor:
     image: martadinata666/cadvisor:git
+    privileged: true
     networks:
       - tig
+    command:
+      - '--docker_only=true'
+      - '--housekeeping_interval=30s'
+      - '--disable_metrics=accelerator,cpu_topology,disk,memory_numa,tcp,udp,percpu,sched,process,hugetlb,referenced_memory,resctrl,cpuset,advtcp,memory_numa'
+      - '--store_container_labels=false'
+      - '--event_storage_event_limit=default=0'
+      - '--event_storage_age_limit=default=0'
+    healthcheck:
+      disable: true
     volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
       - /var/lib/docker/:/var/lib/docker:ro
       - /dev/disk:/dev/disk:ro
+      - /sys:/sys:ro
     deploy:
       mode: global
       #placement:
