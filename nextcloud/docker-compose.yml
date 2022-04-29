@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/nextcloud-smb:23.0.3
+    image: 192.168.0.2:5050/dedyms/nextcloud-smb:23.0.4
     environment:
       - TZ=Asia/Jakarta
       - NEXTCLOUD_UPDATE=1
@@ -92,51 +92,6 @@ services:
     deploy:
       placement:
         constraints: [node.hostname == homelab ]
-#  collabora:
-#    image: collabora/code
-#    networks:
-#      - nextcloud
-#    environment:
-#      - extra_params=--o:tls.enable=false
-#      - extra_params=--o:ssl.enable=false
-#      - username=admin
-#      - password=adminadmin
-#    deploy:
-#      placement:
-#        constraints: [node.hostname == homelab]
-#    ports:
-#      - 8081:9980
-#  nginx:
-#    image: 192.168.0.2:5050/dedyms/apache:fcgid
-#    image: 192.168.0.2:5050/dedyms/nginx:mainline
-#    ports:
-#      - 8080:443
-#    configs:
-#      - source: nginx.conf
-#        target: /etc/nginx/conf.d/default.conf
-#    networks:
-#      - nextcloud
-#    deploy:
-#      placement:
-#        constraints: [ node.hostname == homelab ]
-#  varnish:
-#    image: varnish:fresh
-#    environment:
-#      - TZ=Asia/Jakarta
-#      - VARNISH_SIZE=2G
-    #configs:
-    #  - source: varnish.vcl
-    #    target: /etc/varnish/default.vcl
-#    volumes:
-#       - ./varnish.vcl:/etc/varnish/default.vcl
-#    tmpfs: /var/lib/varnish:exec
-    #ports:
-    #  - 8080:80
-#    networks:
-#      - nextcloud
-#    deploy:
-#      placement:
-#        constraints: [ node.hostname == homelab ]
 
 volumes:
   htdocs:
