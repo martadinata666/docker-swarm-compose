@@ -41,7 +41,7 @@ services:
           - node.hostname == homelab
   
   telegraf:
-    image: telegraf:1.21.4
+    image: telegraf:1.22.2
     hostname: "{{.Node.Hostname}}"
     user: root:root
     entrypoint: "telegraf"
@@ -121,7 +121,7 @@ services:
       #  constraints: [ node.platform.arch == x86_64 ]
 
   prometheus:
-    image: prom/prometheus:v2.34.0
+    image: prom/prometheus:v2.35.0
     user: 1000:1000
     networks:
       - tig
