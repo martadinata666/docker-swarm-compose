@@ -2,7 +2,7 @@
 version: "3.5"
 services:
    guacd:
-     image: guacamole/guacd:1.4.0
+     image: martadinata666/guacd:git
      networks:
        - guacamole
      #ports:
@@ -11,7 +11,7 @@ services:
        placement:
          constraints: [ node.role == manager ]
    guacamole:
-     image: guacamole/guacamole:1.4.0
+     image: martadinata666/guacamole:git
      environment:
        - POSTGRES_HOSTNAME=db
        - POSTGRES_USER=guacamole
@@ -19,8 +19,8 @@ services:
        - POSTGRES_PASSWORD=guacamolepass
        # REPLACE POSTGRES with MYSQL
        - GUACD_HOSTNAME=guacd
-     volumes:
-       - ./init:/init
+     #volumes:
+     #  - ./init:/init
      #ports:
      #  - 4822:8080
      # /opt/guacamole/bin/initdb.sh --postgres > initdb.sql
@@ -32,7 +32,7 @@ services:
        - guacamole
      deploy:
        placement:
-         constraints: [ node.role == manager ]
+         constraints: [ node.hostname == rpi4 ]
    db:
      image: postgres:13
      environment:
