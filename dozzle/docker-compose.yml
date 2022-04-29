@@ -9,7 +9,7 @@ services:
       - TZ=Asia/Jakarta
       - DOZZLE_ADDR=:8080
     ports:
-      - 8888:8080
+      - 8999:8080
     networks:
       - dozzle
     deploy:
