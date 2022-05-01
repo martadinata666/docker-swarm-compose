@@ -4,7 +4,6 @@ services:
     image: 192.168.0.2:5050/dedyms/nextcloud-smb:23.0.4
     environment:
       - TZ=Asia/Jakarta
-      - NEXTCLOUD_UPDATE=1
       - ALLOW_SELF_SIGNED=true
       - NEXTCLOUD_URL=https://web:443
     volumes:
