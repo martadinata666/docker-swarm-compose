@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   grafana:
-    image: grafana/grafana:8.5.0
+    image: grafana/grafana:8.5.1
     user: 1000:1000
     ports:
       - 13000:3000
@@ -41,7 +41,7 @@ services:
           - node.hostname == homelab
   
   telegraf:
-    image: telegraf:1.22.2
+    image: telegraf:1.22.3
     hostname: "{{.Node.Hostname}}"
     user: root:root
     entrypoint: "telegraf"
