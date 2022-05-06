@@ -7,9 +7,13 @@ services:
         target: /home/debian/plex-discord-bot/config/plex.js
       - source: keys.js
         target: /home/debian/plex-discord-bot/config/keys.js
+      - source: config.js
+        target: /home/debian/plex-discord-bot/config/config.js
  
 configs:
   keys.js:
     file: ./config/keys.js
   plex.js:
     file: ./config/plex.js
+  config.js:
+    file: ./config/config.js
