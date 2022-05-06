@@ -12,6 +12,7 @@ services:
       - nfs-cl-downloads:/home/debian/pyload/downloads
     ports:
       - 8093:8000
+      - 9666:9666
     deploy:
       placement:
         constraints:

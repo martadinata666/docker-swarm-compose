@@ -2,20 +2,17 @@ version: "3.5"
 services:
   app:
     image: 192.168.0.2:5050/dedyms/youtubedl-material:git
-    command: node ./app.js
-    #tty: true
-    #stdin_open: true
     environment:
       - TZ=Asia/Jakarta
-      #- ALLOW_CONFIG_MUTATIONS='true'
-      #- ytdl_mongodb_connection_string='mongodb://db:27017/?compression=zlib'
-      #- ytdl_use_local_db='false'
-      #- write_ytdl_config='true'
+      - ALLOW_CONFIG_MUTATIONS=true
+      - ytdl_mongodb_connection_string=mongodb://db:27017/?compression=zlib
+      - ytdl_use_local_db=true
+      - write_ytdl_config=true
     volumes:
       - nfs-downloads:/home/debian/youtubedl-material/video
       - nfs-downloads:/home/debian/youtubedl-material/audio
       - nfs-configs:/home/debian/youtubedl-material/appdata
-      #- ./config:/home/debian/youtubedl-material/appdata
+      #- configs:/home/debian/youtubedl-material/appdata
     #ports:
     #  - 9100:8080
     deploy:
@@ -25,8 +22,9 @@ services:
     networks:
       - ytdl
 
-  #db:
-  #  image: mongo:latest
+  db:
+    image: mongo:latest
+    #user: 1000:1000
     #environment:
     #  MONGO_INITDB_ROOT_USERNAME: ytdlroot
     #  MONGO_INITDB_ROOT_PASSWORD: ytdlpass
@@ -35,13 +33,13 @@ services:
     #  - 27017:27017
     #logging:
     #  driver: "none"
-  #  volumes:
-  #    - ./db:/data/db
-  #  networks:
-  #    - ytdl
-  #  deploy:
-  #    placement:
-  #      constraints: [ node.role == manager  ]
+    volumes:
+      - ./db:/data/db
+    networks:
+      - ytdl
+    deploy:
+      placement:
+        constraints: [ node.role == manager  ]
 
   nginx:
     image: 192.168.0.2:5050/dedyms/nginx:mainline
@@ -69,6 +67,7 @@ networks:
     name: ytdl
 
 volumes:
+  configs:
   nfs-downloads:
     driver_opts:
       type: "nfs4"
@@ -81,7 +80,7 @@ volumes:
       device: ":/home/dedyms/docker/youtubedl-material/config"
 
 configs:
-  apache.conf:
-    file: ./apache.conf
+#  apache.conf:
+#    file: ./apache.conf
   nginx.conf:
     file: ./default.conf
