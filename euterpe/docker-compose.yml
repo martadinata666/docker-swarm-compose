@@ -8,7 +8,7 @@ services:
       - /media/WD/Music:/musics
       - data:/home/debian/.euterpe
     ports:
-       - 2000:443
+       - 1500:443
     configs:
        - source: config.json
          target: /home/debian/.euterpe/config.json

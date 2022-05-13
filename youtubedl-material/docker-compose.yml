@@ -12,9 +12,6 @@ services:
       - nfs-downloads:/home/debian/youtubedl-material/video
       - nfs-downloads:/home/debian/youtubedl-material/audio
       - nfs-configs:/home/debian/youtubedl-material/appdata
-      #- configs:/home/debian/youtubedl-material/appdata
-    #ports:
-    #  - 9100:8080
     deploy:
       placement:
         constraints:
@@ -22,17 +19,19 @@ services:
     networks:
       - ytdl
 
+  ldap:
+    image: bitnami/openldap:latest
+    networks:
+      - ytdl
+    volumes:
+      - openldap:/bitnami/openldap
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+
   db:
     image: mongo:latest
-    #user: 1000:1000
-    #environment:
-    #  MONGO_INITDB_ROOT_USERNAME: ytdlroot
-    #  MONGO_INITDB_ROOT_PASSWORD: ytdlpass
-    #  MONGO_INITDB_DATABASE: ytdl
-    #ports:
-    #  - 27017:27017
-    #logging:
-    #  driver: "none"
     volumes:
       - ./db:/data/db
     networks:
@@ -78,6 +77,7 @@ volumes:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/youtubedl-material/config"
+  openldap:
 
 configs:
 #  apache.conf:

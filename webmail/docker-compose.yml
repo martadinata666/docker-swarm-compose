@@ -2,10 +2,6 @@ version: "3.5"
 services:
   db:
    image: 192.168.0.2:5050/dedyms/mariadb:10.6
-   ulimits:
-      memlock:
-        soft: -1
-        hard: -1
    environment:
       - MARIADB_ROOT_PASSWORD=webmailroot
       - TZ=Asia/Jakarta
@@ -27,6 +23,7 @@ services:
       - TZ=Asia/Jakarta
     volumes:
       - nfs-data:/var/www/html/data
+#      - ./supervisord.conf:/home/debian/supervisor/supervisord.conf
     ports:
       #- 6060:80
       - 6060:443
