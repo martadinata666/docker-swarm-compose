@@ -1,0 +1,58 @@
+version: "3.5"
+services:
+  app:
+    environment:
+      - TZ=Asia/Jakarta
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.4-web
+    ports:
+      - 9091:8080/tcp
+    restart: unless-stopped
+    volumes:
+      - /run/udev:/run/udev:ro
+      - data:/opt/scrutiny/data
+    networks:
+      - scrutiny
+
+  collector:
+    environment:
+      - TZ=Asia/Jakarta
+      - COLLECTOR_API_ENDPOINT=http://app:8080
+    cap_add:
+      - SYS_RAWIO
+      - SYS_ADMIN
+    devices:
+      - /dev/sda:/dev/sda
+      - /dev/sdb:/dev/sdb
+      - /dev/sdc:/dev/sdc
+      - /dev/sdd:/dev/sdd
+      - /dev/nvme0:/dev/nvme0
+    volumes:
+      - /run/udev:/run/udev:ro
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.4-collector
+    restart: unless-stopped
+    networks:
+      - scrutiny
+
+  db:
+    image: influxdb:2.2
+    user: 1000:1000
+    environment:
+      - TZ=Asia/Jakarta
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=scrutiny
+      - DOCKER_INFLUXDB_INIT_PASSWORD=scrutinypass
+      - DOCKER_INFLUXDB_INIT_ORG=scrutinyorg
+      - DOCKER_INFLUXDB_INIT_BUCKET=scrutiny
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=scrutinytoken
+    volumes:
+      - ./db/data:/var/lib/influxdb2
+      - ./db/config:/etc/influxdb2
+    networks:
+      - scrutiny
+
+volumes:
+  data:
+
+networks:
+  scrutiny:
+    name: scrutiny
