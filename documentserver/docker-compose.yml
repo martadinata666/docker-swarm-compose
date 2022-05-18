@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   documentserver:
-    image: onlyoffice/documentserver:7.0
+    image: onlyoffice/documentserver:7.1
     restart: unless-stopped
     environment:
       - TZ=Asia/Jakarta
