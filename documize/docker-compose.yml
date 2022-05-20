@@ -19,7 +19,7 @@ services:
       placement:
         constraints: [ node.role == manager ]
   app:
-    image: 192.168.0.2:5050/dedyms/documize:v4.2.3
+    image: 192.168.0.2:5050/dedyms/documize:v5.0.1
     environment:
       - TZ=Asia/Jakarta
     volumes:
