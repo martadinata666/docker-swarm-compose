@@ -22,7 +22,7 @@ services:
     image: portainer/portainer-ee
     command: -H tcp://tasks.agent:9001 --tlsskipverify
     ports:
-      - "2000:9443"
+      - "2000:9000"
       #- "2100:9000"
     environment:
       - TZ=Asia/Jakarta
