@@ -3,7 +3,7 @@ services:
   app:
     environment:
       - TZ=Asia/Jakarta
-    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.5-web
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.6-web
     ports:
       - 9091:8080/tcp
     restart: unless-stopped
@@ -28,7 +28,7 @@ services:
       - /dev/nvme0:/dev/nvme0
     volumes:
       - /run/udev:/run/udev:ro
-    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.5-collector
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.6-collector
     restart: unless-stopped
     networks:
       - scrutiny
