@@ -34,7 +34,7 @@ services:
     image: 192.168.0.2:5050/dedyms/jellyfin-vue:static
     container_name: jellyfin_client
     ports:
-      - 8100:80
+      - 8098:80
     networks:
       - jellyfin
     labels:

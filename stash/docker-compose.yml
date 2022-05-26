@@ -7,6 +7,7 @@ services:
     #stdin_open: true
     volumes:
       - ow_videos:/home/debian/stash/videos
+      - /media/Clouds/Porn/Pictures:/home/debian/stash/pictures
       - config:/home/debian/stash
     ports:
       - 8888:9999
