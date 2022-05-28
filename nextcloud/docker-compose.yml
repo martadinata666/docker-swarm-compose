@@ -8,8 +8,8 @@ services:
       - NEXTCLOUD_URL=https://web:443
     volumes:
       - htdocs:/var/www/html
-      - nfs-cl-pictures:/Pictures
-      - nfs-cl-instasave:/InstaSave
+#      - nfs-cl-pictures:/Pictures
+#      - nfs-cl-instasave:/InstaSave
       - nfs-config:/var/www/html/config
       - nfs-data:/var/www/html/data
       - nfs-themes:/var/www/html/themes
@@ -24,6 +24,7 @@ services:
     restart: unless-stopped
     networks:
       - nextcloud
+      - minio
     #  - swag
     deploy:
       placement:
@@ -96,18 +97,18 @@ volumes:
   htdocs:
   rd:
   db:
-  ds_logs:
-  ds_data:
-  nfs-cl-pictures:
-    driver_opts:
-      type: "nfs4"
-      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
-      device: ":/media/Clouds/Pictures/dedyms"
-  nfs-cl-instasave:
-    driver_opts:  
-      type: "nfs4"
-      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
-      device: ":/media/Clouds/InstaSave"
+#  ds_logs:
+#  ds_data:
+#  nfs-cl-pictures:
+#    driver_opts:
+#      type: "nfs4"
+#      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+#      device: ":/media/Clouds/Pictures/dedyms"
+#  nfs-cl-instasave:
+#    driver_opts:  
+#      type: "nfs4"
+#      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+#      device: ":/media/Clouds/InstaSave"
   nfs-config:
     driver_opts:
       type: "nfs4"
@@ -128,6 +129,8 @@ networks:
   nextcloud:
     name: nextcloud
     driver: overlay
+  minio:
+    external: true
 
 #configs:
 #  varnish.vcl:
