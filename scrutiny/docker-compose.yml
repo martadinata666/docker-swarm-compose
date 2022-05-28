@@ -3,10 +3,10 @@ services:
   app:
     environment:
       - TZ=Asia/Jakarta
-    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.7-web
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.8-web
     ports:
       - 9091:8080/tcp
-    restart: unless-stopped
+    restart: always
     volumes:
       - /run/udev:/run/udev:ro
       - data:/opt/scrutiny/data
@@ -28,8 +28,8 @@ services:
       - /dev/nvme0:/dev/nvme0
     volumes:
       - /run/udev:/run/udev:ro
-    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.7-collector
-    restart: unless-stopped
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.8-collector
+    restart: always
     networks:
       - scrutiny
 
@@ -49,6 +49,7 @@ services:
       - ./db/config:/etc/influxdb2
     networks:
       - scrutiny
+    restart: always
 
 volumes:
   data:
