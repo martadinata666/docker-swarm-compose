@@ -1,9 +1,9 @@
 version: "3.5"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/owntone-server:28.3
+    image: 192.168.0.2:5050/dedyms/owntone-server:28.4
     privileged: true
-    command: owntone -c ./owntone.conf -f -P ./owntone.pid
+    #command: owntone -c ./owntone.conf -f -P ./owntone.pid
     #tty: true
     #stdin_open: true
     #environment:
