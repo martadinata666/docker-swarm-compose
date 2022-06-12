@@ -1,19 +1,61 @@
 version: "3.5"
 services:
-  documentserver:
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    environment:
+      #- MARIADB_AUTO_UPGRADE=1
+      - MARIADB_ROOT_PASSWORD=onlyofficeroot
+      - TZ=Asia/Jakarta
+      - MARIADB_DATABASE=onlyoffice
+      - MARIADB_USER=onlyoffice
+      - MARIADB_PASSWORD=onlyofficepass
+    volumes:
+      - ./db:/var/lib/mysql
+    restart: unless-stopped
+    networks:
+      - onlyoffice
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
+
+  redis:
+    image: redis:alpine
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - rd:/data
+    restart: unless-stopped
+    networks:
+      - onlyoffice
+    deploy:
+      placement:
+        constraints: [node.hostname == homelab ]
+
+  app:
     image: onlyoffice/documentserver:7.1
     restart: unless-stopped
     environment:
       - TZ=Asia/Jakarta
       - USE_UNAUTHORIZED_STORAGE=true
+      - JWT_ENABLED=true
+      - JWT_SECRET=onlyoffice
+      - REDIS_SERVER_HOST=redis
+      - REDIS_SERVER_PORT=6379
+      - DB_TYPE=mariadb
+      - DB_HOST=db
+      - DB_NAME=onlyoffice
+      - DB_USER=onlyoffice
+      - DB_PWD=onlyofficepass
       #- SSL_VERIFY_CLIENT=false
       #- SSL_CERTIFICATE_PATH=/etc/ssl/certs/ssl-cert-snakeoil.pem
       #- SSL_KEY_PATH=/etc/ssl/private/ssl-cert-snakeoil.key
     #ports:
     #  - 5080:80
+    restart: unless-stopped
     volumes:
       - ds_logs:/var/log/onlyoffice
-      - ds_data:/var/www/onlyoffice/Data
+      - ./data:/var/www/onlyoffice/Data
+      - ds_lib:/var/lib/onlyoffice
     networks:
       - onlyoffice
     deploy:
@@ -36,6 +78,8 @@ services:
 volumes:
   ds_logs:
   ds_data:
+  ds_lib:
+  rd:
 
 networks:
   onlyoffice:

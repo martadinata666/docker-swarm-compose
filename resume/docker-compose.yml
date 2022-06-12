@@ -7,24 +7,22 @@ services:
     configs:
       - source: nginx.conf
         target: /etc/nginx/conf.d/default.conf
+    restart: always
     networks:
       - resume
 
   app:
-    image: 192.168.0.2:5050/dedyms/reactive-resume:latest
-    #command: bash
-    #tty: true
-    #stdin_open: true
+    image: 192.168.0.2:5050/dedyms/reactive-resume:git
+    restart: always
     env_file:
       - env.v3
     networks:
       - resume
-      - minio
     volumes:
-      - ./data:/home/debian/reactiveresume/server/dist/assets
+      - nfs-assets:/home/debian/reactiveresume/server/dist/assets
     deploy:
       placement:
-        constraints: [ node.hostname == homelab ]
+        constraints: [ node.hostname == rpi4 ]
 
   db:
     image: postgres:13
@@ -33,6 +31,7 @@ services:
       - POSTGRES_USER=reactiveresume
       - POSTGRES_PASSWORD=reactiveresumepass
       - POSTGRES_DB=reactiveresume
+    restart: always
     volumes:
       - ./db:/var/lib/postgresql/data
     networks:
@@ -46,6 +45,13 @@ networks:
     name: resume
   minio:
     external: true
+
+volumes:
+  nfs-assets:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/resume/assets"
 
 configs:
   nginx.conf:

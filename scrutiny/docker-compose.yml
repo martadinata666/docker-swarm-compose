@@ -4,7 +4,7 @@ services:
     environment:
       - TZ=Asia/Jakarta
       - SCRUTINY_WEB_INFLUXDB_HOST=db
-    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.8-web
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.12-web
     ports:
       - 9091:8080/tcp
     restart: always
@@ -29,7 +29,7 @@ services:
       - /dev/nvme0:/dev/nvme0
     volumes:
       - /run/udev:/run/udev:ro
-    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.8-collector
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.4.12-collector
     restart: always
     networks:
       - scrutiny

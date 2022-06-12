@@ -1,0 +1,19 @@
+version: "3.8"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/beatbump:git
+#    command: bash
+#    tty: true
+#    stdin_open: true
+    networks:
+      - beatbump
+    ports:
+      - "17000:3000"
+    restart: always
+    deploy:
+       placement:
+         constraints: [node.hostname==rpi4]
+
+networks:
+  beatbump:
+    name: beatbump

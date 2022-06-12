@@ -8,7 +8,7 @@ services:
        - render
     volumes:
        - ./config:/home/debian/.unmanic
-       - /media/WD/Videos/MV:/library
+       - cifs-wd:/library
        - /dev/shm:/tmp/unmanic
     devices:
        - /dev/dri:/dev/dri
@@ -43,3 +43,9 @@ networks:
   unmanic:
     name: unmanic
 
+volumes:
+  cifs-wd:
+    driver_opts:
+      type: "cifs"
+      o: "addr=192.168.0.2,username=dedyms,password=smb,uid=1000,gid=1000"
+      device: "//192.168.0.2/datashare/Videos/MV"

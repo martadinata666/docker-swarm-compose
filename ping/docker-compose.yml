@@ -3,7 +3,7 @@ services:
   app:
     image: 192.168.0.2:5050/dedyms/ping:bullseye
     environment:
-      - URL=indosatooredoo.com
+      - URL=telkomsel.com
     networks:
       - ping
     deploy:

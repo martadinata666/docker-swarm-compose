@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  app:
+    image: collabora/code:latest
+    ports:
+      - 9980:9980
+    environment:
+      - aliasgroup1=https://192.168.0.2:8080
+      - username=admin
+      - pasword=adminadmin
+    restart: unless-stopped
+    networks:
+      - collabora
+
+networks:
+  collabora:
+    name: collabora
