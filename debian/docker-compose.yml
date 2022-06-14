@@ -33,44 +33,6 @@ services:
   #  deploy:
   #    placement:
   #      constraints: [node.hostname == homelab]
-  qbittorrent:
-    image: 192.168.0.2:5050/dedyms/qbittorrent-nox:latest
-    container_name: qbittorrent
-    environment:
-      - TZ=Asia/Jakarta
-      - WEBPORT=8090
-    volumes:
-      - nfs-home-config:/home/debian/.config
-      - nfs-cl-torrents-downloads:/home/debian/Downloads
-      - cifs-wd:/home/debian/WD
-    #ports:
-    #  - 6881:6881/tcp
-    #  - 6881:6881/udp
-    #  - 8090:8090
-    networks:
-      - debian
-      - swag
-    deploy:
-      placement:
-        constraints: [node.hostname == rpi4]
-  #deluge:
-  #  image: 192.168.0.2:5050/dedyms/deluge-web:sid
-  #  environment:
-  #    - TZ=Asia/Jakarta
-    #ports:
-    #  - 58946:58946/tcp
-    #  - 58946:58946/udp
-    #  - 8084:8112
-  #  volumes:
-  #    - nfs-home-config:/home/debian/.config
-  #    - nfs-cl-torrents-downloads:/home/debian/Downloads
-  #    - cifs-wd:/home/debian/WD
-  #  networks:
-  #    - debian
-  #    - swag
-  #  deploy:
-  #    placement:
-  #      constraints: [node.hostname == homelab]
   #ftp:
   #  image: 192.168.0.2:5050/dedyms/vsftpd:sid
   #  environment:
@@ -98,15 +60,10 @@ services:
     image: 192.168.0.2:5050/dedyms/iperf3:latest
     environment:
       - TZ=Asia/Jakarta
-      - SSHPORT=2244
     ports:
       - "5201:5201"
     networks:
       - debian
-    volumes:
-      - nfs-home-config:/home/debian/.config
-      - nfs-cl-torrents-downloads:/home/debian/Downloads
-      - cifs-wd:/home/debian/WD
     deploy:
       placement:
         constraints: [node.hostname == homelab]
