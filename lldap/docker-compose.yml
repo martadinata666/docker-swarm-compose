@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/lldap:latest
+    restart: unless-stopped
+    ports:
+      # For LDAP
+      - "3890:3890"
+      # For the web front-end
+      - "17170:17170"
+    volumes:
+      - ./data:/data	
+      # Alternatively, you can mount a local folder
+      # - "./lldap_data:/data"
+    environment:
+      - LLDAP_JWT_SECRET=thisisjwtsecret
+      - LLDAP_LDAP_USER_PASS=ldappass
+      - LLDAP_LDAP_BASE_DN=dc=example,dc=com
+    deploy:
+      placement:
+        constraints: [node.role==manager]
