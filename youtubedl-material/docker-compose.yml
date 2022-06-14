@@ -19,17 +19,6 @@ services:
     networks:
       - ytdl
 
-  ldap:
-    image: bitnami/openldap:latest
-    networks:
-      - ytdl
-    volumes:
-      - openldap:/bitnami/openldap
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-
   db:
     image: mongo:latest
     volumes:
