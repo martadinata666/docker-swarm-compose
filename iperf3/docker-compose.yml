@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  app:
+     image: 192.168.0.2:5050/dedyms/iperf3:latest
+     environment:
+       - TZ=Asia/Jakarta
+     ports:
+       - "5201:5201"
+     deploy:
+       placement:
+         constraints: [node.hostname == homelab]
