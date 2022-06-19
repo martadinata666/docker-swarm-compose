@@ -3,6 +3,9 @@ services:
   web:
     image: gitlab/gitlab-ee:15.0.1-ee.0
     #hostname: 192.168.0.2:10000
+#    command: bash
+#    tty: true
+#    stdin_open: true
     ports:
       - "2022:22"
       - "10000:10000"
@@ -12,8 +15,11 @@ services:
       - ./gitlab/data:/var/opt/gitlab
       - ./gitlab/logs:/var/log/gitlab
       - ./gitlab/config:/etc/gitlab
+ #     - ./gitlab/gitlab.rb:/omnibus_gitlab.rb
+      - ./gitlab/fixperm.sh:/fixperm.sh
     environment:
       GITLAB_OMNIBUS_CONFIG: "from_file('/omnibus_config.rb')"
+      GITLAB_SKIP_UNMIGRATED_DATA_CHECK: "true"
     configs:
       - source: gitlab
         target: /omnibus_config.rb
@@ -24,7 +30,6 @@ services:
         constraints: [ node.hostname == homelab ]
     networks:
       - gitlab
-      - minio
 
   runner:
     image: 192.168.0.2:5050/dedyms/gitlab-runner:v15.0.0
@@ -53,8 +58,6 @@ secrets:
 networks:
   gitlab:
     name: gitlab
-  minio:
-    external: true
 
 volumes:
   runner_config:
