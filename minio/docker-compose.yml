@@ -29,6 +29,7 @@ services:
     #restart: always
     #user: 1000:1000
     environment:
+      - TZ=Asia/Jakarta
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
       - MINIO_PROMETHEUS_URL=http://192.168.0.2:14000
