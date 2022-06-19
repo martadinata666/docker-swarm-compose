@@ -43,7 +43,7 @@ services:
       placement: 
         constraints: [ node.role == manager ]
     environment:
-      - APP_NAME="My Dashboard"
+      - APP_NAME=Dashboard
     ports:
       #- 80:80
       - 443:443
