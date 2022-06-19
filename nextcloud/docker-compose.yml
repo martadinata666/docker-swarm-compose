@@ -13,6 +13,7 @@ services:
       - nfs-config:/var/www/html/config
       - nfs-data:/var/www/html/data
       - nfs-themes:/var/www/html/themes
+      - nfs-custom_apps:/var/www/html/custom_apps
       - ./ssl/nextcloud.crt:/etc/ssl/certs/ssl-cert-snakeoil.pem
       - ./ssl/nextcloud.key:/etc/ssl/private/ssl-cert-snakeoil.key
     #configs:
@@ -124,6 +125,11 @@ volumes:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/nextcloud/themes"
+  nfs-custom_apps:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/nextcloud/custom_apps"
 
 networks:
   nextcloud:
