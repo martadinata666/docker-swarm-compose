@@ -9,6 +9,7 @@ services:
        - duplicati
      volumes:
        - ./data:/home/debian/duplicati/data
+       - /home/dedyms/Documents/docker-gitlab-local:/home/debian/docker-gitlab-local
        - /media/WD:/media/WD
        - /media/Clouds:/media/Clouds
        - /media/hgst:/media/hgst
