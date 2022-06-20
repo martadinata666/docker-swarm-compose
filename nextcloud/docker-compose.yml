@@ -53,7 +53,7 @@ services:
         constraints: [ node.hostname == homelab ]
 
   db:
-    image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    image: 192.168.0.2:5050/dedyms/mariadb:10.7
     environment:
       #- MARIADB_AUTO_UPGRADE=1
       - MARIADB_ROOT_PASSWORD=mariadbnc
