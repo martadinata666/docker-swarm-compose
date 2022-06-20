@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   db:
-   image: 192.168.0.2:5050/dedyms/mariadb:10.6
+   image: 192.168.0.2:5050/dedyms/mariadb:10.7
    environment:
       - MARIADB_ROOT_PASSWORD=webmailroot
       - TZ=Asia/Jakarta
