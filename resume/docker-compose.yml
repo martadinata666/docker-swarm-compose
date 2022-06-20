@@ -12,7 +12,7 @@ services:
       - resume
 
   app:
-    image: 192.168.0.2:5050/dedyms/reactive-resume:git
+    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.4.6
     restart: always
     env_file:
       - env.v3
@@ -22,7 +22,7 @@ services:
       - nfs-assets:/home/debian/reactiveresume/server/dist/assets
     deploy:
       placement:
-        constraints: [ node.hostname == rpi4 ]
+        constraints: [ node.hostname == homelab ]
 
   db:
     image: postgres:13
