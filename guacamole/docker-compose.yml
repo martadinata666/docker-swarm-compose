@@ -19,6 +19,13 @@ services:
        - POSTGRES_PASSWORD=guacamolepass
        # REPLACE POSTGRES with MYSQL
        - GUACD_HOSTNAME=guacd
+       - LDAP_HOSTNAME=192.168.0.2
+       - LDAP_PORT=3890
+       - LDAP_ENCRYPTION_METHOD=none
+       - LDAP_SEARCH_BIND_DN=uid=readonly,ou=people,dc=example,dc=com
+       - LDAP_SEARCH_BIND_PASSWORD=ldapreadonly
+       - LDAP_USER_BASE_DN=ou=people,dc=example,dc=com
+       - LDAP_USER_SEARCH_FILTER=(memberof=cn=lldap_guacamole,ou=groups,dc=example,dc=com)
      #volumes:
      #  - ./init:/init
      #ports:
