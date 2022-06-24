@@ -1,12 +1,14 @@
 version: "3.5"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/uptime-kuma:latest
+    image: 192.168.0.2:5050/dedyms/uptime-kuma:1.17.0
     volumes:
       - ./data:/home/debian/uptime-kuma/data
     deploy:
       placement:
         constraints: [ node.hostname == homelab  ]
+    environment:
+      - LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libeatmydata.so
     networks:
       - kuma
     #ports:
