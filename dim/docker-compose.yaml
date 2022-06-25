@@ -7,15 +7,15 @@ services:
     #tty: true
     #stdin_open: true
     container_name: dim
-    group_add:
-      - 44
-      - 226
+#    group_add:
+#      - 44
+#      - 226
     environment:
       - TZ=Asia/Jakarta
     devices:
-      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri:/dev/dri
     ports:
-      - 15000:8000
+      - 13000:8000
     volumes:
       - ./data:/opt/dim/config
       - /media/WD/Videos:/videos:rw
