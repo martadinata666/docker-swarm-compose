@@ -62,8 +62,8 @@ services:
     configs:
       - source: prometheus_conf
         target: /etc/prometheus/prometheus.yml
-    ports:
-      - 14000:9090
+#    ports:
+#      - 14000:9090
     deploy:
       mode: replicated
       replicas: 1
