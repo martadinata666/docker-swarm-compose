@@ -2,6 +2,9 @@ version: "3.5"
 services:
   app:
     image: 192.168.0.2:5050/dedyms/youtubedl-material:git
+#    command: bash
+#    stdin_open: true
+#    tty: true
     environment:
       - TZ=Asia/Jakarta
       - ALLOW_CONFIG_MUTATIONS=true
