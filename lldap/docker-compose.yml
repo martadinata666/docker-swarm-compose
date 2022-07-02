@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/lldap:latest
+    image: nitnelave/lldap:latest
     restart: unless-stopped
     ports:
       # For LDAP
@@ -13,6 +13,7 @@ services:
       # Alternatively, you can mount a local folder
       # - "./lldap_data:/data"
     environment:
+      - TZ=Asia/Jakarta
       - LLDAP_JWT_SECRET=thisisjwtsecret
       - LLDAP_LDAP_USER_PASS=ldappass
       - LLDAP_LDAP_BASE_DN=dc=example,dc=com

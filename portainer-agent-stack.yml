@@ -46,3 +46,6 @@ networks:
  #   external: true
 volumes:
   manager-data:
+
+# heimdalltoken for portainer, portainer user lldap
+#ptr_2JZtBdAQRmwsad17kOq+bo+UD5ajl7WkZdMTQEP7Nbs=

@@ -5,7 +5,7 @@
 #  -e "MINIO_ROOT_PASSWORD=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" \
 #  quay.io/minio/minio server /data --console-address ":9001"
 
-version: "3.9"
+version: "3.8"
 services:
   nginx:
     image: 192.168.0.2:5050/dedyms/nginx:mainline
@@ -32,7 +32,7 @@ services:
       - TZ=Asia/Jakarta
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
-      - MINIO_PROMETHEUS_URL=http://192.168.0.2:14000
+      - MINIO_PROMETHEUS_URL=http://prometheus:9090
     #ports:
     #  - 9000:9000
     #  - 9001:9001
@@ -46,7 +46,7 @@ services:
       - minio
 
   prometheus:
-    image: prom/prometheus:v2.36.1
+    image: prom/prometheus:v2.36.2
     user: 1000:1000
     networks:
       - minio
@@ -59,14 +59,13 @@ services:
       - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION:-24h}'
     volumes:
       - ./prometheus:/prometheus
+      - /etc/localtime:/etc/localtime:ro
     configs:
       - source: prometheus_conf
         target: /etc/prometheus/prometheus.yml
 #    ports:
 #      - 14000:9090
     deploy:
-      mode: replicated
-      replicas: 1
       placement:
         constraints:
           - node.role == manager

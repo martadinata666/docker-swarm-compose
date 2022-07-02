@@ -28,7 +28,7 @@ services:
     volumes:
       - /media/Clouds/InstaSave:/images
       - ./config:/home/debian/pigallery2/data
-      - ./tmp:/tmp
+      - /dev/shm:/tmp
     restart: unless-stopped
     networks:
       - pigallery2

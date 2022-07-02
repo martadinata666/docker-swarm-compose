@@ -12,7 +12,7 @@ services:
       - resume
 
   app:
-    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.4.6
+    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.4.7
     restart: always
     env_file:
       - env.v3

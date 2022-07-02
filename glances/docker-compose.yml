@@ -53,8 +53,8 @@ services:
     image: 192.168.0.2:5050/dedyms/glances:latest
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    environment:
-      - ADDITIONAL_OPT=-d
+#    environment:
+#      - ADDITIONAL_OPT=-d
     ports:
       - "61208:61208"
     networks:

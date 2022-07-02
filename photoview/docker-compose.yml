@@ -1,0 +1,54 @@
+version: "3"
+
+services:
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:10.7
+    restart: always
+    environment:
+      - MARIADB_DATABASE=photoview
+      - MARIADB_USER=photoview
+      - MARIADB_PASSWORD=photoviewpass
+      - MARIADB_ROOT_PASSWORD=photoviewroot
+    volumes:
+      - ./db:/var/lib/mysql
+    networks:
+      - photoview
+
+  photoview:
+    image: viktorstrate/photoview:2
+    restart: always
+    user: 1000:1000
+    ports:
+      - "7000:80"
+    depends_on:
+      - db
+    environment:
+      - PHOTOVIEW_DATABASE_DRIVER=mysql
+      - PHOTOVIEW_MYSQL_URL=photoview:photoviewpass@tcp(db)/photoview
+      - PHOTOVIEW_LISTEN_IP=photoview
+      - PHOTOVIEW_LISTEN_PORT=80
+      - PHOTOVIEW_MEDIA_CACHE=/app/cache
+    networks:
+      - photoview
+      # Optional: If you are using Samba/CIFS-Share and experience problems with "directory not found"
+      # Enable the following Godebug
+      # - GODEBUG=asyncpreemptoff=1
+      
+      
+      # Optional: To enable map related features, you need to create a mapbox token.
+      # A token can be generated for free here https://account.mapbox.com/access-tokens/
+      # It's a good idea to limit the scope of the token to your own domain, to prevent others from using it.
+      # - MAPBOX_TOKEN=<YOUR TOKEN HERE>
+
+    volumes:
+      - ./cache:/app/cache
+
+      # Change This: to the directory where your photos are located on your server.
+      # If the photos are located at `/home/user/photos`, then change this value
+      # to the following: `/home/user/photos:/photos:ro`.
+      # You can mount multiple paths, if your photos are spread across multiple directories.
+      - /media/Clouds/Pictures/dedyms:/photos:ro
+
+networks:
+  photoview:
+    name: photoview

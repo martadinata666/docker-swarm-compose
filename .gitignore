@@ -3,6 +3,8 @@
 diunwebhook.txt
 dockerswarmtoken.txt
 apptest/*
+apaxy/apaxy
+apaxy/html
 */.env
 */.zcache
 resume/env.*
@@ -76,3 +78,6 @@ shinobi
 watchtower/*
 spotify-dashboard/*
 minio/data*
+resume/assets
+nextcloud/custom_apps
+duplicati/idrivee2-aws.key
