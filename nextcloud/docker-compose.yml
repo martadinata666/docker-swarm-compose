@@ -16,6 +16,7 @@ services:
       - nfs-custom_apps:/var/www/html/custom_apps
       - ./ssl/nextcloud.crt:/etc/ssl/certs/ssl-cert-snakeoil.pem
       - ./ssl/nextcloud.key:/etc/ssl/private/ssl-cert-snakeoil.key
+      - ./ldap.conf:/etc/ldap/ldap.conf
     #configs:
     #  - source: user.ini
     #    target: /var/www/html/.user.ini
