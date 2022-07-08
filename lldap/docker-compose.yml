@@ -1,11 +1,14 @@
 version: "3.8"
 services:
   app:
-    image: nitnelave/lldap:latest
+    #image: nitnelave/lldap:latest
+    image: 192.168.0.2:5050/dedyms/lldap:git
     restart: unless-stopped
     ports:
       # For LDAP
       - "3890:3890"
+      # For LDAPS
+      - "6360:6360"
       # For the web front-end
       - "17170:17170"
     volumes:
