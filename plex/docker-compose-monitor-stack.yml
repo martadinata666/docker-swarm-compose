@@ -2,7 +2,7 @@
 version: "3.5"
 services:
   tautulli:
-    image: tautulli/tautulli:v2.9.6
+    image: tautulli/tautulli:v2.10.2
     volumes:
       - nfs-tautulli-config:/config
     environment:
