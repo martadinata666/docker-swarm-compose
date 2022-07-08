@@ -1,0 +1,28 @@
+#docker run \
+#    -v /path/to/root:/srv \
+#    -v /path/filebrowser.db:/database.db \
+#    -v /path/.filebrowser.json:/.filebrowser.json \
+#    -u $(id -u):$(id -g) \
+#    -p 8080:80 \
+#    filebrowser/filebrowser
+
+version: "3.8"
+services:
+  app:
+    image: filebrowser/filebrowser:latest
+    user: 1000:1000
+    volumes:
+      - ./db/database.db:/database.db
+      - /media/WD:/srv/wd
+      - /media/Clouds:/srv/clouds
+      - /media/hgst:/srv/hgst
+      - ./filebrowser.json:/.filebrowser.json
+    ports:
+      - 1100:80
+    networks:
+      - filebrowser
+    restart: always
+
+networks:
+  filebrowser:
+    name: filebrowser
