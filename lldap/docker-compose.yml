@@ -2,7 +2,7 @@ version: "3.8"
 services:
   app:
     #image: nitnelave/lldap:latest
-    image: 192.168.0.2:5050/dedyms/lldap:git
+    image: 192.168.0.2:5050/dedyms/lldap:v0.4.0
     restart: unless-stopped
     ports:
       # For LDAP
