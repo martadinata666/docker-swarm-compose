@@ -2,7 +2,7 @@
 version: '3.5'
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/ympd:git
+    image: 192.168.0.2:5050/dedyms/ympd:v0.23.8
     volumes:
       - mpd-data:/home/debian/mpd
       - nfs-music:/music
