@@ -19,7 +19,9 @@ services:
     networks:
       - resume
     volumes:
-      - nfs-assets:/home/debian/reactiveresume/server/dist/assets
+      - nfs-assets:/home/debian/reactiveresume/server/dist/assets/uploads
+    ports:
+      - 28000:3000
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
@@ -51,7 +53,7 @@ volumes:
     driver_opts:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
-      device: ":/home/dedyms/docker/resume/assets"
+      device: ":/home/dedyms/docker/resume/assets/uploads"
 
 configs:
   nginx.conf:
