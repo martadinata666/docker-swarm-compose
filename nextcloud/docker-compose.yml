@@ -1,11 +1,12 @@
 version: "3.8"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/nextcloud-smb:24.0.2
+    image: 192.168.0.2:5050/dedyms/nextcloud-smb:24.0.3
     environment:
       - TZ=Asia/Jakarta
       - ALLOW_SELF_SIGNED=true
       - NEXTCLOUD_URL=https://web:443
+      - NEXTCLOUD_UPDATE=1
     volumes:
       - htdocs:/var/www/html
       - nfs-cl-pictures:/Pictures
