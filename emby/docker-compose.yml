@@ -36,7 +36,7 @@ services:
       #- PUID=1000
       #- PGID=1000
       - TZ=Asia/Jakarta
-    network_mode: host
+#    network_mode: host
     labels:
       - com.centurylinklabs.watchtower.enable=true
 networks:
