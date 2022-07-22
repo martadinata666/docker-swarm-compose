@@ -44,4 +44,4 @@ volumes:
     driver_opts:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
-      device: ":/home/dedyms/docker/webmail/www/data"
+      device: ":/home/dedyms/docker/webmail/data"
