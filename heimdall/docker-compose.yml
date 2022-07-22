@@ -31,11 +31,16 @@ services:
     image: 192.168.0.2:5050/dedyms/heimdall:latest
     networks:
       - heimdall
+#      - swag
     configs:
       - source: env
         target: /var/www/html/.env
       - source: nginx
         target: /etc/nginx/conf.d/default.conf
+      - source: sslcrt
+        target: /etc/ssl/localcerts/nginx.crt
+      - source: sslkey
+        target: /etc/ssl/localcerts/nginx.key
     volumes:
       - nfs-storage:/var/www/html/storage
       #- nfs-htdocs:/var/www/html
@@ -45,18 +50,24 @@ services:
     environment:
       - APP_NAME=Dashboard
     ports:
-      #- 80:80
+      - 80:80
       - 443:443
 
 networks:
   heimdall:
     name: heimdall
+#  swag:
+#    external: true
 
 configs:
   env:
     file: env
   nginx:
     file: nginx.conf
+  sslcrt:
+    file: sslcloudflare/ddyms.space.pem
+  sslkey:
+    file: sslcloudflare/ddyms.space.key
 
 volumes:
   rd:
