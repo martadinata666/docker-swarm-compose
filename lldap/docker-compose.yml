@@ -14,7 +14,6 @@ services:
     volumes:
       - ./data:/data	
       # Alternatively, you can mount a local folder
-      # - "./lldap_data:/data"
     environment:
       - TZ=Asia/Jakarta
       - LLDAP_JWT_SECRET=thisisjwtsecret
@@ -23,3 +22,9 @@ services:
     deploy:
       placement:
         constraints: [node.role==manager]
+    networks:
+      - lldap
+
+networks:
+  lldap:
+    name: lldap
