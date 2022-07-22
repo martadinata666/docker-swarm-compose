@@ -121,7 +121,7 @@ services:
       #  constraints: [ node.platform.arch == x86_64 ]
 
   prometheus:
-    image: prom/prometheus:v2.35.0
+    image: prom/prometheus:v2.37.0
     user: 1000:1000
     networks:
       - tig
