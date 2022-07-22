@@ -77,7 +77,8 @@ volumes:
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock,rsize=8192,wsize=8192"
       device: ":/media/Clouds/Downloads/Torrents"
   cifs-wd:
+    driver: local
     driver_opts:
-      type: "cifs"
-      o: "addr=192.168.0.2,username=dedyms,password=smb,uid=1000,gid=1000"
-      device: "//192.168.0.2/datashare"
+      type: cifs
+      device: //192.168.0.2/datashare
+      o: "username=dedyms,password=smb,file_mode=0700,dir_mode=0700,vers=3.0"

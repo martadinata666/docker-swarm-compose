@@ -10,7 +10,7 @@ services:
     #  - VUE_APP_JSON_API_SERVER='http://192.168.0.2:3689'
     #  - VUE_APP_WEBSOCKET_SERVER='ws://192.168.0.2:3688'
     volumes:
-      - data:/home/debian/owntone
+      - ./data:/home/debian/owntone
       - ./owntone.conf:/home/debian/owntone/owntone.conf
       - /var/run/dbus:/var/run/dbus
       - nfs-music:/music
