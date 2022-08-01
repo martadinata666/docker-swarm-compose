@@ -33,6 +33,7 @@ services:
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
       - MINIO_PROMETHEUS_URL=http://prometheus:9090
+      - _MINIO_SERVER_DEBUG=on
     #ports:
     #  - 9000:9000
     #  - 9001:9001
