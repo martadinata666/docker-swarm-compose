@@ -13,7 +13,7 @@ services:
       - ./data:/home/debian/owntone
       - ./owntone.conf:/home/debian/owntone/owntone.conf
       - /var/run/dbus:/var/run/dbus
-      - nfs-music:/music
+      - /media/WD/Music:/music
     ports:
       - 3689:3689
       - 3688:3688
