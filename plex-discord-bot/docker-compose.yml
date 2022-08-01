@@ -2,6 +2,7 @@ version: "3.5"
 services:
   app:
     image: 192.168.0.2:5050/dedyms/plex-discord-bot:git
+    restart: always
     configs:
       - source: plex.js
         target: /home/debian/plex-discord-bot/config/plex.js
@@ -9,6 +10,10 @@ services:
         target: /home/debian/plex-discord-bot/config/keys.js
       - source: config.js
         target: /home/debian/plex-discord-bot/config/config.js
+    deploy:
+      placement:
+         constraints: [node.hostname==homelab]
+        
  
 configs:
   keys.js:

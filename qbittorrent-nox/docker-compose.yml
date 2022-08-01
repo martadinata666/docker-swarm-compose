@@ -17,6 +17,7 @@ services:
     #  - 6881:6881/tcp
     #  - 6881:6881/udp
       - 8090:8090
+    restart: unless-stopped
     networks:
       - qbittorrent
     #  - swag
