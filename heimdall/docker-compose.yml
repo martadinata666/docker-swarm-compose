@@ -65,10 +65,9 @@ configs:
   nginx:
     file: nginx.conf
   sslcrt:
-    file: sslcloudflare/ddyms.space.pem
+    file: ssl/homelab.crt
   sslkey:
-    file: sslcloudflare/ddyms.space.key
-
+    file: ssl/homelab.key
 volumes:
   rd:
   nfs-db:
