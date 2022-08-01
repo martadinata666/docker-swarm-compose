@@ -17,7 +17,7 @@ services:
       - 8097:8096
     volumes:
       - ./config:/config
-      - ./cache:/cache
+      - cache:/cache
       - /media/WD/Videos:/Videos:rw
       - ow_videos:/Videos2:rw
       - /media/Clouds/Porn:/Porn:rw
@@ -41,6 +41,7 @@ services:
       - com.centurylinklabs.watchtower.enable=true
     restart: unless-stopped
 volumes:
+  cache:
   ow_videos:
     external: true
   #transcodes:
