@@ -27,8 +27,8 @@ services:
     restart: unless-stopped
     networks:
       - nextcloud
-      - minio
-    #  - swag
+#      - minio
+      - lldap
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
@@ -137,7 +137,7 @@ networks:
   nextcloud:
     name: nextcloud
     driver: overlay
-  minio:
+  lldap:
     external: true
 
 #configs:
