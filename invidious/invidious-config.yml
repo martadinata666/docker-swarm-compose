@@ -334,7 +334,7 @@ channel_refresh_interval: 120m
 ## Accepted values: true, false
 ## Default: false
 ##
-full_refresh: false
+full_refresh: true
 
 ##
 ## Number of threads to use when updating RSS feeds.
@@ -745,7 +745,7 @@ default_user_preferences:
   ##    720p, 480p, 360p, 240p, 144p, worst
   ## Default: auto
   ##
-  quality_dash: 360p
+  quality_dash: 720p
 
   ##
   ## Default video playback speed.
@@ -761,7 +761,7 @@ default_user_preferences:
   ## Accepted values: 0-100
   ## Default: 100
   ##
-  volume: 30
+  volume: 50
 
   ##
   ## Allow 360° videos to be played.
