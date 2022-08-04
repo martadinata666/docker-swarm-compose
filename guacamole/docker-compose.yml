@@ -10,6 +10,7 @@ services:
      deploy:
        placement:
          constraints: [ node.role == manager ]
+
    guacamole:
      image: martadinata666/guacamole:git
      environment:
@@ -17,9 +18,10 @@ services:
        - POSTGRES_USER=guacamole
        - POSTGRES_DATABASE=guacamole
        - POSTGRES_PASSWORD=guacamolepass
+       - WEBAPP_CONTEXT=ROOT
        # REPLACE POSTGRES with MYSQL
        - GUACD_HOSTNAME=guacd
-       - LDAP_HOSTNAME=192.168.0.2
+       - LDAP_HOSTNAME=lldap_app
        - LDAP_PORT=3890
        - LDAP_ENCRYPTION_METHOD=none
        - LDAP_SEARCH_BIND_DN=uid=readonly,ou=people,dc=example,dc=com
@@ -37,9 +39,10 @@ services:
      # mysql -u username -p database_name < /path/to/file.sql
      networks:
        - guacamole
+       - lldap
      deploy:
        placement:
-         constraints: [ node.hostname == rpi4 ]
+         constraints: [ node.hostname == homelab ]
    db:
      image: postgres:13
      environment:
@@ -72,7 +75,9 @@ services:
 networks:
   guacamole:
     name: guacamole
+  lldap:
+    external: true
 
 configs:
   apache.conf:
-    file: ./apache.conf
+    file: ./apache-root.conf
