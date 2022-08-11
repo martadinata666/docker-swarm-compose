@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  app:
+    image: ghcr.io/enchant97/hasty-paste:1
+    user: 1000:1000
+    restart: always
+    environment:
+      - ENABLE_PUBLIC_LIST=True
+      - WORKERS=2
+    volumes:
+      - ./data:/app/data
+    ports:
+      - 1300:8000
+    networks:
+      - paste
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+networks:
+  paste:
+    name: paste
