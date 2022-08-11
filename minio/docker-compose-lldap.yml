@@ -1,0 +1,57 @@
+version: "3.8"
+services:
+  lldap:
+    #image: nitnelave/lldap:latest
+    image: 192.168.0.2:5050/dedyms/lldap:v0.4.0
+    restart: unless-stopped
+    ports:
+      # For LDAP
+      - "3899:3890"
+      # For LDAPS
+      #- "6360:6360"
+      # For the web front-end
+      - "17175:17170"
+    volumes:
+      - ./lldap-data:/data
+      # Alternatively, you can mount a local folder
+    environment:
+      - TZ=Asia/Jakarta
+      - LLDAP_JWT_SECRET=thisisjwtsecrethaha
+      - LLDAP_LDAP_USER_PASS=ldapadminpass
+      - LLDAP_LDAP_BASE_DN=dc=example,dc=com
+    networks:
+      - apptest
+
+  s3:
+    image: quay.io/minio/minio:latest
+    command: server /data --console-address ":9003"
+    #restart: always
+    user: 1000:1000
+    environment:
+      - TZ=Asia/Jakarta
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+      - MINIO_PROMETHEUS_URL=http://prometheus:9090
+      - _MINIO_SERVER_DEBUG=on
+#      - MINIO_IDENTITY_LDAP_USERNAME_FORMAT=cn=%s,ou=people,dc=example,dc=com
+      - MINIO_IDENTITY_LDAP_SERVER_ADDR=192.168.0.2:3899
+      - MINIO_IDENTITY_LDAP_LOOKUP_BIND_DN=cn=admin,ou=people,dc=example,dc=com
+      - MINIO_IDENTITY_LDAP_USER_DN_SEARCH_BASE_DN=ou=people,dc=example,dc=com
+      - MINIO_IDENTITY_LDAP_USER_DN_SEARCH_FILTER=(uid=%s)
+      - MINIO_IDENTITY_LDAP_LOOKUP_BIND_PASSWORD=ldapadminpass
+      - MINIO_IDENTITY_LDAP_SERVER_INSECURE=on
+#      - MINIO_IDENTITY_LDAP_GROUP_SEARCH_FILTER=(&(objectClass=group)(member=%d))
+#      - MINIO_IDENTITY_LDAP_GROUP_SEARCH_BASE_DN=ou=lldap_admin,dc=example,dc=com
+    ports:
+      - 9002:9000
+      - 9003:9003
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./minio-data:/data
+    networks:
+      - apptest
+
+
+networks:
+  apptest:
+    name: apptest
