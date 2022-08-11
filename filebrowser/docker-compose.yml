@@ -12,9 +12,10 @@ services:
     image: filebrowser/filebrowser:latest
     user: 1000:1000
     volumes:
-      - ./db/database.db:/database.db
+      - ./db:/db
       - /media/WD:/srv/wd
       - /media/Clouds:/srv/clouds
+      - /home/dedyms/docker/shinobi/videos:/srv/cctv
       - /media/hgst:/srv/hgst
       - ./filebrowser.json:/.filebrowser.json
     ports:
@@ -22,6 +23,8 @@ services:
     networks:
       - filebrowser
     restart: always
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 
 networks:
   filebrowser:
