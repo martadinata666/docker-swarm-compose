@@ -1,4 +1,4 @@
-version: "3.5"
+version: "3.8"
 services:
   app:
     image: 192.168.0.2:5050/dedyms/unmanic:latest
@@ -8,7 +8,7 @@ services:
        - render
     volumes:
        - ./config:/home/debian/.unmanic
-       - cifs-wd:/library
+       - wd:/library
        - /dev/shm:/tmp/unmanic
     devices:
        - /dev/dri:/dev/dri
@@ -44,8 +44,8 @@ networks:
     name: unmanic
 
 volumes:
-  cifs-wd:
+  wd:
     driver_opts:
       type: "cifs"
-      o: "addr=192.168.0.2,username=dedyms,password=smb,uid=1000,gid=1000"
+      o: "addr=192.168.0.2,username=dedyms,password=smb,uid=1000,gid=1000,vers=3.0"
       device: "//192.168.0.2/datashare/Videos/MV"
