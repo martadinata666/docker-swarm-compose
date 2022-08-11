@@ -17,6 +17,7 @@ services:
       - 8097:8096
     volumes:
       - ./config:/config
+      - ./config/subtitle:/Subtitle Edit/Dictionaries
       - cache:/cache
       - /media/WD/Videos:/Videos:rw
       - ow_videos:/Videos2:rw
@@ -30,16 +31,16 @@ services:
     #deploy:
     #  placement:
     #    constrainst: [ node.name == homeworker0 ]
-  client:
-    image: 192.168.0.2:5050/dedyms/jellyfin-vue:static
-    container_name: jellyfin_client
-    ports:
-      - 8098:80
-    networks:
-      - jellyfin
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
-    restart: unless-stopped
+#  client:
+#    image: 192.168.0.2:5050/dedyms/jellyfin-vue:static
+#    container_name: jellyfin_client
+#    ports:
+#      - 8098:80
+#    networks:
+#      - jellyfin
+#    labels:
+#      - com.centurylinklabs.watchtower.enable=true
+#    restart: unless-stopped
 volumes:
   cache:
   ow_videos:
