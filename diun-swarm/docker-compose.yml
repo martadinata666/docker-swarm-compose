@@ -8,6 +8,7 @@ services:
       - ./data/image.yml:/image.yml:ro
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /etc/localtime:/etc/localtime:ro
+      - /home/dedyms/.docker:/root/.docker
     restart: always
     deploy:
       placement:
