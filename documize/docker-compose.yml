@@ -2,14 +2,14 @@
 version: "3.5"
 services:
   db:
-    image: 192.168.0.2:5050/dedyms/mariadb:10.6
-    user: 1000:1000
+    image: 192.168.0.2:5050/dedyms/mariadb:10.7
     environment:
       - MARIADB_ROOT_PASSWORD=documizeroot
       - TZ=Asia/Jakarta
       - MARIADB_DATABASE=documize
       - MARIADB_USER=documize
       - MARIADB_PASSWORD=documize
+      - MARIADB_AUTO_UPGRADE=0
     volumes:
       - nfs-db:/var/lib/mysql
     restart: unless-stopped
