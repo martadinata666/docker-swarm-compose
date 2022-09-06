@@ -5,7 +5,7 @@ services:
     environment:
       - TZ=Asia/Jakarta
       - ALLOW_SELF_SIGNED=true
-      - NEXTCLOUD_URL=https://web:443
+      - NEXTCLOUD_URL=https://nextcloud.ddyms.space
       - NEXTCLOUD_UPDATE=1
     volumes:
       - htdocs:/var/www/html
@@ -22,12 +22,12 @@ services:
     #  - source: user.ini
     #    target: /var/www/html/.user.ini
     ports:
-    #  - 8081:80
+      - 8081:80
       - 8080:443
     restart: unless-stopped
     networks:
       - nextcloud
-#      - minio
+      - minio
       - lldap
     deploy:
       placement:
@@ -108,7 +108,7 @@ volumes:
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/media/Clouds/Pictures/dedyms"
   nfs-cl-instasave:
-    driver_opts:  
+    driver_opts:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/media/Clouds/InstaSave"
@@ -136,8 +136,9 @@ volumes:
 networks:
   nextcloud:
     name: nextcloud
-    driver: overlay
   lldap:
+    external: true
+  minio:
     external: true
 
 #configs:
