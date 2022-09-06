@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/plex-discord-bot:latest
+    image: 192.168.0.2:5050/dedyms/plex-discord-bot:v2.4.3
     restart: always
     configs:
       - source: plex.js
@@ -13,8 +13,7 @@ services:
     deploy:
       placement:
          constraints: [node.hostname==homelab]
-        
- 
+
 configs:
   keys.js:
     file: ./config/keys.js
