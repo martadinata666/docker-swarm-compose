@@ -48,6 +48,8 @@ services:
       retries: 2
     depends_on:
       - invidious-db
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
 
   invidious-db:
     image: docker.io/library/postgres:13
