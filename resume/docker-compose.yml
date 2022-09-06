@@ -1,30 +1,23 @@
 version: "3.8"
 services:
-  proxy:
-    image: 192.168.0.2:5050/dedyms/nginx:mainline
-    ports:
-      - 27000:80
-    configs:
-      - source: nginx.conf
-        target: /etc/nginx/conf.d/default.conf
-    restart: always
-    networks:
-      - resume
-
   app:
-    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.6.2
+    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.6.5
 #    command: bash
 #    tty: true
 #    stdin_open: true
     restart: always
+    environment:
+      - TZ=Asia/Jakarta
     env_file:
       - env.v3
     networks:
       - resume
     volumes:
-      - nfs-assets:/home/debian/reactiveresume/server/dist/assets/uploads
+      - nfs-uploads:/home/debian/reactiveresume/server/dist/assets/uploads
+      - nfs-exports:/home/debian/reactiveresume/server/dist/assets/exports
     ports:
-      - 28000:3000
+      - 3000:3000
+      - 3100:3100
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
@@ -48,15 +41,18 @@ services:
 networks:
   resume:
     name: resume
-  minio:
-    external: true
 
 volumes:
-  nfs-assets:
+  nfs-uploads:
     driver_opts:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/home/dedyms/docker/resume/assets/uploads"
+  nfs-exports:
+    driver_opts:
+      type: "nfs4"
+      o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
+      device: ":/home/dedyms/docker/resume/assets/exports"
 
 configs:
   nginx.conf:
