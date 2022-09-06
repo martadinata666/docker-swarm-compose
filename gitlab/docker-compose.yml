@@ -17,7 +17,7 @@ services:
        placement:
          constraints: [ node.role == manager ]
   web:
-    image: gitlab/gitlab-ee:15.3.1-ee.0
+    image: gitlab/gitlab-ee:15.3.2-ee.0
     ports:
       - "2022:22"
       - "10000:10000"
@@ -39,19 +39,22 @@ services:
     networks:
       - gitlab
       - lldap
+      - minio
 
   runner:
     image: 192.168.0.2:5050/dedyms/gitlab-runner:v15.3.0
     volumes:
       - runner_config:/etc/gitlab-runner
+      - /media/VM/gitlab-builds:/builds
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints: [ node.hostname == homelab ]
-    networks: 
+    networks:
       - gitlab
+      - minio
 
 secrets:
   gitlab_root_password:
@@ -61,6 +64,8 @@ networks:
   gitlab:
     name: gitlab
   lldap:
+   external: true
+  minio:
    external: true
 
 volumes:

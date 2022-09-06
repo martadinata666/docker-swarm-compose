@@ -3,6 +3,8 @@ version: "3.5"
 services:
    guacd:
      image: martadinata666/guacd:git
+     environment:
+       - GUACD_LOG_LEVEL=debug
      networks:
        - guacamole
      #ports:

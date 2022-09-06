@@ -3,45 +3,51 @@ version: "3.5"
 services:
   db:
     image: 192.168.0.2:5050/dedyms/mariadb:10.7
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
     environment:
       - MARIADB_ROOT_PASSWORD=documizeroot
       - TZ=Asia/Jakarta
       - MARIADB_DATABASE=documize
-      - MARIADB_USER=documize
-      - MARIADB_PASSWORD=documize
-      - MARIADB_AUTO_UPGRADE=0
+      - MARIADB_USER=documizeuser
+      - MARIADB_PASSWORD=documizepass
+      - MARIADB_AUTO_UPGRADE=1
     volumes:
-      - nfs-db:/var/lib/mysql
+      - ./db:/var/lib/mysql
     restart: unless-stopped
     networks:
       - documize
     deploy:
       placement:
         constraints: [ node.role == manager ]
+
   app:
-    image: 192.168.0.2:5050/dedyms/documize:latest
-    environment:
-      - TZ=Asia/Jakarta
-    volumes:
-      - nfs-config:/home/debian/documize
-    ports:
+     image: 192.168.0.2:5050/dedyms/documize:plus
+     depends_on:
+       - db
+     volumes:
+       - ./data:/home/debian/documize
+     ports:
       - 5001:5001
-    networks:
+     restart: always
+     networks:
       - documize
-    depends_on:
+# w     - lldap
+     depends_on:
       - db
-    deploy:
-      placement:
-        constraints: [ node.hostname == homelab ]
-  nginx:
-    image: 192.168.0.2:5050/dedyms/nginx:mainline
-    ports:
-      - 5002:443
-    configs:
-      - source: nginx.conf
-        target: /etc/nginx/conf.d/default.conf
-    networks:
-      - documize
+     deploy:
+       placement:
+         constraints: [ node.hostname == homelab ]
+#  nginx:
+#    image: 192.168.0.2:5050/dedyms/nginx:mainline
+#    ports:
+#      - 5002:443
+#    configs:
+#      - source: nginx.conf
+#        target: /etc/nginx/conf.d/default.conf
+#    networks:
+#      - documize
+#    restart: always
+
   #apache:
   #  image: 192.168.0.2:5050/dedyms/apache:fcgid
   #  ports:
@@ -55,6 +61,8 @@ services:
 networks:
   documize:
     name: documize
+  lldap:
+    external: true
 
 volumes:
   nfs-config:
