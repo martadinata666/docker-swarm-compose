@@ -1,11 +1,11 @@
 upstream:
-#  rewrite:
-#    lan: localdomain
   default:
-    - 46.182.19.48
-    - 80.241.218.68
-    - tcp-tls:fdns1.dismail.de:853
-    - https://dns.digitale-gesellschaft.ch/dns-query
+    - https://dns.nextdns.io/b71d34
+    - b71d34.dns.nextdns.io
+    - 2a07:a8c0::b7:1d34
+    - 45.90.28.186
+    - 1.1.1.1
+    - 9.9.9.9
     - 192.168.0.1
 
 customDNS:
@@ -36,7 +36,7 @@ blocking:
       - https://raw.githubusercontent.com/mitchellkrogza/Stop.Google.Analytics.Ghost.Spam.HOWTO/master/output/domains/INACTIVE/list
       - https://raw.githubusercontent.com/nickspaargaren/no-google/master/categories/analytics.txt
       - https://raw.githubusercontent.com/nickspaargaren/no-google/master/categories/analyticsparsed
-      - https://raw.githubusercontent.com/kowith337/PersonalFilterListCollection/master/hosts/hosts_facebook0.txt
+#      - https://raw.githubusercontent.com/kowith337/PersonalFilterListCollection/master/hosts/hosts_facebook0.txt
       - https://raw.githubusercontent.com/anudeepND/blacklist/master/facebook.txt
       - https://raw.githubusercontent.com/r-a-y/mobile-hosts/master/AdguardMobileSpyware.txt
       - https://raw.githubusercontent.com/XionKzn/PiHole-Lists/master/PiHole_HOSTS_Spyware.txt
@@ -94,6 +94,9 @@ blocking:
         (\.|^)microsoft\.com$
         (\.|^)xiaomi\.com$
         (\.|^)miui\.com$
+        /facebook/
+        /fbcn/
+        /instagram/
 
 
   clientGroupsBlock:
@@ -104,3 +107,12 @@ httpPort: 4000
 
 caching:
   prefetching: true
+
+prometheus:
+  enable: true
+  path: /metrics
+
+queryLog:
+  type: mysql
+  target: blockyuser:blockypass@tcp(192.168.0.2:3310)/blocky?charset=utf8mb4&parseTime=True&loc=Local
+  logRetentionDays: 30
