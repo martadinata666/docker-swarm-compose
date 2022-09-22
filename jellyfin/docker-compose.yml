@@ -23,7 +23,7 @@ services:
       - /media/WD/Videos:/Videos:rw
       - ow_videos:/Videos2:rw
       - /media/Clouds/Porn:/Porn:rw
-      - ./transcodes:/config/transcodes
+      - transcodes:/config/transcodes
     networks:
       - jellyfin
     labels:
@@ -32,31 +32,25 @@ services:
     #deploy:
     #  placement:
     #    constrainst: [ node.name == homeworker0 ]
-#  client:
-#    image: 192.168.0.2:5050/dedyms/jellyfin-vue:static
-#    container_name: jellyfin_client
-#    ports:
-#      - 8098:80
-#    networks:
-#      - jellyfin
-#    labels:
-#      - com.centurylinklabs.watchtower.enable=true
-#    restart: unless-stopped
+
+  client:
+    image: 192.168.0.2:5050/dedyms/jellyfin-vue:static
+#    user: 2000:2000
+    container_name: jellyfin_client
+    ports:
+      - 8098:80
+    networks:
+      - jellyfin
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    restart: unless-stopped
+
 volumes:
   cache:
   ow_videos:
     external: true
-  #transcodes:
-  #nfs-data:
-  #  driver_opts:
-  #    type: "nfs4"
-  #    o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
-  #    device: ":/home/dedyms/docker/jellyfin/data"
-  #nfs-cache:
-  #  driver_opts:
-  #    type: "nfs4"
-  #    o: "addr=192.168.0.3,rw,noatime,timeo=14,nolock"
-  #    device: ":/home/dedyms/docker/jellyfin/cache"
+  transcodes:
+
 networks:
   jellyfin:
     name: jellyfin

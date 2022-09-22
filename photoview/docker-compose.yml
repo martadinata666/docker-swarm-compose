@@ -10,6 +10,9 @@ services:
       - MARIADB_ROOT_PASSWORD=photoviewroot
     volumes:
       - ./db:/var/lib/mysql
+    deploy:
+      placement:
+        constraints: [node.hostname==homelab]
     networks:
       - photoview
 

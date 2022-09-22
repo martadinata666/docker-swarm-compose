@@ -52,7 +52,7 @@ services:
       - "17170:17170"
     volumes:
       - ./data:/data
-      - ./init:/init
+#      - ./init:/init
       # Alternatively, you can mount a local folder
     environment:
       - TZ=Asia/Jakarta
