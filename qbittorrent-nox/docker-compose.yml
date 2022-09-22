@@ -1,5 +1,5 @@
 version: "3.5"
-services:  
+services:
   app:
     image: 192.168.0.2:5050/dedyms/qbittorrent-nox:latest
     #entrypoint: /home/debian/.local/bin/qbittorrent-nox --webui-port=8090 --profile=/home/debian/qbittorrent
@@ -10,12 +10,12 @@ services:
       - TZ=Asia/Jakarta
       - WEBPORT=8090
     volumes:
-      - nfs-config:/home/debian/qbittorrent
+      - ./config:/home/debian/qbittorrent
       - nfs-downloads:/home/debian/downloads
       - cifs-wd:/home/debian/WD
     ports:
-    #  - 6881:6881/tcp
-    #  - 6881:6881/udp
+      - 6881:6881/tcp
+      - 6881:6881/udp
       - 8090:8090
     restart: unless-stopped
     networks:
@@ -25,53 +25,16 @@ services:
       placement:
         constraints: [node.hostname == homelab]
 
-#  flood:
-#    image: jesec/flood:4.7.0
-#    restart: always
-#    depends_on:
-#      - app
-#    user: 1000:1000
-#    ports:
-#      - 8091:3000
-#    environment:
-#      - HOME=/config
-#    volumes:
-#      - nfs-flood-config:/config
-#      - /etc/localtime:/etc/localtime:ro
-#      - nfs-config:/home/debian/qbittorrent/qBittorrent
-#      - nfs-downloads:/home/debian/qbittorrent/downloads
-#      - cifs-wd:/home/debian/WD
-#    networks:
-#      - qbittorrent
-#    deploy:
-#      placement:
-#        constraints: [node.hostname == homelab]
-    #command:
-    #  - --auth=none
-    #  - --qburl=http://app:8090
-    #  - --qbuser=admin
-    #  - --qbpass=adminadmin
-    #  - --rundir=/home/debian/qbittorrent
-
 networks:
   qbittorrent:
     name: qbittorrent
-  swag:
-    external: true
 
 volumes:
-  config:
-  flood_config:
   nfs-config:
     driver_opts:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
       device: ":/home/dedyms/docker/qbittorrent-nox/config"
-  nfs-flood-config:
-    driver_opts:
-      type: "nfs4"
-      o: "addr=192.168.0.2,rw,noatime,rsize=8192,wsize=8192,timeo=14,nolock"
-      device: ":/home/dedyms/docker/qbittorrent-nox/flood"
   nfs-downloads:
     driver_opts:
       type: "nfs4"
@@ -82,4 +45,4 @@ volumes:
     driver_opts:
       type: cifs
       device: //192.168.0.2/datashare
-      o: "username=dedyms,password=smb,file_mode=0700,dir_mode=0700,vers=3.0"
+      o: "username=dedyms,password=smb,file_mode=0700,dir_mode=0700,uid=1000,gid=1000,vers=3.0"
