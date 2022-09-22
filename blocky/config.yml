@@ -1,3 +1,4 @@
+bootstrapDns: 8.8.8.8
 upstream:
   default:
     - https://dns.nextdns.io/b71d34
