@@ -24,6 +24,7 @@ services:
    volumes:
      - nfs-htdocs:/var/www/html
      - ./yacron.yml:/home/debian/supervisor/yacron.yml
+     - ./php.ini:/usr/local/etc/php/conf.d/php-timezone.ini
    #configs:
    #  - source: apache.conf
    #    target: /etc/apache2/sites-available/000-default-ssl.conf

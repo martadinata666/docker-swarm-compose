@@ -47,7 +47,7 @@ services:
       - minio
 
   prometheus:
-    image: prom/prometheus:v2.37.0
+    image: prom/prometheus:v2.37.1
     user: 1000:1000
     networks:
       - minio
