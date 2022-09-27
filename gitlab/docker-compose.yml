@@ -39,7 +39,6 @@ services:
     networks:
       - gitlab
       - lldap
-      - minio
 
   runner:
     image: 192.168.0.2:5050/dedyms/gitlab-runner:v15.4.0
@@ -54,7 +53,6 @@ services:
         constraints: [ node.hostname == homelab ]
     networks:
       - gitlab
-      - minio
 
 secrets:
   gitlab_root_password:
@@ -64,9 +62,7 @@ networks:
   gitlab:
     name: gitlab
   lldap:
-   external: true
-  minio:
-   external: true
+    external: true
 
 volumes:
   runner_config:
