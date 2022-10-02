@@ -1,0 +1,9 @@
+version: "3.9"
+services:
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    command: tunnel run
+    environment:
+      - TUNNEL_TOKEN=sometoken
+    deploy:
+      mode: global
