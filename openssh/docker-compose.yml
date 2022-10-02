@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/openssh:latest
+#    image: openssh:local
+#    command: mkdir -p /home/debian/.ssh && ssh-keygen -t rsa -N '' -f ~/.ssh/id_rsa <<< y && /usr/local/sbin/sshd -f /home/debian/sshd_config -D -e -p 2022
+#    command: bash
+#    stdin_open: true
+#    tty: true
+    networks:
+      - openssh
+    ports:
+      - 2023:2222
+
+networks:
+  openssh:
+    name: openssh
