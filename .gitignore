@@ -84,3 +84,5 @@ duplicati/idrivee2-aws.key
 gitlab/bu
 heimdall/sslcloudflare
 ssl/
+ympd/conf
+cloudflared/docker-compose.yml
