@@ -21,7 +21,7 @@ services:
         constraints: [ node.role == manager ]
 
   app:
-     image: 192.168.0.2:5050/dedyms/documize:plus
+     image: 192.168.0.2:5050/dedyms/documize:v5.2.2-plus
      depends_on:
        - db
      volumes:

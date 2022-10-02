@@ -3,7 +3,7 @@ services:
   app:
     image: martadinata666/python-http-server:latest
     volumes:
-      - /media/WD:/data
+      - /media/WD/static:/data
     ports:
       - 25000:8000
     deploy:

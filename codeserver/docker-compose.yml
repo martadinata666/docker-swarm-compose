@@ -1,19 +1,19 @@
 ---
 version: "3.5"
 services:
-  web:
-    image: martadinata666/nginx:xdebug
-    volumes:
-      - ./htdocs:/var/www/html
-      - ./xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-      - ./error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
-    ports:
-      - 20000:80
-    networks:
-      - code-server
-    deploy:
-      placement:
-        constraints: [ node.hostname == homelab  ]
+#  web:
+#    image: martadinata666/nginx:xdebug
+#    volumes:
+#      - ./htdocs:/var/www/html
+#      - ./xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
+#      - ./error_reporting.ini:/usr/local/etc/php/conf.d/error_reporting.ini
+#    ports:
+#      - 20000:80
+#    networks:
+#      - code-server
+#    deploy:
+#      placement:
+#        constraints: [ node.hostname == homelab  ]
   app:
     image: 192.168.0.2:5050/dedyms/code-server:latest
     volumes:

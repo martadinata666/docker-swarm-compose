@@ -13,7 +13,7 @@ services:
       - ./db:/var/lib/mysql
     restart: unless-stopped
     networks:
-      - onlyoffice
+      - documentserver
     deploy:
       placement:
         constraints: [ node.role == manager ]
@@ -26,13 +26,13 @@ services:
       - rd:/data
     restart: unless-stopped
     networks:
-      - onlyoffice
+      - documentserver
     deploy:
       placement:
         constraints: [node.hostname == homelab ]
 
   app:
-    image: onlyoffice/documentserver:7.1
+    image: onlyoffice/documentserver:7.2
     restart: unless-stopped
     environment:
       - TZ=Asia/Jakarta
@@ -57,7 +57,7 @@ services:
       - ./data:/var/www/onlyoffice/Data
       - ds_lib:/var/lib/onlyoffice
     networks:
-      - onlyoffice
+      - documentserver
     deploy:
       placement:
         constraints: [node.hostname == homelab]
@@ -68,7 +68,7 @@ services:
       - source: apache.conf
         target: /etc/apache2/sites-available/000-default-ssl.conf
     networks:
-      - onlyoffice
+      - documentserver
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
@@ -82,8 +82,8 @@ volumes:
   rd:
 
 networks:
-  onlyoffice:
-    name: onlyoffice
+  documentserver:
+    name: documentserver
 
 configs:
   apache.conf:
