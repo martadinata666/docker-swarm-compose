@@ -1,44 +1,5 @@
 version: "3.8"
 services:
-#  db1:
-#    image: 192.168.0.2:5050/dedyms/mariadb:10.7
-#    environment:
-#      - MARIADB_ROOT_PASSWORD=lldaproot
-#      - TZ=Asia/Jakarta
-#      - MARIADB_DATABASE=lldap
-#      - MARIADB_USER=lldapuser
-#      - MARIADB_PASSWORD=lldappass
-#      - MARIADB_INITDB_SKIP_TZINFO=1
-#    volumes:
-#      - ./db1:/var/lib/mysql
-#      - ./init:/init
-#    restart: unless-stopped
-#    networks:
-#      - lldap
-#    deploy:
-#      placement:
-#        constraints: [ node.role == manager ]
-
-#  db:
-#    image: postgres:13
-#    user: 1000:1000
-#    networks:
-#      - lldap
-#    restart: unless-stopped
-#    volumes:
-#      - ./db:/var/lib/postgresql/data
-#      - ./init:/init
-#    environment:
-#      POSTGRES_DB: lldap
-#      POSTGRES_USER: lldap
-#      POSTGRES_PASSWORD: lldappass
-#    healthcheck:
-#      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
-#    deploy:
-#      placement:
-#        constraints: [node.role==manager]
-
-
   app:
     #image: nitnelave/lldap:latest
     image: 192.168.0.2:5050/dedyms/lldap:v0.4.0
@@ -52,8 +13,6 @@ services:
       - "17170:17170"
     volumes:
       - ./data:/data
-#      - ./init:/init
-      # Alternatively, you can mount a local folder
     environment:
       - TZ=Asia/Jakarta
       - LLDAP_JWT_SECRET=thisisjwtsecret

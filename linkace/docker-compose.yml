@@ -2,6 +2,7 @@ version: "3.5"
 services:
   rd:
    image: redis:alpine
+   #image: dph5199278/dragonflydb:latest
    environment:
      - TZ=Asia/Jakarta
    volumes:

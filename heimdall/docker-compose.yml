@@ -49,6 +49,7 @@ services:
         constraints: [ node.role == manager ]
     environment:
       - APP_NAME=Dashboard
+      - TZ=Asia/Jakarta
     ports:
       - 80:80
       - 443:443
