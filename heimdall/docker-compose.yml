@@ -15,23 +15,25 @@ services:
      deploy:
        placement:
          constraints: [ node.role == manager ]
+
   rd:
-    image: redis:alpine
+    #image: redis:alpine
+    image: dph5199278/dragonflydb:latest
     environment:
       - TZ=Asia/Jakarta
     volumes:
-      - rd:/data
+      - rd-db:/data
     restart: unless-stopped
     networks:
       - heimdall
     deploy:
       placement:
         constraints: [node.hostname == homelab ]
+
   web:
     image: 192.168.0.2:5050/dedyms/heimdall:latest
     networks:
       - heimdall
-#      - swag
     configs:
       - source: env
         target: /var/www/html/.env
@@ -45,7 +47,7 @@ services:
       - nfs-storage:/var/www/html/storage
       #- nfs-htdocs:/var/www/html
     deploy:
-      placement: 
+      placement:
         constraints: [ node.role == manager ]
     environment:
       - APP_NAME=Dashboard
@@ -71,6 +73,7 @@ configs:
     file: ssl/homelab.key
 volumes:
   rd:
+  rd-db:
   nfs-db:
     driver_opts:
       type: "nfs4"

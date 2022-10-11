@@ -19,11 +19,12 @@ services:
         constraints: [ node.role == manager ]
 
   redis:
-    image: redis:alpine
+    #image: redis:alpine
+    image: dph5199278/dragonflydb:latest
     environment:
       - TZ=Asia/Jakarta
     volumes:
-      - rd:/data
+      - rd-data:/data
     restart: unless-stopped
     networks:
       - documentserver
@@ -80,6 +81,7 @@ volumes:
   ds_data:
   ds_lib:
   rd:
+  rd-data:
 
 networks:
   documentserver:
