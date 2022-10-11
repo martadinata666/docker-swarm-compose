@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.6.6
+    image: 192.168.0.2:5050/dedyms/reactive-resume:v3.6.7
 #    command: bash
 #    tty: true
 #    stdin_open: true

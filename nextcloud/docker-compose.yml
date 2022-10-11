@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/nextcloud-smb:24.0.5
+    image: 192.168.0.2:5050/dedyms/nextcloud-smb:24.0.6
     environment:
       - TZ=Asia/Jakarta
       - ALLOW_SELF_SIGNED=true
@@ -86,10 +86,12 @@ services:
   rd:
     image: redis:alpine
     #image: dph5199278/dragonflydb:latest
+    #command: dragonfly --logtostderr --memcache_port=11211
     environment:
       - TZ=Asia/Jakarta
     volumes:
       - rd:/data
+#      - rd-data:/data
     restart: unless-stopped
     networks:
       - nextcloud
@@ -100,6 +102,7 @@ services:
 volumes:
   htdocs:
   rd:
+  rd-data:
   db:
 #  ds_logs:
 #  ds_data:
