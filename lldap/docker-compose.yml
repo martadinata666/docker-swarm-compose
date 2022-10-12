@@ -2,20 +2,20 @@ version: "3.8"
 services:
   app:
     #image: nitnelave/lldap:latest
-    image: 192.168.0.2:5050/dedyms/lldap:v0.4.0
+    image: 192.168.0.2:5050/dedyms/lldap:v0.4.1
     restart: unless-stopped
     ports:
       # For LDAP
-      - "3890:3890"
+      - 3890:3890
       # For LDAPS
-      - "6360:6360"
+      - 6360:6360
       # For the web front-end
-      - "17170:17170"
+#      - 17170:17170
     volumes:
       - ./data:/data
     environment:
       - TZ=Asia/Jakarta
-      - LLDAP_JWT_SECRET=thisisjwtsecret
+      - LLDAP_JWT_SECRET=justsomejwtupdate
       - LLDAP_LDAP_USER_PASS=ldappass
       - LLDAP_LDAP_BASE_DN=dc=example,dc=com
     deploy:
@@ -24,6 +24,24 @@ services:
     networks:
       - lldap
 
+  apache:
+    image: 192.168.0.2:5050/dedyms/apache:fcgid
+    configs:
+      - source: apache.conf
+        target: /etc/apache2/sites-enabled/000-default-ssl.conf
+    ports:
+      - 17170:443
+    networks:
+      - lldap
+    deploy:
+      placement:
+        constraints: [ node.role == manager ]
+
+
 networks:
   lldap:
     name: lldap
+
+configs:
+  apache.conf:
+    file: ./apache.conf
