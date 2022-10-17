@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  app:
+    image: lissy93/dashy:latest
+    volumes:
+      - /portainer/Files/AppData/Config/Dashy/local-conf.yml:/app/public/conf.yml
+    ports:
+      - 9180:80

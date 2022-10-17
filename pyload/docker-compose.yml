@@ -28,7 +28,7 @@ volumes:
       type: "nfs4"
       o: "addr=192.168.0.2,rw,noatime,timeo=14,nolock"
       device: ":/media/Clouds/Downloads"
+
 networks:
   pyload:
     name: pyload
-    driver: overlay
