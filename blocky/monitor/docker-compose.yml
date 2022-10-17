@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   db:
-   image: 192.168.0.2:5050/dedyms/mariadb:10.6.10
+   image: 192.168.0.2:5050/dedyms/mariadb:10.6
    volumes:
      - db:/var/lib/mysql
    ports:
@@ -36,8 +36,9 @@ services:
     deploy:
       placement:
         constraints: [node.role==manager]
+  # dont use latest, grafana 9 breaks sql queries.
   grafana:
-    image: grafana/grafana:latest
+    image: grafana/grafana:8.5.13
     depends_on:
       - prometheus
     ports:
@@ -56,9 +57,9 @@ services:
       - blocky
 
 volumes:
-    prometheus_data: {}
-    grafana_data: {}
-    db: {}
+    prometheus_data:
+    grafana_data:
+    db:
 
 networks:
   blocky:
