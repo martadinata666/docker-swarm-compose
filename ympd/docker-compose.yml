@@ -2,7 +2,7 @@
 version: '3.5'
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/ympd:v0.23.10
+    image: 192.168.0.2:5050/dedyms/ympd:v0.23.9
     volumes:
       - mpd-data:/home/debian/mpd
       - nfs-music:/music
@@ -10,19 +10,23 @@ services:
     networks:
       - ympd
     restart: always
-    environment:
+    #environment:
     #  MPD_SERVER: player
     #  MPD_PORT: 6600
-      - MYMPD_HTTP_PORT=8084
-      - MYMPD_SSL=false
+    #  - MYMPD_HTTP_PORT=8084
+    #  - MYMPD_SSL=false
     ulimits:
       memlock:
         soft: -1
         hard: -1
     ports:
+      # MPD port
+      - 6600:6600
+      # ympd web port
       - 8083:8080
-      - 8084:8084
+      # http output
       - 8800:8800
+      # icecast output
       - 8000:8000
     deploy:
       placement:
