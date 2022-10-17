@@ -19,7 +19,7 @@ services:
     volumes:
       - ./data:/home/debian/code-server
       - /home/dedyms/Documents/docker-gitlab-local:/home/debian/code-server/docker-gitlab
-      - ./htdocs:/var/www/html
+#      - ./htdocs:/var/www/html
     #ports:
     #  - 9003:9003
     #  - 5555:5555
@@ -38,9 +38,11 @@ services:
         target: /etc/nginx/conf.d/default.conf
     networks:
       - code-server
+
 networks:
   code-server:
     name: code-server
+
 configs:
   default.conf:
     file: ./default.conf

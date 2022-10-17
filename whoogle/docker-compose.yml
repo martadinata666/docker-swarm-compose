@@ -9,7 +9,7 @@ services:
       - WHOOGLE_CONFIG_DISABLE=true
       - WHOOGLE_CONFIG_THEME=dark
       - WHOOGLE_AUTOCOMPLETE=1
-      - WHOOGLE_CONFIG_URL=https://192.168.0.2:5000
+      - WHOOGLE_CONFIG_URL=https://whoogle.ddyms.space
       - HTTPS_ONLY=1
     #command: bash
     #stdin_open: true

@@ -13,7 +13,7 @@ services:
 
   wetty:
     image: wettyoss/wetty
-    command: --ssh-host=client --ssh-port=2222
+    command: --ssh-host=client --ssh-port=2222 --ssh-user=debian --ssh-pass=debian --base / --title glances-client -c "glances --disable-autodiscover -C /home/debian/glances/glances.conf --browser"
     ports:
       - 3105:3000
     deploy:

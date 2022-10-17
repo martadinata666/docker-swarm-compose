@@ -86,3 +86,4 @@ heimdall/sslcloudflare
 ssl/
 ympd/conf
 cloudflared/docker-compose.yml
+gitlab/registry*

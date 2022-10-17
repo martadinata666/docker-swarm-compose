@@ -6,7 +6,6 @@ services:
     container_name: jellyfin_server
     pull_policy: always
     #entrypoint: ./jellyfin/jellyfin --datadir /config --cachedir /cache --ffmpeg /usr/lib/jellyfin-ffmpeg/ffmpeg
-    hostname: homelab
     environment:
       - TZ=Asia/Jakarta
     #group_add:
