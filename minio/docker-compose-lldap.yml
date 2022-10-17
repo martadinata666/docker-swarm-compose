@@ -55,3 +55,8 @@ services:
 networks:
   apptest:
     name: apptest
+
+### Manually assign role
+# ./mc alias set localapptest http://192.168.0.2:9002 minioadmin minioadmin
+# ./mc admin policy set localapptest consoleAdmin user='uid=admin,ou=people,dc=example,dc=com'
+# ./mc admin policy set localapptest readwrite user='uid=someuser,ou=people,dc=example,dc=com'

@@ -9,7 +9,6 @@ version: "3.8"
 services:
   nginx:
     image: 192.168.0.2:5050/dedyms/nginx:mainline
-    hostname: nginx
     volumes:
       - ./nginx-std.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
@@ -40,6 +39,7 @@ services:
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ./data-standalone:/data
+      - /media/VM/gitlab-builds/minio-cache:/cache
     deploy:
       placement:
         constraints: [ node.role == manager ]
