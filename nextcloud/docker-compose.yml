@@ -71,18 +71,19 @@ services:
     deploy:
       placement:
         constraints: [ node.role == manager ]
-  #drawio:
-  #  image: jgraph/drawio:alpine
-  #  environment:
-  #    - TZ=Asia/Jakarta
-  #  ports:
-  #    - 8082:8080
+
+  drawio:
+    image: jgraph/drawio:20.4.0
+    environment:
+      - TZ=Asia/Jakarta
+    ports:
+      - 8082:8080
   #  restart: unless-stopped
-  #  networks:
-  #    - nextcloud
-  #  deploy:
-  #    placement:
-  #      constraints: [node.hostname == homelab ]
+    networks:
+      - nextcloud
+    deploy:
+      placement:
+         constraints: [node.hostname == homelab ]
   rd:
     image: redis:alpine
     #image: dph5199278/dragonflydb:latest

@@ -19,8 +19,8 @@ services:
         constraints: [ node.role == manager ]
 
   redis:
-    #image: redis:alpine
-    image: dph5199278/dragonflydb:latest
+    image: redis:alpine
+    #image: dph5199278/dragonflydb:latest
     environment:
       - TZ=Asia/Jakarta
     volumes:
