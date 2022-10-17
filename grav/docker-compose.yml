@@ -1,0 +1,17 @@
+---
+version: "3.8"
+services:
+  web:
+    image: lscr.io/linuxserver/grav:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jakarta
+    volumes:
+      - ./config:/config
+    ports:
+      - 7000:80
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [node.hostname==homelab]
