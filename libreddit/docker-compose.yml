@@ -1,12 +1,13 @@
 version: '3.8'
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/libreddit:latest
+    image: martadinata666/libreddit:latest
     networks:
       - libreddit
     deploy:
-      placement:
-        constraints: [ node.hostname == rpi4 ]
+       mode: global
+#      placement:
+#        constraints: [ node.hostname == rpi4 ]
   apache:
     image: 192.168.0.2:5050/dedyms/apache:fcgid
     ports:
@@ -17,8 +18,9 @@ services:
     networks:
       - libreddit
     deploy:
-      placement:
-        constraints: [ node.hostname == rpi4 ]
+       mode: global
+#      placement:
+#        constraints: [ node.hostname == rpi4 ]
 networks:
   libreddit:
     name: libreddit

@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  app:
+    image: releaseargus/argus:latest
+    volumes:
+      - ./config:/app
+      - ./config/data:/app/data
+    environment:
+      ARGUS_UID: 1000 # Optional UID override
+      ARGUS_GID: 1000 # Optional GID override
+    ports:
+      - 3380:8080 # <Host_Port:Container_Port>
+    restart: always
+    networks:
+      - argus
+    deploy:
+      placement:
+        constraints: [node.role==manager]
+
+networks:
+  argus:
+    name: argus
