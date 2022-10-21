@@ -1,15 +1,17 @@
 version: '3.5'
 services:
   sqldb:
-    image: mariadb:10.6
+    #image: 192.168.0.2:5050/dedyms/mariadb:10.6
+    image: lscr.io/linuxserver/mariadb
     environment:
       - MYSQL_DATABASE=kimai
       - MYSQL_USER=kimaiuser
       - MYSQL_PASSWORD=kimaipassword
       - MYSQL_ROOT_PASSWORD=changemeplease
     volumes:
-      - db:/var/lib/mysql
-    command: --default-storage-engine innodb
+#      - db:/var/lib/mysql
+      - db:/config
+#    command: --default-storage-engine innodb
     restart: unless-stopped
     healthcheck:
       test: mysqladmin -p$$MYSQL_ROOT_PASSWORD ping -h localhost
@@ -24,14 +26,14 @@ services:
       - ADMINMAIL=admin@kimai.local
       - ADMINPASS=changemeplease
       - DATABASE_URL=mysql://kimaiuser:kimaipassword@sqldb/kimai
-      - TRUSTED_HOSTS=nginx,localhost,127.0.0.1
+      - TRUSTED_HOSTS=nginx,localhost,127.0.0.1,192.168.0.2
     volumes:
 #      - public:/opt/kimai/public
        - var:/opt/kimai/var
       # - ./ldap.conf:/etc/openldap/ldap.conf:z
       # - ./ROOT-CA.pem:/etc/ssl/certs/ROOT-CA.pem:z
     ports:
-      - 11000:8001
+      - 11100:8001
     restart: unless-stopped
 
 volumes:
