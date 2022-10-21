@@ -36,9 +36,10 @@ services:
     deploy:
       placement:
         constraints: [node.role==manager]
+
   # dont use latest, grafana 9 breaks sql queries.
   grafana:
-    image: grafana/grafana:8.5.13
+    image: grafana/grafana:9.2.1
     depends_on:
       - prometheus
     ports:
