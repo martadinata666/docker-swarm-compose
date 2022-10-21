@@ -10,7 +10,7 @@ services:
       # For LDAPS
       - 6360:6360
       # For the web front-end
-#      - 17170:17170
+      - 17170:17170
     volumes:
       - ./data:/data
     environment:
@@ -24,18 +24,18 @@ services:
     networks:
       - lldap
 
-  apache:
-    image: 192.168.0.2:5050/dedyms/apache:fcgid
-    configs:
-      - source: apache.conf
-        target: /etc/apache2/sites-enabled/000-default-ssl.conf
-    ports:
-      - 17170:443
-    networks:
-      - lldap
-    deploy:
-      placement:
-        constraints: [ node.role == manager ]
+#  apache:
+#    image: 192.168.0.2:5050/dedyms/apache:fcgid
+#    configs:
+#      - source: apache.conf
+#        target: /etc/apache2/sites-enabled/000-default-ssl.conf
+#    ports:
+#      - 17170:443
+#    networks:
+#      - lldap
+#    deploy:
+#      placement:
+#        constraints: [ node.role == manager ]
 
 
 networks:

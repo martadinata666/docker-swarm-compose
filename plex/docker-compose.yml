@@ -12,7 +12,7 @@ services:
       - PLEX_UID=1000
       - PLEX_GID=1000
       - ADVERTISE_IP=http://192.168.0.2:32400
-      #- PLEX_CLAIM="claim-u6-r59XTu6SAiUdj_KpD"
+#      - PLEX_CLAIM="claim-_Wx2B1ttJyC_Kr4DFczn"
     volumes:
       - ./data:/config
       - /dev/shm:/transcode
