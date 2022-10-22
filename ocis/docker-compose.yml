@@ -15,16 +15,16 @@ services:
      OCIS_INSECURE: true
      OCIS_ADMIN_USER_ID: "min9chars-or-cantupload"  #https://github.com/owncloud/ocis/issues/3808
      AUTH_BASIC_AUTH_PROVIDER: ldap
-     LDAP_URI: ldap://192.168.0.2:3890
+     LDAP_URI: ldap://ip:port
      LDAP_INSECURE: true
      LDAP_BIND_DN: "cn=admin,ou=people,dc=example,dc=com"
      LDAP_BIND_PASSWORD: theadminpass
      LDAP_LOGIN_ATTRIBUTES: "uid"
      LDAP_USER_BASE_DN: "ou=people,dc=example,dc=com"
      LDAP_GROUP_BASE_DN: "ou=groups,dc=example,dc=com"
-     LDAP_USER_FILTER: "(&(objectClass=person)(memberOf=cn=somegroup,ou=groups,dc=example,dc=com))"
+     LDAP_USER_FILTER: "(&(objectClass=person)(memberOf=cn=lldap_ocis,ou=groups,dc=example,dc=com))"
      LDAP_GROUP_FILTER: "(cn=lldap_ocis,ou=groups,dc=example,dc=com)"
-     IDP_LDAP_URI: ldap://192.168.0.2:3890
+     IDP_LDAP_URI: ldap://ip:port
      IDP_LDAP_LOGIN_ATTRIBUTE: "uid"
      IDP_LDAP_UUID_ATTRIBUTE: "uid"
      GRAPH_IDENTITY_BACKEND: ldap
