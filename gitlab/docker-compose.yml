@@ -16,8 +16,10 @@ services:
     deploy:
        placement:
          constraints: [ node.role == manager ]
+    restart: unless-stopped
+
   web:
-    image: gitlab/gitlab-ee:15.4.3-ee.0
+    image: gitlab/gitlab-ee:15.5.1-ee.0
     ports:
       - "22:22"
       - "2022:22"
@@ -40,11 +42,14 @@ services:
     networks:
       - gitlab
       - lldap
+    restart: unless-stopped
 
   runner:
-    image: 192.168.0.2:5050/dedyms/gitlab-runner:v15.4.0
+    image: 192.168.0.2:5050/dedyms/gitlab-runner:v15.5.0
+#    group_add:
+#      - docker
     volumes:
-      - runner_config:/etc/gitlab-runner
+      - ./runner/config.toml:/etc/gitlab-runner/config.toml
       - /media/VM/gitlab-builds:/builds
       - /var/run/docker.sock:/var/run/docker.sock
     deploy:
@@ -54,6 +59,7 @@ services:
         constraints: [ node.hostname == homelab ]
     networks:
       - gitlab
+    restart: unless-stopped
 
 secrets:
   gitlab_root_password:

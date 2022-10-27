@@ -1,0 +1,60 @@
+---
+version: "3.8"
+services:
+#  dbpg:
+#    image: postgres:13
+#    environment:
+#      - POSTGRES_USER=authelia
+#      - POSTGRES_PASSWORD=mypassword
+#      - POSTGRES_DB=authelia
+#    restart: always
+#    volumes:
+#      - dbpg:/var/lib/postgresql/data
+#    networks:
+#      - authelia
+#    deploy:
+#      placement:
+#        constraints: [ node.role == manager ]
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - rd:/data
+    networks:
+      - authelia
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Jakarta
+
+  app:
+    container_name: authelia
+    user: 1000:1000
+    image: authelia/authelia:latest
+    restart: unless-stopped
+    networks:
+      - authelia
+    ports:
+      - 9091:9091
+    environment:
+      AUTHELIA_JWT_SECRET: "jwtsecret"
+      AUTHELIA_SESSION_SECRET: "sessionsecret"
+      AUTHELIA_STORAGE_ENCRYPTION_KEY: "123456789123456789storageenc"
+    volumes:
+      - ./config:/config
+#      - ./secrets:/secrets
+    deploy:
+      placement:
+        constraints: [node.role==manager]
+
+#networks:
+#  cloudflared-tunnel_default:
+#    external: true
+#    name: cloudflared-tunnel_default
+networks:
+  authelia:
+    name: authelia
+
+volumes:
+  rd:
+  db:
+  dbpg:

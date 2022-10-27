@@ -2,6 +2,7 @@ version: '3.7'
 services:
   app:
     image: releaseargus/argus:latest
+    user: 1000:1000
     volumes:
       - ./config:/app
       - ./config/data:/app/data

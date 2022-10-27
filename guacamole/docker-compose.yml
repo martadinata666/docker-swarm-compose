@@ -47,6 +47,7 @@ services:
          constraints: [ node.hostname == homelab ]
    db:
      image: postgres:13
+     user: 1000:1000
      environment:
        - POSTGRES_USER=guacamole
        - POSTGRES_DB=guacamole

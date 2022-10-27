@@ -33,7 +33,8 @@ services:
         constraints: [node.hostname == homelab ]
 
   app:
-    image: onlyoffice/documentserver:7.2
+    image: onlyoffice/documentserver:7.0
+    entrypoint: bash -c "sed -i 's/isSupportEditFeature=function(){return!1}/isSupportEditFeature=function(){return 1}/g'  /var/www/onlyoffice/documentserver/web-apps/apps/*/mobile/dist/js/app.js;/app/ds/run-document-server.sh;"
     restart: unless-stopped
     environment:
       - TZ=Asia/Jakarta

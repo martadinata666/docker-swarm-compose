@@ -73,6 +73,7 @@ services:
         constraints: [ node.role == manager ]
 
   drawio:
+    user: 1000:1000
     image: jgraph/drawio:20.5.0
     environment:
       - TZ=Asia/Jakarta

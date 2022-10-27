@@ -26,7 +26,7 @@ services:
     image: quay.io/minio/minio:latest
     command: server /data --console-address ":9001"
     #restart: always
-    #user: 1000:1000
+    user: 1000:1000
     environment:
       - TZ=Asia/Jakarta
       - MINIO_ROOT_USER=minioadmin
