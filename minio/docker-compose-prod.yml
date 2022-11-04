@@ -2,8 +2,9 @@ version: '3.7'
 
 # Settings and configurations that are common for all containers
 x-minio-common: &minio-common
-  image: quay.io/minio/minio:RELEASE.2022-04-09T15-09-52Z
+  image: quay.io/minio/minio:latest
   command: server --console-address ":9001" http://minio{1...4}/data{1...2}
+  user: 1000:1000
 #  expose:
 #    - "9000"
 #    - "9001"
@@ -12,7 +13,7 @@ x-minio-common: &minio-common
     MINIO_ROOT_PASSWORD: minioadmin
     TZ: Asia/Jakarta
   networks:
-    - minio
+    - minio-prod
   healthcheck:
     test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
     interval: 30s
@@ -60,22 +61,22 @@ services:
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "9002:9000"
+      - "9003:9001"
     networks:
-      - minio
+      - minio-prod
     depends_on:
       - minio1
       - minio2
-      - minio3
-      - minio4
+#      - minio3
+#      - minio4
     deploy:
       placement:
         constraints: [node.role == manager]
 
 networks:
-  minio:
-    name: minio
+  minio-prod:
+    name: minio-prod
 ## By default this config uses default local driver,
 ## For custom volumes replace with volume driver configuration.
 #volumes:

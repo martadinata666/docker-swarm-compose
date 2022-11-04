@@ -1,17 +1,18 @@
----
 version: "3.8"
 services:
   web:
-    image: lscr.io/linuxserver/grav:latest
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Asia/Jakarta
+    image: 192.168.0.2:5050/dedyms/apache:fpm
     volumes:
-      - ./config:/config
+      - ./grav:/var/www/html
     ports:
       - 7000:80
-    restart: unless-stopped
+    networks:
+      - grav
     deploy:
       placement:
-        constraints: [node.hostname==homelab]
+        constraints: [node.role==manager]
+
+networks:
+  grav:
+    name: grav
+

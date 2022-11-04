@@ -38,8 +38,8 @@ services:
     #  - 9001:9001
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ./data-standalone:/data
-      - /media/VM/gitlab-builds/minio-cache:/cache
+      - ./data:/data
+      - /media/VM/minio-cache:/cache
     deploy:
       placement:
         constraints: [ node.role == manager ]
