@@ -8,9 +8,9 @@ services:
     #entrypoint: ./jellyfin/jellyfin --datadir /config --cachedir /cache --ffmpeg /usr/lib/jellyfin-ffmpeg/ffmpeg
     environment:
       - TZ=Asia/Jakarta
-    #group_add:
-    #  - video
-    #  - render
+    group_add:
+      - "44"
+      - "139"
     devices:
       - /dev/dri/:/dev/dri/
     ports:
@@ -32,17 +32,17 @@ services:
     #  placement:
     #    constrainst: [ node.name == homeworker0 ]
 
-  client:
-    image: 192.168.0.2:5050/dedyms/jellyfin-vue:static
+#  client:
+#    image: 192.168.0.2:5050/dedyms/jellyfin-vue:static
 #    user: 2000:2000
-    container_name: jellyfin_client
-    ports:
-      - 8098:80
-    networks:
-      - jellyfin
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
-    restart: unless-stopped
+#    container_name: jellyfin_client
+#    ports:
+#      - 8098:80
+#    networks:
+#      - jellyfin
+#    labels:
+#      - com.centurylinklabs.watchtower.enable=true
+#    restart: unless-stopped
 
 volumes:
   cache:
