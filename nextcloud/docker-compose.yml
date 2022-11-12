@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/nextcloud-smb:25.0.0
+    image: 192.168.0.2:5050/dedyms/nextcloud-smb:25.0.1
     environment:
       - TZ=Asia/Jakarta
       - ALLOW_SELF_SIGNED=true
@@ -32,27 +32,27 @@ services:
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
-  es:
-    image: elasticsearch:7.17.1
-    environment:
-      - discovery.type=single-node
-      - TZ=Asia/Jakarta
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=true
-    user: 1000:1000
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    networks:
-      - nextcloud
-    volumes:
-      - ./esdata/data:/usr/share/elasticsearch/data
-      - ./esdata/plugins:/usr/share/elasticsearch/plugins
-    deploy:
-      placement:
-        constraints: [ node.hostname == homelab ]
+#  es:
+#    image: elasticsearch:7.17.1
+#    environment:
+#      - discovery.type=single-node
+#      - TZ=Asia/Jakarta
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#      - xpack.security.enabled=true
+#    user: 1000:1000
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    networks:
+#      - nextcloud
+#    volumes:
+#      - ./esdata/data:/usr/share/elasticsearch/data
+#      - ./esdata/plugins:/usr/share/elasticsearch/plugins
+#    deploy:
+#      placement:
+#        constraints: [ node.hostname == homelab ]
 
   db:
     image: 192.168.0.2:5050/dedyms/mariadb:10.7
@@ -74,7 +74,7 @@ services:
 
   drawio:
     user: 1000:1000
-    image: jgraph/drawio:20.5.0
+    image: jgraph/drawio:20.5.3
     environment:
       - TZ=Asia/Jakarta
     ports:
