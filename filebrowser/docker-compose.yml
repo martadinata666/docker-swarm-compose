@@ -13,10 +13,10 @@ services:
     user: 1000:1000
     volumes:
       - ./db:/db
-      - /media/WD:/srv/wd
-      - /media/Clouds:/srv/clouds
-      - /home/dedyms/docker/shinobi/videos:/srv/cctv
-      - /media/hgst:/srv/hgst
+      - /home/dedyms/docker/shinobi/videos/dms:/srv
+#      - /media/Clouds:/srv/clouds
+#      - /home/dedyms/docker/shinobi/videos:/srv/cctv
+#      - /media/hgst:/srv/hgst
       - ./filebrowser.json:/.filebrowser.json
     ports:
       - 1100:80

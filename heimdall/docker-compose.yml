@@ -17,12 +17,12 @@ services:
          constraints: [ node.role == manager ]
 
   rd:
-    #image: redis:alpine
-    image: dph5199278/dragonflydb:latest
+    image: redis:alpine
+    #image: dph5199278/dragonflydb:latest
     environment:
       - TZ=Asia/Jakarta
     volumes:
-      - rd-db:/data
+      - rd:/data
     restart: unless-stopped
     networks:
       - heimdall
@@ -31,7 +31,7 @@ services:
         constraints: [node.hostname == homelab ]
 
   web:
-    image: 192.168.0.2:5050/dedyms/heimdall:latest
+    image: 192.168.0.2:5050/dedyms/heimdall:git
     networks:
       - heimdall
     configs:

@@ -2,7 +2,7 @@ version: "3.5"
 services:
   diun:
     image: crazymax/diun:latest
-    user: 1000:1000
+#    user: 1000:1000
     volumes:
       - ./data:/data
       - ./data/diun.yml:/diun.yml:ro

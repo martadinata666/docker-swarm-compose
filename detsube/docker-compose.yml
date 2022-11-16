@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/detsube:git
+    image: martadinata666/detsube:git
     environment:
       - TZ=Asia/Jakarta
     volumes:

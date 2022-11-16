@@ -1,0 +1,99 @@
+version: '3'
+services:
+  db:
+    restart: always
+    user: 1000:1000
+    image: postgres:13
+    shm_size: 256mb
+    networks:
+      - internal_network
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-U', 'postgres']
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+      - POSTGRES_DB=mastodon
+
+  db-setup:
+    image: tootsuite/mastodon
+    restart: "no"
+    env_file: mastodon.env
+    command: bundle exec rake db:setup && bundle exec rake db:migrate
+    depends_on:
+      - db
+    networks:
+      - internal_network
+
+  redis:
+    restart: always
+    image: redis:7-alpine
+    networks:
+      - internal_network
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+    volumes:
+      - redis:/data
+
+  web:
+    image: tootsuite/mastodon
+#    user: 1000:1000
+    restart: always
+    env_file: mastodon.env
+    command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000"
+    networks:
+      - external_network
+      - internal_network
+    healthcheck:
+      # prettier-ignore
+      test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:3000/health || exit 1']
+    ports:
+      - '30000:3000'
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./system:/mastodon/public/system
+
+  streaming:
+    image: tootsuite/mastodon
+#    user: 1000:1000
+    restart: always
+    env_file: mastodon.env
+    command: node ./streaming
+    networks:
+      - external_network
+      - internal_network
+    healthcheck:
+      # prettier-ignore
+      test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1']
+    ports:
+      - 4000:4000
+    depends_on:
+      - db
+      - redis
+
+  sidekiq:
+    image: tootsuite/mastodon:edge
+    user: 1000:1000
+    restart: always
+    env_file: mastodon.env
+    command: bundle exec sidekiq
+    depends_on:
+      - db
+      - redis
+    networks:
+      - external_network
+      - internal_network
+    volumes:
+      - ./system:/mastodon/public/system
+    healthcheck:
+      test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 6' || false"]
+
+networks:
+  external_network:
+  internal_network:
+    internal: true
+
+volumes:
+  redis:

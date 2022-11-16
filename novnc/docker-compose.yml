@@ -2,7 +2,8 @@
 version: "3.5"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/novnc:git
+    #image: 192.168.0.2:5050/dedyms/novnc:git
+    image: novnc:local
     container_name: novnc
     #command: bash
     #tty: true

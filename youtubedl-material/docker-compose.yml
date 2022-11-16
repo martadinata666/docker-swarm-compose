@@ -1,0 +1,31 @@
+version: "2"
+services:
+  web:
+    environment:
+      ytdl_mongodb_connection_string: 'mongodb://db:27017'
+      ytdl_use_local_db: 'false'
+      write_ytdl_config: 'true'
+    volumes:
+      - ./appdata:/home/debian/youtubedl-material/appdata
+      - ./audio:/home/debian/youtubedl-material/audio
+      - ./video:/home/debian/youtubedl-material/video
+      - ./subscriptions:/home/debian/youtubedl-material/subscriptions
+      - ./users:/home/debian/youtubedl-material/users
+    restart: always
+    ports:
+      - "8998:17442"
+    networks:
+      - ytdlm
+    image: 192.168.0.2:5050/dedyms/youtubedl-material:latest
+  db:
+    user: 1000:1000
+    networks:
+      - ytdlm
+    image: mongo
+    restart: always
+    volumes:
+      - ./db/:/data/db
+
+networks:
+  ytdlm:
+    name: ytdlm

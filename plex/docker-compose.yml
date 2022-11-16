@@ -4,8 +4,8 @@ services:
   web:
     image: plexinc/pms-docker:plexpass
     container_name: plex_mediaserver
-    ports:
-      - 32400:32400
+#    ports:
+#      - 32400:32400
 #      - 1900:1900
     environment:
       - TZ=Asia/Jakarta
@@ -18,7 +18,7 @@ services:
       - /dev/shm:/transcode
       - /media/WD:/media/WD
       - /media/Clouds:/media/Clouds
-#    network_mode: host
+    network_mode: host
     devices:
       - /dev/dri/:/dev/dri/
     restart: always

@@ -1,0 +1,23 @@
+---
+version: "3.5"
+services:
+  web:
+    #image: 192.168.0.2:5050/dedyms/novnc-desktop:latest
+    image: novnc-desktop:local
+    environment:
+      - VNC_WIDTH=1600
+      - VNC_HEIGHT=900
+      - PULSE_SERVER=192.168.0.11
+    ports:
+      - 13000:13000
+    networks:
+      - novnc-desktop
+#    volumes:
+#      - ./client.conf:/home/debian/.config/pulse/client.conf
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
+
+networks:
+  novnc-desktop:
+    name: novnc-desktop

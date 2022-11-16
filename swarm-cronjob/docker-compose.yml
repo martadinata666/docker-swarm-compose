@@ -2,7 +2,7 @@ version: "3.5"
 services:
   app:
     image: crazymax/swarm-cronjob
-    user: 1000:1000
+#    user: 1000:1000
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "/etc/localtime:/etc/localtime:ro"
