@@ -2,7 +2,7 @@
 version: '3.5'
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/ympd:v0.23.10
+    image: 192.168.0.2:5050/dedyms/ympd:latest
     volumes:
       - mpd-data:/home/debian/mpd
       - nfs-music:/music
@@ -32,6 +32,22 @@ services:
       placement:
         constraints:
           - node.hostname == homelab
+
+  maloja:
+    image: krateng/maloja
+    user: 1000:1000
+    volumes:
+      - ./scrobble:/scrobble
+    environment:
+      - MALOJA_DATA_DIRECTORY=/scrobble
+    ports:
+      - 42010:42010
+    deploy:
+      placement:
+        constraints:
+          - node.hostname == homelab
+
+# docker run -p 42010:42010 -v $PWD/malojadata:/mljdata -e MALOJA_DATA_DIRECTORY=/mljdata krateng/maloja
 
 volumes:
   icecast2-config:

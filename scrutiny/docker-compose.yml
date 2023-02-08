@@ -1,12 +1,12 @@
-version: "3.5"
+version: "3.8"
 services:
   app:
     environment:
       - TZ=Asia/Jakarta
       - SCRUTINY_WEB_INFLUXDB_HOST=db
-    image: 192.168.0.2:5050/dedyms/scrutiny:v0.5.0-web
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.6.0-web
     ports:
-      - 9091:8080/tcp
+      - 9092:8080/tcp
     restart: always
     volumes:
       - /run/udev:/run/udev:ro
@@ -15,6 +15,7 @@ services:
       - scrutiny
 
   collector:
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.6.0-collector
     environment:
       - TZ=Asia/Jakarta
       - COLLECTOR_API_ENDPOINT=http://app:8080
@@ -29,7 +30,6 @@ services:
       - /dev/nvme0:/dev/nvme0
     volumes:
       - /run/udev:/run/udev:ro
-    image: 192.168.0.2:5050/dedyms/scrutiny:v0.5.0-collector
     restart: always
     networks:
       - scrutiny

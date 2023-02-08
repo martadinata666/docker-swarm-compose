@@ -9,7 +9,7 @@ services:
       - MARIADB_USER=pigallery
       - MARIADB_PASSWORD=pigallery
     volumes:
-      - nfs-db:/var/lib/mysql
+      - ./db:/var/lib/mysql
     restart: unless-stopped
     networks:
       - pigallery2
@@ -28,7 +28,7 @@ services:
     volumes:
       - /media/Clouds/InstaSave:/images
       - ./config:/home/debian/pigallery2/data
-      - ./data:/tmp
+      - preview:/preview
     restart: unless-stopped
     networks:
       - pigallery2
@@ -61,6 +61,7 @@ configs:
     file: ./apache.conf
 
 volumes:
+  preview:
   nfs-db:
     driver_opts:
       type: "nfs4"

@@ -1,11 +1,11 @@
 version: "3.8"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/unmanic:latest
+    image: 192.168.0.2:5050/dedyms/unmanic:git
     restart: always
     group_add:
-       - video
-       - render
+       - "44"
+       - "139"
     volumes:
        - ./config:/home/debian/.unmanic
        - wd:/library

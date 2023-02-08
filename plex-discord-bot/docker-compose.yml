@@ -1,8 +1,13 @@
 version: "3.5"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/plex-discord-bot:v2.4.3
+    image: pdb:local
+    #image: irbyk/plexbot:latest
     restart: always
+#    volumes:
+#      - ./config/keys.js:/home/PlexBot/config/keys.js
+#      - ./config/plex.js:/home/PlexBot/config/plex.js
+#      - ./config/config.js:/home/PlexBot/config/config.js
     configs:
       - source: plex.js
         target: /home/debian/plex-discord-bot/config/plex.js
