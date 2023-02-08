@@ -1,8 +1,7 @@
 version: "3.5"
 services:
   rd:
-   image: redis:alpine
-   #image: dph5199278/dragonflydb:latest
+   image: redis:latest
    environment:
      - TZ=Asia/Jakarta
    volumes:
@@ -53,6 +52,7 @@ networks:
     name: linkace
 volumes:
   rd:
+  df-db:
 #  nfs-htdocs:
 #    driver_opts:
 #      type: "nfs4"

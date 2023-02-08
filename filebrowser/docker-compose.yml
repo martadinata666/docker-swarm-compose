@@ -13,7 +13,9 @@ services:
     user: 1000:1000
     volumes:
       - ./db:/db
-      - /home/dedyms/docker/shinobi/videos/dms:/srv
+      - ow_videos:/srv/videos
+      - /media/WD/Videos/AnimeX:/srv/animeX
+#      - /home/dedyms/docker/shinobi/videos/dms:/srv
 #      - /media/Clouds:/srv/clouds
 #      - /home/dedyms/docker/shinobi/videos:/srv/cctv
 #      - /media/hgst:/srv/hgst
@@ -29,3 +31,7 @@ services:
 networks:
   filebrowser:
     name: filebrowser
+
+volumes:
+  ow_videos:
+    external: true

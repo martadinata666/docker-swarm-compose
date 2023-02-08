@@ -2,7 +2,7 @@
 version: "3.8"
 services:
   server:
-    image: 192.168.0.2:5050/dedyms/jellyfin:git
+    image: 192.168.0.2:5050/dedyms/jellyfin:stable
     container_name: jellyfin_server
     pull_policy: always
     #entrypoint: ./jellyfin/jellyfin --datadir /config --cachedir /cache --ffmpeg /usr/lib/jellyfin-ffmpeg/ffmpeg
@@ -12,9 +12,9 @@ services:
       - "44"
       - "139"
     devices:
-      - /dev/dri/:/dev/dri/
-    ports:
-      - 8097:8096
+      - /dev/dri:/dev/dri
+#    ports:
+#      - 8097:8097
     volumes:
       - ./config:/config
       - ./config/subtitle:/Subtitle Edit/Dictionaries
@@ -23,8 +23,9 @@ services:
       - ow_videos:/Videos2:rw
       - /media/Clouds/Porn:/Porn:rw
       - transcodes:/config/transcodes
-    networks:
-      - jellyfin
+#    networks:
+#      - jellyfin
+    network_mode: host
     labels:
       - com.centurylinklabs.watchtower.enable=true
     restart: unless-stopped
@@ -50,6 +51,6 @@ volumes:
     external: true
   transcodes:
 
-networks:
-  jellyfin:
-    name: jellyfin
+#networks:
+#  jellyfin:
+#    name: jellyfin

@@ -22,7 +22,6 @@ services:
       - ./env:/app/.env
     restart: always
     ports:
-#      - 29000:3000
       - 29100:80
     networks:
       - huginn

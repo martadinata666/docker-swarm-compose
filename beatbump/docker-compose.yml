@@ -7,13 +7,19 @@ services:
     ports:
       - 17000:3000
     restart: always
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
   proxy:
-    image: 192.168.0.2:5050/dedyms/beatbump:proxy
+    image: 192.168.0.2:5050/dedyms/beatbump:proxy-rust
     ports:
-      - 21000:3001
+      - 21000:10000
     networks:
       - beatbump
+    deploy:
+      placement:
+        constraints: [node.role == manager]
 
 networks:
   beatbump:

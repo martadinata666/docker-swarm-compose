@@ -15,15 +15,15 @@ services:
       - POSTGRES_HOST_AUTH_METHOD=trust
       - POSTGRES_DB=mastodon
 
-  db-setup:
-    image: tootsuite/mastodon
-    restart: "no"
-    env_file: mastodon.env
-    command: bundle exec rake db:setup && bundle exec rake db:migrate
-    depends_on:
-      - db
-    networks:
-      - internal_network
+#  db-setup:
+#    image: tootsuite/mastodon:edge
+#    restart: "no"
+#    env_file: mastodon.env
+#    command: bundle exec rake db:setup && bundle exec rake db:migrate
+#    depends_on:
+#      - db
+#    networks:
+#      - internal_network
 
   redis:
     restart: always
@@ -36,7 +36,7 @@ services:
       - redis:/data
 
   web:
-    image: tootsuite/mastodon
+    image: tootsuite/mastodon:edge
 #    user: 1000:1000
     restart: always
     env_file: mastodon.env
@@ -56,7 +56,7 @@ services:
       - ./system:/mastodon/public/system
 
   streaming:
-    image: tootsuite/mastodon
+    image: tootsuite/mastodon:edge
 #    user: 1000:1000
     restart: always
     env_file: mastodon.env

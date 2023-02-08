@@ -23,7 +23,7 @@ services:
         constraints: [node.role == manager]
 
   s3:
-    image: quay.io/minio/minio:latest
+    image: minio/minio:latest
     command: server /data --console-address ":9001"
     #restart: always
     user: 1000:1000
@@ -47,7 +47,7 @@ services:
       - minio
 
   prometheus:
-    image: prom/prometheus:v2.37.1
+    image: prom/prometheus:latest
     user: 1000:1000
     networks:
       - minio

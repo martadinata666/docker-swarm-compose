@@ -19,12 +19,14 @@ services:
         constraints: [ node.role == manager ]
 
   redis:
-    image: redis:alpine
+    #image: redis:alpine
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
+    command: dragonfly --logtostderr --memcache_port 11211
     #image: dph5199278/dragonflydb:latest
     environment:
       - TZ=Asia/Jakarta
     volumes:
-      - rd-data:/data
+      - df-data:/data
     restart: unless-stopped
     networks:
       - documentserver
@@ -83,6 +85,7 @@ volumes:
   ds_lib:
   rd:
   rd-data:
+  df-data:
 
 networks:
   documentserver:

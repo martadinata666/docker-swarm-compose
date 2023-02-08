@@ -19,6 +19,7 @@ services:
     volumes:
       - ./data:/home/debian/code-server
       - /home/dedyms/Documents/docker-gitlab-local:/home/debian/code-server/docker-gitlab
+      - /home/dedyms/.ssh:/home/debian/.ssh
 #      - ./htdocs:/var/www/html
     #ports:
     #  - 9003:9003

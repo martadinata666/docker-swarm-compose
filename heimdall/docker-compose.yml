@@ -17,8 +17,7 @@ services:
          constraints: [ node.role == manager ]
 
   rd:
-    image: redis:alpine
-    #image: dph5199278/dragonflydb:latest
+    image: redis:latest
     environment:
       - TZ=Asia/Jakarta
     volumes:
@@ -31,7 +30,7 @@ services:
         constraints: [node.hostname == homelab ]
 
   web:
-    image: 192.168.0.2:5050/dedyms/heimdall:git
+    image: 192.168.0.2:5050/dedyms/heimdall:2.5.5
     networks:
       - heimdall
     configs:
@@ -73,7 +72,7 @@ configs:
     file: ssl/homelab.key
 volumes:
   rd:
-  rd-db:
+  df-db:
   nfs-db:
     driver_opts:
       type: "nfs4"

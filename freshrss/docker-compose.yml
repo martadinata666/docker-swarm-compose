@@ -23,7 +23,7 @@ services:
      - TZ=Asia/Jakarta
    volumes:
      - nfs-htdocs:/var/www/html
-     - ./yacron.yml:/home/debian/supervisor/yacron.yml
+     - ./yacron.yml:/supervisor/yacron.yml
      - ./php.ini:/usr/local/etc/php/conf.d/php-timezone.ini
    #configs:
    #  - source: apache.conf

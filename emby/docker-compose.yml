@@ -18,13 +18,14 @@ services:
 #    labels:
 #      - com.centurylinklabs.watchtower.enable=true
   emby:
-    image: emby/embyserver:latest
-    #image: ghcr.io/linuxserver/emby:beta
+    #image: emby/embyserver:latest
+    image: ghcr.io/linuxserver/emby:beta
     container_name: emby
     restart: always
     volumes:
       - ./data:/config
       - /media/WD:/media/WD
+      - transcode:/transcode
     devices:
       - /dev/dri:/dev/dri
 #    ports:
@@ -32,13 +33,17 @@ services:
     environment:
       - UID=1000
       - GID=1000
-      - GIDLIST=1000,139
+      - GIDLIST=1000,139,226
       #- PUID=1000
       #- PGID=1000
       - TZ=Asia/Jakarta
     network_mode: host
     labels:
       - com.centurylinklabs.watchtower.enable=true
+
+volumes:
+  transcode:
+
 networks:
   emby:
     name: emby
