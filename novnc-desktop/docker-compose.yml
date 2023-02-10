@@ -2,18 +2,25 @@
 version: "3.5"
 services:
   web:
-    #image: 192.168.0.2:5050/dedyms/novnc-desktop:latest
-    image: novnc-desktop:local
+    image: 192.168.0.2:5050/dedyms/novnc-desktop:latest
+    devices:
+      - /dev/dri:/dev/dri
+    group_add:
+      - "44"
+      - "139"
     environment:
       - VNC_WIDTH=1600
       - VNC_HEIGHT=900
-      - PULSE_SERVER=192.168.0.11
+#      - DBUS_SESSION_BUS_ADDRESS=unix:path=/noVNC/system_bus_socket
+#      - DISPLAY=:2
+#      - PULSE_SERVER=192.168.0.11
     ports:
       - 13000:13000
+      - 56780:56780
     networks:
       - novnc-desktop
 #    volumes:
-#      - ./client.conf:/home/debian/.config/pulse/client.conf
+#      -  /run/dbus/system_bus_socket:/run/dbus/system_bus_socket
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
