@@ -57,7 +57,7 @@ services:
 
   streaming:
     image: tootsuite/mastodon:edge
-#    user: 1000:1000
+    user: 1000:1000
     restart: always
     env_file: mastodon.env
     command: node ./streaming
@@ -75,10 +75,10 @@ services:
 
   sidekiq:
     image: tootsuite/mastodon:edge
-    user: 1000:1000
+#    user: 1000:1000
     restart: always
     env_file: mastodon.env
-    command: bundle exec sidekiq
+    command: bundle exec sidekiq -c 15
     depends_on:
       - db
       - redis
