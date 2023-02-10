@@ -1,19 +1,12 @@
----
 version: "3.5"
 services:
   web:
-    #image: 192.168.0.2:5050/dedyms/novnc:git
-    image: novnc:local
-    container_name: novnc
-    #command: bash
-    #tty: true
-    #stdin_open: true
+    image: 192.168.0.2:5050/dedyms/novnc:v1.4.0
     environment:
-      - REMOTE_HOST=localhost
+      - REMOTE_HOST=192.168.0.2
       - REMOTE_PORT=5902
-      - NOVNC_PORT=13000
     ports:
-      - 13000:13000
+      - 13100:13000
     networks:
       - novnc
     deploy:
