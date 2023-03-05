@@ -18,7 +18,7 @@ services:
 #    labels:
 #      - com.centurylinklabs.watchtower.enable=true
   emby:
-    #image: emby/embyserver:latest
+#    image: emby/embyserver:latest
     image: ghcr.io/linuxserver/emby:beta
     container_name: emby
     restart: always

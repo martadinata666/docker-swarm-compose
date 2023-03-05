@@ -1,0 +1,89 @@
+version: "2.4"
+services:
+  cadvisor:
+    command:
+    - '--docker_only=true'
+    - '--housekeeping_interval=30s'
+    - '--disable_metrics=accelerator,cpu_topology,disk,memory_numa,tcp,udp,percpu,sched,process,hugetlb,referenced_memory,resctrl,cpuset,advtcp,memory_numa'
+    - '--store_container_labels=false'
+    - '--event_storage_event_limit=default=0'
+    - '--event_storage_age_limit=default=0'
+    devices:
+      - /dev/kmsg:/dev/kmsg
+    expose:
+      - 8080
+    image: martadinata666/cadvisor:latest
+    ipc: shareable
+    networks:
+      - monitoring
+    privileged: true
+    restart: unless-stopped
+    security_opt:
+      - label=disable
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /etc/machine-id:/etc/machine-id:ro
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  grafana:
+    environment:
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_PATHS_CONFIG=/etc/grafana/grafana.ini
+      - GF_PATHS_DATA=/var/lib/grafana
+      - GF_PATHS_HOME=/usr/share/grafana
+      - GF_PATHS_LOGS=/var/log/grafana
+      - GF_PATHS_PLUGINS=/var/lib/grafana/plugins
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+    image: grafana/grafana:latest
+    networks:
+      - monitoring
+    ports:
+      - 33000:3000
+    restart: unless-stopped
+    volumes:
+      # to be modified depending on your needs
+      - /portainer/Files/AppData/Config/grafana/data:/var/lib/grafana
+      - /portainer/Files/AppData/Config/grafana/grafana.ini:/etc/grafana/grafana.ini
+      - /portainer/Files/AppData/Config/grafana/provisioning:/etc/grafana/provisioning
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  node-exporter:
+    expose:
+      - 9100
+    image: prom/node-exporter:latest
+    networks:
+      - monitoring
+    restart: unless-stopped
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+  prometheus:
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--storage.tsdb.retention.time=${PROMETHEUS_RETENTION:-15d}'
+    user: root
+    expose:
+      - 9090
+    image: prom/prometheus:latest
+    networks:
+      - monitoring
+    restart: unless-stopped
+    volumes:
+      # to be modified depending on your needs
+      - /portainer/Files/AppData/Config/prometheus/data:/prometheus
+      - /portainer/Files/AppData/Config/prometheus/config:/etc/prometheus/
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    links:
+      - cadvisor:cadvisor
+      - node-exporter:node-exporter
+
+networks:
+  monitoring:
+    name: monitoring

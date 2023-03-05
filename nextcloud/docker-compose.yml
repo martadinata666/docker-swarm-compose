@@ -1,12 +1,12 @@
 version: "3.8"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/nextcloud-smb:25.0.3
+    image: 192.168.0.2:5050/dedyms/nextcloud-smb:25.0.4
     environment:
       - TZ=Asia/Jakarta
       - ALLOW_SELF_SIGNED=true
       - NEXTCLOUD_URL=https://nextcloud.ddyms.space
-      - NEXTCLOUD_UPDATE=1
+#      - NEXTCLOUD_UPDATE=0
     volumes:
       - htdocs:/var/www/html
       - nfs-cl-pictures:/Pictures
@@ -55,7 +55,7 @@ services:
         constraints: [ node.hostname == homelab ]
 
   db:
-    image: 192.168.0.2:5050/dedyms/mariadb:10.7
+    image: 192.168.0.2:5050/dedyms/mariadb:lts
     environment:
       #- MARIADB_AUTO_UPGRADE=1
       - MARIADB_ROOT_PASSWORD=mariadbnc
@@ -72,19 +72,19 @@ services:
       placement:
         constraints: [ node.role == manager ]
 
-  drawio:
-    user: 1000:1000
-    image: jgraph/drawio:latest
-    environment:
-      - TZ=Asia/Jakarta
-    ports:
-      - 8082:8080
+#  drawio:
+#    user: 1000:1000
+#    image: jgraph/drawio:latest
+#    environment:
+#      - TZ=Asia/Jakarta
+#    ports:
+#      - 8082:8080
   #  restart: unless-stopped
-    networks:
-      - nextcloud
-    deploy:
-      placement:
-         constraints: [node.hostname == homelab ]
+#    networks:
+#      - nextcloud
+#    deploy:
+#      placement:
+#         constraints: [node.hostname == homelab ]
   rd:
     image: redis:latest
     #image: dph5199278/dragonflydb:latest

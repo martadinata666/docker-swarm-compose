@@ -4,6 +4,8 @@ services:
     image: 192.168.0.2:5050/dedyms/apprise:latest
     ports:
       - 1000:8000
+    environment:
+      - APPRISE_WORKER_COUNT=1
     deploy:
       placement:
         constraints:

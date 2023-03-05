@@ -7,7 +7,7 @@ services:
     environment:
       - ENABLE_PUBLIC_LIST=True
       - NEW_AT_INDEX=True
-      - WORKERS=2
+      - WORKERS=1
       - DEFAULT_USE_LONG_ID=True
     volumes:
       - ./data:/app/data

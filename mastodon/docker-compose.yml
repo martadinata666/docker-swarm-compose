@@ -16,7 +16,7 @@ services:
       - POSTGRES_DB=mastodon
 
 #  db-setup:
-#    image: tootsuite/mastodon:edge
+#    image: tootsuite/mastodon:v4.1.0
 #    restart: "no"
 #    env_file: mastodon.env
 #    command: bundle exec rake db:setup && bundle exec rake db:migrate
@@ -36,7 +36,7 @@ services:
       - redis:/data
 
   web:
-    image: tootsuite/mastodon:edge
+    image: tootsuite/mastodon:v4.1.0
 #    user: 1000:1000
     restart: always
     env_file: mastodon.env
@@ -56,7 +56,7 @@ services:
       - ./system:/mastodon/public/system
 
   streaming:
-    image: tootsuite/mastodon:edge
+    image: tootsuite/mastodon:v4.1.0
     user: 1000:1000
     restart: always
     env_file: mastodon.env
@@ -74,7 +74,7 @@ services:
       - redis
 
   sidekiq:
-    image: tootsuite/mastodon:edge
+    image: tootsuite/mastodon:v4.1.0
 #    user: 1000:1000
     restart: always
     env_file: mastodon.env

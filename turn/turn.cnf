@@ -1,0 +1,13 @@
+listening-port=3478
+fingerprint
+use-auth-secret
+static-auth-secret=justsomesecrets
+realm=nextcloud.ddyms.space
+total-quota=100
+bps-capacity=0
+stale-nonce
+no-multicast-peers
+no-udp
+log-file=-
+pidfile="/home/debian/turn/turnserver.pid"
+userdb=/home/debian/turn/turndb

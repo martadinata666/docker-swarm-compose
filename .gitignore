@@ -1,4 +1,4 @@
-.zcache
+cache
 *.txt
 diunwebhook.txt
 dockerswarmtoken.txt
@@ -87,3 +87,19 @@ ssl/
 ympd/conf
 cloudflared/docker-compose.yml
 gitlab/registry*
+*/config.txt
+.zcache
+minio/mc
+grav/grav
+mastodon/mastodon.env
+mastodon/system
+youtubedl-material/appdata
+*/preview
+ympd/scrobble
+immich/env.immich
+youtubedl-material/appdata
+youtubedl-material/audio
+youtubedl-material/db
+youtubedl-material/subscriptions
+youtubedl-material/users
+youtubedl-material/video

@@ -30,6 +30,7 @@ services:
     deploy:
       placement:
         constraints: [ node.hostname == homelab  ]
+
   nginx:
     image: 192.168.0.2:5050/dedyms/nginx:mainline
     ports:

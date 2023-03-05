@@ -2,7 +2,7 @@
 version: "3.5"
 services:
    guacd:
-     image: martadinata666/guacd:alpine
+     image: martadinata666/guacd:debian
      environment:
        - GUACD_LOG_LEVEL=debug
      networks:

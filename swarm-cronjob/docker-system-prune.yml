@@ -2,7 +2,7 @@ version: "3.2"
 services:
   system-prune:
     image: 192.168.0.2:5050/dedyms/docker-static:latest
-    command: ["sh","-c","docker system prune -f"]
+    command: ["sh","-c","docker system prune -f && docker image prune -a -f"]
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     deploy:

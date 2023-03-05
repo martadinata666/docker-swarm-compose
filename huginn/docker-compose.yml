@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   db:
-   image: 192.168.0.2:5050/dedyms/mariadb:10.7
+   image: 192.168.0.2:5050/dedyms/mariadb:lts
    command: mariadbd --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
    environment:
       - MARIADB_ROOT_PASSWORD=huginnroot
@@ -17,7 +17,7 @@ services:
       - huginn
 
   app:
-    image: martadinata666/huginn:develop
+    image: huginn:local
     volumes:
       - ./env:/app/.env
     restart: always

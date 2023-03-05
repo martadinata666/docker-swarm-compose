@@ -1,0 +1,9 @@
+version: "3.5"
+services:
+  turn:
+    image: turn:local
+    ports:
+      - 3478:3478
+    restart: always
+
+
