@@ -12,9 +12,9 @@ services:
         constraints: [node.role == manager]
 
   proxy:
-    image: 192.168.0.2:5050/dedyms/beatbump:proxy-rust
+    image: 192.168.0.2:5050/dedyms/beatbump:proxy-deno
     ports:
-      - 21000:10000
+      - 21000:3001
     networks:
       - beatbump
     deploy:

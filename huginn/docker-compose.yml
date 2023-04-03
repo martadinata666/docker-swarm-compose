@@ -17,7 +17,7 @@ services:
       - huginn
 
   app:
-    image: huginn:local
+    image: martadinata666/huginn:develop
     volumes:
       - ./env:/app/.env
     restart: always

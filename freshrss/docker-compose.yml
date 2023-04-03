@@ -31,7 +31,7 @@ services:
    networks:
      - freshrss
    ports:
-     - 2500:80
+     - 2500:8080
    deploy:
      placement:
        constraints: [ node.hostname == homelab ]

@@ -1,0 +1,29 @@
+---
+version: "3.7"
+services:
+  mealie-omni:
+    image: hkotel/mealie:v0.5.6
+    container_name: mealie
+    ports:
+      - "3000:80"
+#      - "3000:3000"
+#      - "3001:9000"
+    volumes:
+      - ./data:/app/data/
+    environment:
+      - ALLOW_SIGNUP=false
+      - API_URL=http://192.168.0.2:3001
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Jakarta
+      - BASE_URL=http://192.168.0.2:3000
+      - LDAP_AUTH_ENABLED=true
+      - LDAP_SERVER_URL=ldap://192.168.0.2:3890
+      - LDAP_BIND_TEMPLATE=uid={},ou=people,dc=example,dc=com
+#      - LDAP_TLS_INSECURE=true
+#      - LDAP_QUERY_BIND=cn=readonly,ou=people,dc=example,dc=com
+#      - LDAP_QUERY_PASSWORD=ldapreadonly
+#      - LDAP_BASE_DN=ou=people,dc=example,dc=com
+#      - LDAP_USER_FILTER=(memberOf=cn=lldap_mealie,ou=groups,dc=example,dc=com)
+#      - LDAP_ADMIN_FILTER=(memberOf=cn=lldap_admin,ou=groups,dc=example,dc=com)
+    restart: always

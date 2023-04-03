@@ -2,7 +2,7 @@ version: "3.2"
 services:
   buildx-volume-prune:
     image: 192.168.0.2:5050/dedyms/docker-static:latest
-    command: ["sh","-c","docker volume prune -f"]
+    command: ["sh","-c","docker volume prune --filter all=1 -f"]
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock"
     deploy:

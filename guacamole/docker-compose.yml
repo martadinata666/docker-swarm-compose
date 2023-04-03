@@ -70,7 +70,7 @@ services:
        - source: apache.conf
          target: /etc/apache2/sites-available/000-default-ssl.conf
      ports:
-       - 4822:443
+       - 4822:8443
      deploy:
        placement:
          constraints: [ node.role == manager ]

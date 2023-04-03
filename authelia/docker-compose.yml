@@ -17,14 +17,17 @@ services:
 #        constraints: [ node.role == manager ]
 
   redis:
-    image: redis:alpine
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
     volumes:
-      - rd:/data
+      - df-data:/data
     networks:
       - authelia
     restart: unless-stopped
     environment:
       - TZ=Asia/Jakarta
+    deploy:
+      placement:
+        constraints: [node.role==manager]
 
   app:
     container_name: authelia
@@ -55,6 +58,6 @@ networks:
     name: authelia
 
 volumes:
-  rd:
   db:
   dbpg:
+  df-data:

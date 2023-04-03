@@ -68,6 +68,7 @@ linkace/backups
 duckdns/
 diun/
 */esdata
+*/osdata
 */backup
 shepherd/docker-compose.yml
 apptest/heimdall
@@ -103,3 +104,6 @@ youtubedl-material/db
 youtubedl-material/subscriptions
 youtubedl-material/users
 youtubedl-material/video
+turn/turn.cnf
+*/config.toml
+.Trash-1000

@@ -2,8 +2,11 @@ version: "3.8"
 services:
 
   redis:
-    image: redis:6.2
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
+    #image: redis:latest
     restart: always
+    volumes:
+      - df-data:/data
 
   database:
     image: postgres:14
@@ -18,28 +21,28 @@ services:
 
 
   microservices:
-    image: altran1502/immich-server:release
+    image: altran1502/immich-server:v1.49.0
     entrypoint: ["/bin/sh", "./start-microservices.sh"]
     volumes:
       - /media/WD/Rasdem/Photos:/usr/src/app/upload
     env_file:
       - env.immich
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
     depends_on:
       - redis
       - database
     restart: always
 
   server:
-    image: altran1502/immich-server:release
+    image: altran1502/immich-server:v1.49.0
     entrypoint: ["/bin/sh", "./start-server.sh"]
     volumes:
       - /media/WD/Rasdem/Photos:/usr/src/app/upload
     env_file:
       - env.immich
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=development
     ports:
       - 2281:3001
     depends_on:
@@ -48,7 +51,7 @@ services:
     restart: always
 
   web:
-    image: altran1502/immich-web:release
+    image: altran1502/immich-web:v1.49.0
     entrypoint: ["/bin/sh", "./entrypoint.sh"]
     env_file:
       - env.immich
@@ -61,8 +64,8 @@ services:
       # - IMMICH_SERVER_URL=http://server:3001
     restart: always
 
-  immich-proxy:
-    image: altran1502/immich-proxy:release
+  proxy:
+    image: altran1502/immich-proxy:v1.49.0
     environment:
       # Make sure these values get passed through from the env file
       - IMMICH_SERVER_URL=http://server:3001
@@ -72,3 +75,7 @@ services:
     depends_on:
       - server
     restart: always
+
+volumes:
+  df-data:
+  redis:

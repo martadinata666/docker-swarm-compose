@@ -1,7 +1,7 @@
 version: "3.8"
 services:
   web:
-    image: 192.168.0.2:5050/dedyms/nextcloud-smb:25.0.4
+    image: 192.168.0.2:5050/dedyms/nextcloud-smb:26.0.0
     environment:
       - TZ=Asia/Jakarta
       - ALLOW_SELF_SIGNED=true
@@ -22,8 +22,8 @@ services:
     #  - source: user.ini
     #    target: /var/www/html/.user.ini
     ports:
-      - 8081:80
-      - 8080:443
+      - 8081:8080
+      - 8080:8443
     restart: unless-stopped
     networks:
       - nextcloud
@@ -32,24 +32,28 @@ services:
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
-  es:
-    image: elasticsearch:7.17.1
-    environment:
-      - discovery.type=single-node
-      - TZ=Asia/Jakarta
-      - bootstrap.memory_lock=true
+#  es:
+#    image: opensearchproject/opensearch:1
+#    environment:
+#      - discovery.type=single-node
+#      - TZ=Asia/Jakarta
+#      - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - xpack.security.enabled=true
-    user: 1000:1000
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    networks:
-      - nextcloud
-    volumes:
-      - ./esdata/data:/usr/share/elasticsearch/data
-      - ./esdata/plugins:/usr/share/elasticsearch/plugins
+#      - xpack.security.enabled=true # this is elastic config
+#      - "DISABLE_INSTALL_DEMO_CONFIG=true" # Prevents execution of bundled demo script which installs demo certificates and security configurations to OpenSearch
+#      - "DISABLE_SECURITY_PLUGIN=true" # Disables security plugin
+#    user: 1000:1000
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    networks:
+#      - nextcloud
+#    volumes:
+#      - ./osdata/data:/usr/share/opensearch/data
+#      - ./osdata/plugins:/usr/share/opensearch/plugins
+#      - ./esdata/data:/usr/share/elasticsearch/data
+#      - ./esdata/plugins:/usr/share/elasticsearch/plugins
     deploy:
       placement:
         constraints: [ node.hostname == homelab ]
@@ -72,6 +76,18 @@ services:
       placement:
         constraints: [ node.role == manager ]
 
+  imaginary:
+    image: nextcloud/aio-imaginary:latest
+    restart: always
+    environment:
+      - PORT=9000
+      - TZ=Asia/Jakarta
+    networks:
+      - nextcloud
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+#    command: -concurrency 50 -enable-url-source -log-level debug
 #  drawio:
 #    user: 1000:1000
 #    image: jgraph/drawio:latest
@@ -86,10 +102,8 @@ services:
 #      placement:
 #         constraints: [node.hostname == homelab ]
   rd:
-    image: redis:latest
-    #image: dph5199278/dragonflydb:latest
     #image: docker.dragonflydb.io/dragonflydb/dragonfly
-    #command: dragonfly --logtostderr --memcache_port 11211
+    image: redis:latest
     environment:
       - TZ=Asia/Jakarta
     volumes:
@@ -103,9 +117,8 @@ services:
 
 volumes:
   htdocs:
-  rd:
-  df-data:
   rd-data:
+  df-data:
   db:
 #  ds_logs:
 #  ds_data:

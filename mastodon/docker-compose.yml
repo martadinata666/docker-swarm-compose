@@ -16,34 +16,43 @@ services:
       - POSTGRES_DB=mastodon
 
 #  db-setup:
-#    image: tootsuite/mastodon:v4.1.0
+#    image: ghcr.io/mastodon/mastodon:v4.1.1
 #    restart: "no"
 #    env_file: mastodon.env
 #    command: bundle exec rake db:setup && bundle exec rake db:migrate
 #    depends_on:
 #      - db
 #    networks:
-#      - internal_network
+#      - mastodon
 
   redis:
     restart: always
-    image: redis:7-alpine
+    image: redis:latest
+    #image: docker.dragonflydb.io/dragonflydb/dragonfly
+    #image: cachegrand/cachegrand-server:latest
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 262144
+        hard: 262144
     networks:
       - internal_network
-    healthcheck:
-      test: ['CMD', 'redis-cli', 'ping']
+    #healthcheck:
+    #  test: ['CMD', 'redis-cli', 'ping']
     volumes:
       - redis:/data
 
   web:
-    image: tootsuite/mastodon:v4.1.0
+    image: ghcr.io/mastodon/mastodon:v4.1.1
 #    user: 1000:1000
     restart: always
     env_file: mastodon.env
-    command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rails s -p 3000"
+    command: bash -c "rm -f /mastodon/tmp/pids/server.pid; bundle exec rake db:migrate && bundle exec rails s -p 3000"
     networks:
-      - external_network
       - internal_network
+      - external_network
     healthcheck:
       # prettier-ignore
       test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:3000/health || exit 1']
@@ -54,16 +63,17 @@ services:
       - redis
     volumes:
       - ./system:/mastodon/public/system
+      - ./cleanup.sh:/usr/local/bin/mastodon-cleanup
 
   streaming:
-    image: tootsuite/mastodon:v4.1.0
+    image: ghcr.io/mastodon/mastodon:v4.1.1
     user: 1000:1000
     restart: always
     env_file: mastodon.env
     command: node ./streaming
     networks:
-      - external_network
       - internal_network
+      - external_network
     healthcheck:
       # prettier-ignore
       test: ['CMD-SHELL', 'wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1']
@@ -74,7 +84,7 @@ services:
       - redis
 
   sidekiq:
-    image: tootsuite/mastodon:v4.1.0
+    image: ghcr.io/mastodon/mastodon:v4.1.1
 #    user: 1000:1000
     restart: always
     env_file: mastodon.env
@@ -83,17 +93,17 @@ services:
       - db
       - redis
     networks:
-      - external_network
       - internal_network
+      - external_network
     volumes:
       - ./system:/mastodon/public/system
     healthcheck:
       test: ['CMD-SHELL', "ps aux | grep '[s]idekiq\ 6' || false"]
 
 networks:
-  external_network:
   internal_network:
     internal: true
+  external_network:
 
 volumes:
   redis:

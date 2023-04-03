@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
 
   web:
-    image: gitlab/gitlab-ee:15.9.1-ee.0
+    image: gitlab/gitlab-ee:15.10.1-ee.0
     hostname: gitlab-homelab
     ports:
       - "22:22"
@@ -46,13 +46,14 @@ services:
     restart: unless-stopped
 
   runner:
-    image: 192.168.0.2:5050/dedyms/gitlab-runner:latest
-#    group_add:
-#      - docker
+#    image: 192.168.0.2:5050/dedyms/gitlab-runner:v15.9.1
+    image: 192.168.0.2:5050/dedyms/gitlab-runner:v15.10.1
     volumes:
       - ./runner/config.toml:/etc/gitlab-runner/config.toml
+#       - ./runner/config.toml:/home/gitlab-runner/.gitlab-runner/config.toml
       - /media/VM/gitlab-builds:/builds
       - /var/run/docker.sock:/var/run/docker.sock
+#      - ./gitlab-runner-linux-amd64:/usr/bin/gitlab-runner
     deploy:
       mode: replicated
       replicas: 1

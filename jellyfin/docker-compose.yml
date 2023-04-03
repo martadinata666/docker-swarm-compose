@@ -2,8 +2,8 @@
 version: "3.8"
 services:
   server:
-#    image: 192.168.0.2:5050/dedyms/jellyfin:stable
-    image: 192.168.0.2:5050/dedyms/jellyfin:git
+    image: 192.168.0.2:5050/dedyms/jellyfin:stable
+#    image: 192.168.0.2:5050/dedyms/jellyfin:git
     container_name: jellyfin_server
     pull_policy: always
     #entrypoint: ./jellyfin/jellyfin --datadir /config --cachedir /cache --ffmpeg /usr/lib/jellyfin-ffmpeg/ffmpeg
@@ -17,6 +17,7 @@ services:
     ports:
       - 8097:8097
     volumes:
+#      - ./ffmpeg:/usr/local/ffmpeg
       - ./config:/config
       - ./config/subtitle:/Subtitle Edit/Dictionaries
       - cache:/cache

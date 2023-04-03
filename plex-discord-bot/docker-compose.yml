@@ -1,8 +1,7 @@
 version: "3.5"
 services:
   app:
-    image: pdb:local
-    #image: irbyk/plexbot:latest
+    image: 192.168.0.2:5050/dedyms/plex-discord-bot:git
     restart: always
 #    volumes:
 #      - ./config/keys.js:/home/PlexBot/config/keys.js

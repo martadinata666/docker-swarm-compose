@@ -6,12 +6,44 @@ services:
       - 9980:9980
     environment:
       - aliasgroup1=https://192.168.0.2:8080
+      - aliasgroup2=https://nextcloud.ddyms.space
       - username=admin
       - pasword=adminadmin
+#      - extra_params=--o:ssl.enable=false
+#      - extra_params=--o:ssl.termination=true
+#      - DONT_GEN_SSL_CERT=1
+      - ./coolwsd.xml:/etc/coolwsd/coolwsd.xml
+#    configs:
+#      - source: coolwsd.xml
+#        target: /etc/coolwsd/coolwsd.xml
     restart: unless-stopped
     networks:
       - collabora
+    deploy:
+      placement:
+        constraints: [node.role==manager]
+
+#  apache:
+#    image: 192.168.0.2:5050/dedyms/apache:fcgid
+#    ports:
+#      - 9980:8443
+#    configs:
+#      - source: apache.conf
+#        target: /etc/apache2/sites-available/000-default-ssl.conf
+#    networks:
+#      - collabora
+#    deploy:
+#      placement:
+#        constraints: [node.role==manager]
 
 networks:
   collabora:
     name: collabora
+  nextcloud:
+    external: true
+
+configs:
+  apache.conf:
+    file: ./apache.conf
+#  coolwsd.xml:
+#    file: ./coolwsd.xml

@@ -17,11 +17,12 @@ services:
          constraints: [ node.role == manager ]
 
   rd:
-    image: redis:latest
+    #image: redis:latest
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
     environment:
       - TZ=Asia/Jakarta
     volumes:
-      - rd:/data
+      - df-db:/data
     restart: unless-stopped
     networks:
       - heimdall
@@ -30,7 +31,7 @@ services:
         constraints: [node.hostname == homelab ]
 
   web:
-    image: 192.168.0.2:5050/dedyms/heimdall:2.5.5
+    image: 192.168.0.2:5050/dedyms/heimdall:2.5.6
     networks:
       - heimdall
     configs:

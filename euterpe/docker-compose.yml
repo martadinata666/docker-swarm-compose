@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/euterpe:latest
+    image: 192.168.0.2:5050/dedyms/euterpe:v1.5.4
     environment:
       - TZ=Asia/Jakarta
     volumes:

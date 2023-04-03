@@ -15,7 +15,7 @@ services:
       - "8998:17442"
     networks:
       - ytdlm
-    image: 192.168.0.2:5050/dedyms/youtubedl-material:latest
+    image: 192.168.0.2:5050/dedyms/youtubedl-material:git
   db:
     user: 1000:1000
     networks:
@@ -23,7 +23,7 @@ services:
     image: mongo
     restart: always
     volumes:
-      - ./db/:/data/db
+      - ./db:/data/db
 
 networks:
   ytdlm:

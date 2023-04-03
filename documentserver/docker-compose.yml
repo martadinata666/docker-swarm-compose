@@ -19,14 +19,14 @@ services:
         constraints: [ node.role == manager ]
 
   redis:
-    image: redis:latest
-#    image: docker.dragonflydb.io/dragonflydb/dragonfly
+#    image: redis:latest
+    image: docker.dragonflydb.io/dragonflydb/dragonfly
 #    command: dragonfly --logtostderr --memcache_port 11211
     #image: dph5199278/dragonflydb:latest
     environment:
       - TZ=Asia/Jakarta
     volumes:
-      - rd-data:/data
+      - df-data:/data
     restart: unless-stopped
     networks:
       - documentserver
@@ -77,7 +77,7 @@ services:
       placement:
         constraints: [ node.hostname == homelab ]
     ports:
-      - 5080:443
+      - 5080:8443
 
 volumes:
   ds_logs:

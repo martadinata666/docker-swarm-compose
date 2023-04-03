@@ -1,0 +1,24 @@
+version: "3.5"
+services:
+   app:
+     image: 192.168.0.2:5050/dedyms/duplicati:dotnet
+     #command: bash
+     #stdin_open: true
+     #tty: true
+#     networks:
+#       - duplicati
+#     volumes:
+#       - ./data:/home/debian/duplicati/data
+#       - /home/dedyms/Documents/docker-gitlab-local:/home/debian/docker-gitlab-local
+#       - /media/WD:/media/WD
+#       - /media/Clouds:/media/Clouds
+#       - /media/hgst:/media/hgst
+#     ports:
+#       - 8200:8200
+#     deploy:
+#       placement:
+#         constraints: [ node.role == manager ]
+
+#networks:
+#  duplicati:
+#    name: duplicati

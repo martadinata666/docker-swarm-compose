@@ -42,7 +42,7 @@ services:
       - source: apache.conf
         target: /etc/apache2/sites-enabled/000-default-ssl.conf
     ports:
-      - 4080:443
+      - 4080:8443
     networks:
       - pigallery2
     deploy:

@@ -27,7 +27,7 @@ services:
   apache:
     image: 192.168.0.2:5050/dedyms/apache:fcgid
     ports:
-      - 5000:443
+      - 5000:8443
     configs:
       - source: apache.conf
         target: /etc/apache2/sites-available/000-default-ssl.conf

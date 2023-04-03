@@ -1,11 +1,11 @@
 version: "3.5"
 services:
   rd:
-   image: redis:latest
+   image: docker.dragonflydb.io/dragonflydb/dragonfly
    environment:
      - TZ=Asia/Jakarta
    volumes:
-     - rd:/data
+     - df-db:/data
    restart: unless-stopped
    networks:
      - linkace
@@ -42,7 +42,7 @@ services:
    networks:
      - linkace
    ports:
-     - 7070:443
+     - 7070:8443
    deploy:
      placement:
        constraints: [ node.hostname == homelab ]
@@ -51,7 +51,6 @@ networks:
   linkace:
     name: linkace
 volumes:
-  rd:
   df-db:
 #  nfs-htdocs:
 #    driver_opts:
