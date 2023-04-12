@@ -16,7 +16,7 @@ services:
       - POSTGRES_DB=mastodon
 
 #  db-setup:
-#    image: ghcr.io/mastodon/mastodon:v4.1.1
+#    image: ghcr.io/mastodon/mastodon:v4.1.2
 #    restart: "no"
 #    env_file: mastodon.env
 #    command: bundle exec rake db:setup && bundle exec rake db:migrate
@@ -45,7 +45,7 @@ services:
       - redis:/data
 
   web:
-    image: ghcr.io/mastodon/mastodon:v4.1.1
+    image: ghcr.io/mastodon/mastodon:v4.1.2
 #    user: 1000:1000
     restart: always
     env_file: mastodon.env
@@ -66,7 +66,7 @@ services:
       - ./cleanup.sh:/usr/local/bin/mastodon-cleanup
 
   streaming:
-    image: ghcr.io/mastodon/mastodon:v4.1.1
+    image: ghcr.io/mastodon/mastodon:v4.1.2
     user: 1000:1000
     restart: always
     env_file: mastodon.env
@@ -84,7 +84,7 @@ services:
       - redis
 
   sidekiq:
-    image: ghcr.io/mastodon/mastodon:v4.1.1
+    image: ghcr.io/mastodon/mastodon:v4.1.2
 #    user: 1000:1000
     restart: always
     env_file: mastodon.env

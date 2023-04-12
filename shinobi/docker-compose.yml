@@ -1,0 +1,74 @@
+version: "3"
+services:
+  db:
+   image: 192.168.0.2:5050/dedyms/mariadb:lts
+   environment:
+      - MARIADB_ROOT_PASSWORD=shinobiroot
+      - TZ=Asia/Jakarta
+      - MARIADB_DATABASE=ccio
+      - MARIADB_USER=shinobi
+      - MARIADB_PASSWORD=shinobipass
+      - MARIADB_INITDB_SKIP_TZINFO=1
+   volumes:
+      - ./db:/var/lib/mysql
+   restart: always
+   networks:
+     - shinobi
+
+  tensorflow:
+    image: 192.168.0.2:5050/dedyms/shinobi:tensorflow
+    environment:
+      - TZ=Asia/Jakarta
+    volumes:
+      - ./config/tfjs.conf:/config/conf.json
+    networks:
+      - shinobi
+    restart: always
+
+  app:
+    image: 192.168.0.2:5050/dedyms/shinobi:git
+    pull_policy: always
+    group_add:
+       - "44"
+       - "139"
+    environment:
+       - DB_HOST=db
+       - DB_USER=shinobi
+       - DB_PASSWORD=shinobipass
+       - DB_DATABASE=ccio
+       - TZ=Asia/Jakarta
+    volumes:
+       - /home/dedyms/docker/shinobi/config:/config
+       - /home/dedyms/docker/shinobi/customAutoLoad:/Shinobi/libs/customAutoLoad
+       - /home/dedyms/docker/shinobi/videos:/Shinobi/videos
+       - /etc/localtime:/etc/localtime:ro
+    devices:
+       - /dev/dri:/dev/dri
+#    ports:
+#       - 23000:8080
+    restart: always
+    networks:
+      - shinobi
+    depends_on:
+      - db
+
+  nginx:
+    image: 192.168.0.2:5050/dedyms/nginx:mainline
+    ports:
+      - 23000:443
+      - 22000:80
+    configs:
+      - source: nginx.conf
+        target: /etc/nginx/conf.d/default.conf
+    restart: always
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+    networks:
+      - shinobi
+
+configs:
+  nginx.conf:
+    file: nginx.conf
+networks:
+  shinobi:
+    name: shinobi

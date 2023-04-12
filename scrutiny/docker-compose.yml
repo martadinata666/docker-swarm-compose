@@ -4,7 +4,7 @@ services:
     environment:
       - TZ=Asia/Jakarta
       - SCRUTINY_WEB_INFLUXDB_HOST=db
-    image: 192.168.0.2:5050/dedyms/scrutiny:v0.6.0-web
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.7.0-web
     ports:
       - 9092:8080/tcp
     restart: always
@@ -15,7 +15,7 @@ services:
       - scrutiny
 
   collector:
-    image: 192.168.0.2:5050/dedyms/scrutiny:v0.6.0-collector
+    image: 192.168.0.2:5050/dedyms/scrutiny:v0.7.0-collector
     environment:
       - TZ=Asia/Jakarta
       - COLLECTOR_API_ENDPOINT=http://app:8080
@@ -35,7 +35,7 @@ services:
       - scrutiny
 
   db:
-    image: influxdb:2.2
+    image: influxdb:latest
     user: 1000:1000
     environment:
       - TZ=Asia/Jakarta

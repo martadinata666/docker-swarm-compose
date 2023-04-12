@@ -12,7 +12,7 @@ services:
       - /dev/kmsg:/dev/kmsg
     expose:
       - 8080
-    image: martadinata666/cadvisor:latest
+    image: martadinata666/cadvisor:git
     ipc: shareable
     networks:
       - monitoring

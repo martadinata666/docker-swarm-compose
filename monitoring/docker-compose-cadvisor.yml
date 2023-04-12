@@ -1,0 +1,32 @@
+version: "2.4"
+services:
+  cadvisor:
+    command:
+    - '--docker_only=true'
+    - '--housekeeping_interval=30s'
+#    - '--disable_metrics=accelerator,cpu_topology,disk,memory_numa,tcp,udp,percpu,sched,process,hugetlb,referenced_memory,resctrl,cpuset,advtcp,memory_numa'
+    - '--store_container_labels=false'
+    - '--event_storage_event_limit=default=0'
+    - '--event_storage_age_limit=default=0'
+    devices:
+      - /dev/kmsg:/dev/kmsg
+#    expose:
+#      - 8080
+    ports:
+      - 6060:8080
+    image: 192.168.0.2:5050/dedyms/cadvisor:git
+    ipc: shareable
+#    networks:
+#      - monitoring
+    privileged: true
+    restart: unless-stopped
+    security_opt:
+      - label=disable
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /etc/machine-id:/etc/machine-id:ro
+#    labels:
+#      - com.centurylinklabs.watchtower.enable=true
