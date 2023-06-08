@@ -1,11 +1,11 @@
 version: "3.8"
 services:
   app:
-    image: martadinata666/python-http-server:latest
+    image: 192.168.0.2:5050/dedyms/rs-http-server:latest
     volumes:
       - /media/WD/static:/data
     ports:
-      - 25000:8000
+      - 25000:8080
     deploy:
       placement:
          constraints: [node.role==manager]

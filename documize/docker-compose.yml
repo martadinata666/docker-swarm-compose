@@ -1,9 +1,10 @@
----
-version: "3.5"
 services:
   db:
-    image: 192.168.0.2:5050/dedyms/mariadb:10.7
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+    image: 192.168.0.2:5050/dedyms/mariadb:lts
+    command: mariadbd --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+#    security_opt:
+#      - seccomp=unconfined
+    runtime: youki
     environment:
       - MARIADB_ROOT_PASSWORD=documizeroot
       - TZ=Asia/Jakarta
@@ -21,7 +22,8 @@ services:
         constraints: [ node.role == manager ]
 
   app:
-     image: 192.168.0.2:5050/dedyms/documize:v5.4.1-plus
+     image: 192.168.0.2:5050/dedyms/documize:latest
+     runtime: youki
      depends_on:
        - db
      volumes:
@@ -31,9 +33,6 @@ services:
      restart: always
      networks:
       - documize
-# w     - lldap
-     depends_on:
-      - db
      deploy:
        placement:
          constraints: [ node.hostname == homelab ]

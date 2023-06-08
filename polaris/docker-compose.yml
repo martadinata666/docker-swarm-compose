@@ -1,0 +1,12 @@
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/polaris:latest
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    volumes:
+      - ./data:/data
+      - /home/dedyms/Musik/Music/Music/:/music
+    ports:
+      - 1600:5050

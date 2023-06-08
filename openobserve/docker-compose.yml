@@ -1,0 +1,35 @@
+#mkdir data
+#docker run -v $PWD/data:/data -e ZO_DATA_DIR="/data" -p 5080:5080 \
+#    -e ZO_ROOT_USER_EMAIL=root@example.com -e ZO_ROOT_USER_PASSWORD=Complexpass#123 \
+#    public.ecr.aws/zinclabs/openobserve:latest
+
+services:
+  app:
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    environment:
+      - ZO_DATA_DIR=/data
+      - ZO_ROOT_USER_EMAIL=root@example.com
+      - ZO_ROOT_USER_PASSWORD=openobservepass
+    volumes:
+      - ./data:/data
+    ports:
+      - 5070:5080
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [node.role==manager]
+
+  logger:
+    image: fluent/fluentd:edge
+    ports:
+      - 24224:24224
+    volumes:
+      - ./fluentd.conf:/fluentd/etc/docker.conf
+    environment:
+      - FLUENTD_CONF=docker.conf
+    restart: unless-stopped
+    deploy:
+      placement:
+        constraints: [node.role==manager]
+
+#docker run -it -p 24224:24224 -v /path/to/conf/test.conf:/fluentd/etc/test.conf -e FLUENTD_CONF=test.conf fluent/fluentd:latest

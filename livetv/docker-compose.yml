@@ -1,0 +1,18 @@
+services:
+  app:
+    image: 192.168.0.2:5050/dedyms/ffmpeg:6
+    runtime: crun
+    restart: unless-stopped
+    volumes:
+      - ./ersatztv:/home/debian/ersatztv
+      - ./data:/home/debian/.local/share
+      - /media/WD/Videos/MV:/MV
+    working_dir: /home/debian/ersatztv
+    command: /home/debian/ersatztv/ErsatzTV
+    group_add:
+      - "44"
+      - "139"
+    devices:
+      - /dev/dri:/dev/dri
+    ports:
+      - 8409:8409

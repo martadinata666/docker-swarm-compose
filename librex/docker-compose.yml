@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  web:
+    image: 192.168.0.2:5050/dedyms/apache:fpm
+    volumes:
+      - ./html:/var/www/html
+    ports:
+      - 7100:8080
+    networks:
+      - librex
+    deploy:
+      placement:
+        constraints: [node.role==manager]
+
+networks:
+  librex:
+    name: librex

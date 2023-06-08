@@ -27,8 +27,9 @@ services:
 
   redis:
     restart: always
-    image: redis:latest
-    #image: docker.dragonflydb.io/dragonflydb/dragonfly
+#    image: redis:latest
+    image: docker.dragonflydb.io/dragonflydb/dragonfly:latest
+#    command: apt update && apt install -y libxml2 && dragonfly --logtostderr
     #image: cachegrand/cachegrand-server:latest
     ulimits:
       memlock:
@@ -42,7 +43,8 @@ services:
     #healthcheck:
     #  test: ['CMD', 'redis-cli', 'ping']
     volumes:
-      - redis:/data
+      - df-data:/data
+#      - redis:/data
 
   web:
     image: ghcr.io/mastodon/mastodon:v4.1.2
@@ -107,3 +109,4 @@ networks:
 
 volumes:
   redis:
+  df-data:

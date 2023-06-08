@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   db:
-    image: 192.168.0.2:5050/dedyms/mariadb:10.7
+    image: 192.168.0.2:5050/dedyms/mariadb:lts
     environment:
       - MARIADB_ROOT_PASSWORD=pigalleryroot
       - TZ=Asia/Jakarta

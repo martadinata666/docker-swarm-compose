@@ -1,14 +1,9 @@
 version: "3"
 services:
-  invidious:
+  app:
     image: quay.io/invidious/invidious:latest
-#    container_name: invidious
-#    command: sh
-#    tty: true
-#    stdin_open: true
-#    hostname: invidious
     networks:
-      - invidious_network
+      - invidious
     restart: unless-stopped
     ports:
       - "35000:3000"
@@ -18,7 +13,7 @@ services:
           dbname: invidious
           user: kemal
           password: kemal
-          host: invidious-db
+          host: db
           port: 5432
         check_tables: true
         domain:
@@ -31,9 +26,11 @@ services:
         captcha_enabled: true
         channel_threads: 1
         feed_threads: 1
+        enable_user_notifications: false
+        hmac_key: 61fe63584295750bcd93ffdcaa4a26e1d600d6c7
         default_user_preferences:
           locale: en-US
-          region: ID
+          region: US
           #captions: ["", "", ""]
           dark_mode: true
           thin_mode: false
@@ -41,33 +38,40 @@ services:
           default_home: Trending
           related_videos: true
           autoplay: false
-    healthcheck:
-      test: wget -nv --tries=1 --spider http://127.0.0.1:3000/api/v1/comments/jNQXAC9IVRw || exit 1
-      interval: 30s
-      timeout: 5s
-      retries: 2
+#    healthcheck:
+#      test: wget -nv --tries=1 --spider http://127.0.0.1:3000/api/v1/comments/jNQXAC9IVRw || exit 1
+#      interval: 30s
+#      timeout: 5s
+#      retries: 2
     depends_on:
       - invidious-db
     labels:
       - com.centurylinklabs.watchtower.enable=true
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
 
-  invidious-db:
+  db:
     image: docker.io/library/postgres:13
-#    hostname: invidious-db
+    user: 1000:1000
     networks:
-      - invidious_network
+      - invidious
     restart: unless-stopped
     volumes:
-      - /portainer/Files/AppData/Config/invidious/dbdata:/var/lib/postgresql/data
-      - /portainer/Files/AppData/Config/invidious/config-sql:/config/sql
-      - /portainer/Files/AppData/Config/invidious/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh
+      - ./db:/var/lib/postgresql/data
+      - ./config/sql:/config/sql
+      - ./config/init-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh
     environment:
       POSTGRES_DB: invidious
       POSTGRES_USER: kemal
       POSTGRES_PASSWORD: kemal
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+    deploy:
+      placement:
+        constraints: [ node.hostname == homelab ]
 
 networks:
- invidious_network:
+ invidious:
+   name: invidious
 

@@ -1,25 +1,9 @@
 ---
 version: "2.4"
 services:
-#  embystat:
-#    image: ghcr.io/linuxserver/embystat:latest
-#    container_name: emby-stat
-#    environment:
-#      - PUID=1000
-#      - PGID=1000
-#      - TZ=Asia/Jakarta
-#    volumes:
-#      - ./embystat/config:/config
-#    ports:
-#      - "6555:6555"
-#    restart: unless-stopped
-#    networks:
-#      - emby
-#    labels:
-#      - com.centurylinklabs.watchtower.enable=true
   emby:
-#    image: emby/embyserver:latest
     image: ghcr.io/linuxserver/emby:beta
+    runtime: crun
     container_name: emby
     restart: always
     volumes:

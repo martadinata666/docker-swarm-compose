@@ -1,8 +1,9 @@
 version: "3.8"
 services:
   app:
-    image: 192.168.0.2:5050/dedyms/unmanic:git
+    image: 192.168.0.2:5050/dedyms/unmanic:0.2.4
     restart: always
+    runtime: crun
     group_add:
        - "44"
        - "139"
@@ -18,26 +19,6 @@ services:
        - unmanic
     labels:
       - com.centurylinklabs.watchtower.enable=true
-    #deploy:
-    #  resources:
-    #     limits:
-    #       cpus: '4.0'
-  #nginx:
-  #  image: 192.168.0.2:5050/dedyms/nginx:mainline
-  #  ports:
-  #    - 7777:443
-  #  volumes:
-  #    - ./default.conf:/etc/nginx/conf.d/default.conf
-  #  networks:
-  #    - unmanic
-  #apache:
-  #  image: 192.168.0.2:5050/dedyms/apache2:fcgid
-  #  ports:
-  #    - 7777:443
-  #  volumes:
-  #    - ./apache.conf:/etc/apache2/sites-available/000-default-ssl.conf
-  #  networks:
-  #    - unmanic
 
 networks:
   unmanic:

@@ -3,7 +3,9 @@ version: "3.8"
 services:
   server:
     image: 192.168.0.2:5050/dedyms/jellyfin:stable
-#    image: 192.168.0.2:5050/dedyms/jellyfin:git
+    runtime: youki
+    security_opt:
+      - seccomp=unconfined
     container_name: jellyfin_server
     pull_policy: always
     #entrypoint: ./jellyfin/jellyfin --datadir /config --cachedir /cache --ffmpeg /usr/lib/jellyfin-ffmpeg/ffmpeg
@@ -17,7 +19,6 @@ services:
     ports:
       - 8097:8097
     volumes:
-#      - ./ffmpeg:/usr/local/ffmpeg
       - ./config:/config
       - ./config/subtitle:/Subtitle Edit/Dictionaries
       - cache:/cache
@@ -25,9 +26,10 @@ services:
       - ow_videos:/Videos2:rw
       - /media/Clouds/Porn:/Porn:rw
       - transcodes:/config/transcodes
+      - /home/dedyms/docker/shinobi/videos/dms/office:/c1c
+      - /home/dedyms/docker/shinobi/videos/dms/office2:/c6n
     networks:
       - jellyfin
-#    network_mode: host
     labels:
       - com.centurylinklabs.watchtower.enable=true
     restart: unless-stopped
@@ -35,20 +37,6 @@ services:
       resources:
         limits:
           memory: 2000M
-    #  placement:
-    #    constrainst: [ node.name == homeworker0 ]
-
-  client:
-    image: 192.168.0.2:5050/dedyms/jellyfin-vue:static
-#    user: 2000:2000
-    container_name: jellyfin_client
-    ports:
-      - 8098:80
-    networks:
-      - jellyfin
-    labels:
-      - com.centurylinklabs.watchtower.enable=true
-    restart: unless-stopped
 
 volumes:
   cache:

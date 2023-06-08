@@ -75,7 +75,7 @@ apptest/heimdall
 pigallery2d
 pigallery2p
 jellyfin/transcodes
-shinobi
+shinobi/data
 watchtower/*
 spotify-dashboard/*
 minio/data*
@@ -107,3 +107,6 @@ youtubedl-material/video
 turn/turn.cnf
 */config.toml
 .Trash-1000
+shinobi
+livetv/ersatztv
+librex/html

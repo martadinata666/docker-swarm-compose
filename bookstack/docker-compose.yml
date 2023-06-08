@@ -1,0 +1,34 @@
+version: "2"
+services:
+  app:
+    image: lscr.io/linuxserver/bookstack
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - APP_URL=http://192.168.0.2:6875
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=bookstackuser
+      - DB_PASS=bookstackpass
+      - DB_DATABASE=bookstack
+    volumes:
+      - ./data:/config
+    ports:
+      - 6875:80
+    restart: unless-stopped
+    depends_on:
+      - db
+  db:
+    image: 192.168.0.2:5050/dedyms/mariadb:lts
+    environment:
+      - MARIADB_ROOT_PASSWORD=bookstackrootpass
+      - MARIADB_DATABASE=bookstack
+      - MARIADB_USER=bookstackuser
+      - MARIADB_PASSWORD=bookstackpass
+    volumes:
+      - db:/var/lib/mysql
+    restart: unless-stopped
+
+volumes:
+  data:
+  db:
